@@ -1,0 +1,219 @@
+\documentclass{beamer}
+\usepackage{preamble_beamer}
+
+
+\title[Случайные процессы]{Лекция 2. Случайные процессы в непрерывном времени} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+
+\begin{document}
+
+\begin{frame}
+\titlepage 
+\end{frame}
+
+\section{Стохастические дифф. уравнения}
+\begin{frame}{Стохастические дифф. уравнения}
+    Интегральная запись:
+    $$
+        X_t = X_0 + \int_0^t \mu(s, X_s) ds + \int_0^t \sigma(s, X_s) dW_s
+    $$
+
+    Дифференциальная запись:
+    $$
+    \begin{cases}
+        d X_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t \\
+        X_0 = x_0
+    \end{cases}
+    $$
+\end{frame}
+
+\begin{frame}{Пример. Броуновское движение со сносом}
+    $$
+        dX_t = \mu dt + \sigma dB_t 
+    $$
+     
+    $$
+        X_t = X_0 + \mu t + \sigma B_t
+    $$
+\end{frame}
+
+\begin{frame}{Пример. Геометрическое броуновское движение}
+  \begin{itemize}
+      \item     Дифференциальная запись:
+    $$\begin{cases}
+            dX_t = X_t \left( \mu dt + \sigma dB_t \right) \\
+            X_0 = 1
+    \end{cases}$$
+    \item   Рассмотрим детерминированное уравнение:
+    $$
+        dX_t = X_t \mu dt \to X_t = e^{\mu t}
+    $$
+    \item Замена переменных:
+    $$X_t = e^{Y_t} \longrightarrow  Y_t = \log X_t$$
+    \item Формула Ито:
+    $$d Y_t = \dfrac{d X_t}{X_t} - \dfrac{1}{2} \dfrac{(dX_t)^2}{X_t^2} =\left( \mu - \dfrac{1}{2}\sigma^2 \right) dt + \sigma dB_t$$
+    \item Решение
+    $$X_t = \exp\left[ \left( \mu - \dfrac{1}{2}\sigma^2 \right) t + \sigma B_t \right]$$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Процесс Орнштейна-Уленбека}
+\begin{itemize}
+    \item Дифференциальная запись:    
+    $$ \begin{cases}
+            dX_t = d X_t = -\alpha X_t dt + \sigma dW_t\\
+            X_0 = x_0
+        \end{cases}
+    $$
+    \item Замена переменных:
+    $$
+        X_t = e^{-\alpha t} Y_t \longrightarrow Y_t = e^{\alpha t} X_t
+    $$
+    \item Формула Ито:
+    $$
+        dY_t = e^{\alpha t}X_t \alpha dt + e^{\alpha t} dX_t
+        = e^{\alpha t}\sigma dW_t \to Y_t = X_0 + \sigma \int_0^t e^{\alpha s}dW_s
+    $$
+    \item Решение:
+    $$
+        X_t = X_0 e^{-\alpha t} + \sigma  \int_0^t e^{-\alpha(t-s)}dW_s
+    $$
+    $$
+        X_t \sim N\left(X_0e^{-\alpha t}, \dfrac{\sigma^2}{2\alpha}(1-e^{-2\alpha t})\right)
+    $$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Сильное и слабое решение}
+    Пусть $(\Omega, \F, \mathbb{P})$ -- вероятностное пространство, $(W_t)_{t\geq0}$ -- броуновское движение, $(\F_t)_{t\geq 0}$ -- естественная фильтрация. Пусть задано стохастическое дифф. уравнение:
+    $$
+        dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t
+    $$
+    \begin{block}{Определение}
+        Процесс $X_t$, определённый на том же вероятностном пространстве и обращающий уравнение в тождество называется \textbf{сильным} решением СДУ.
+    \end{block}
+    \begin{block}{Определение}
+        Пара из вероятностного пространства $(\tilde{\Omega}, \tilde{\F}, \tilde{\mathbb{P}})$ и процесса $\tilde{X}_t$ называется слабым решением СДУ, если выполнено:
+        $$d\tilde{X}_t = \mu(t, \tilde{X}_t) dt + \sigma(t, \tilde{X}_t) d\tilde{W}_t$$где $(\tilde{W}_t)_{t\geq 0}$ -- броуновское движение на новом вероятностном пространстве.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Сильное и слабое решение: пример}
+    СДУ 
+    $$\begin{cases}
+        dX_t = -\mathrm{sgn}(X_t)dW_t 
+        \\
+        X_0 = 0
+    \end{cases}
+    $$имеет слабое решение, но не имеет сильное.s
+\end{frame}
+
+\begin{frame}{Теорема существования и единственности}
+    Пусть задано стохастическое дифф. уравнение:
+    $$
+        dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t
+    $$
+    \begin{block}{Теорема}
+        Пусть 
+        \begin{itemize}
+            \item $|\mu(t, x) - \mu(t, y)| \leq K |x - y|$
+            \item $|\sigma(t, x) - \sigma(t, y)| \leq K |x - y|$
+            \item $|\mu(t, x)| + |\sigma(t, y)| \leq K (1 + |x|)$
+        \end{itemize}
+
+        Тогда $\exists !$ решение СДУ $(X_t)_{t\geq 0}$, причем:
+        \begin{itemize}
+            \item $(X_t)_{t\geq 0}$ адаптированный к $(\F_t)_{t\geq0}$ процесс,
+            \item $(X_t)_{t\geq 0}$ имеет непрерывные траектории,
+            \item $(X_t)_{t\geq 0}$ -- марковский процесс,
+            \item $\exists C \in \R^+: \;\E X_t^2 \leq Ce^{Ct}(1+x_0^2)$
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Инфинитезимальный оператор}
+    Пусть задано стохастическое дифф. уравнение:
+    $$
+        dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t
+    $$
+    \begin{block}{Определение}
+    Дифференциальный оператор $A$, действующий на гладкие функции $h(x)$ следующим образом:
+    $$
+        Ah(x) = \mu(t, x) \dfrac{\partial h}{\partial x}(x) + \dfrac{1}{2}\sigma^2(t, x) \dfrac{\partial^2 h}{\partial x^2}(x)
+    $$ называется инфинитезимальным оператором, или обратным оператором Колмогорова.        
+    \end{block}
+
+    Формулу Ито можно записать как:
+    $$
+        df(t, X_t)=\{\dfrac{\partial f}{\partial t}+Af\}dt +\dfrac{\partial f}{\partial x}\sigma dW_t
+    $$
+
+\end{frame}
+
+\begin{frame}{Формула Феймана-Каца}
+    Рассмотрим краевую задачу на функцию $F(t, x)$:
+    $$\begin{cases}
+        \dfrac{\partial F}{\partial t}+AF = 0 \\
+        F(T, x) = \Phi(x)
+    \end{cases}
+    $$
+    Пусть $(X_u)_{u \geq t}$ удовлетворяет СДУ     $$
+        \begin{cases}
+            dX_u = \mu(u, X_u) du + \sigma(u, X_u) dW_u
+            \\
+            X_t = x
+        \end{cases}
+    $$
+
+    Рассмотрим процесс $Y_u = F(u, X_u)$. По формуле Ито:
+    $$
+        Y_T = Y_t + \int_t^T \left[\dfrac{\partial F}{\partial u}+AF\right]du + \int_t^T \sigma(u, X_u) \dfrac{\partial F}{\partial x} dW_u
+    $$
+
+    Первый интеграл равен нулю, второй является мартингалом, откуда:
+    $$
+        Y_t = \E \left[ Y_T | \F_t\right] \to F(t, x) = \E \left[ \Phi(X_T) | \F_t\right] = \E \left[ \Phi(X_T) | X_t=x\right] 
+    $$
+\end{frame}
+
+\begin{frame}{Хуй}
+    \begin{block}{Утверждение}
+    \begin{itemize}
+        \item         Процесс $F(t, X_t)$ мартингал относительно $(\F_t)_{t\geq0}$ тогда и только тогда, когда:
+        $$
+            \dfrac{\partial F}{\partial t}+AF = 0
+        $$
+        \item         Процесс $F(t, X_t)$ мартингал относительно $(\F_t)_{t\geq0}$ тогда и только тогда, когда:
+        $$
+            F(t,x)=\E \left[ F(T,X_T) | X_t=x\right] 
+        $$
+    \end{itemize}
+
+    \end{block}
+\end{frame}
+
+\begin{frame}{Уравнение Колмогорова}
+        Пусть задано стохастическое дифф. уравнение:
+    $$
+        dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t
+    $$
+
+    $A$ -- его инфинитазимальный оператор, $A^*$ -- сопряженный оператор. 
+
+    Пусть $p(s, y; t, x)$ -- переходная плотность процесса $X_t$, т.е.
+    $$
+        \mathbb{P}( X_t \in A | X_s = y) = \int_A p(s, y; t, x) dx
+    $$
+
+    Тогда $p(s, y; t, x)$ удовлетворяет прямому уравнению Колмогорова:
+    $$ 
+    \begin{cases}
+        \dfrac{\partial }{\partial t} p(s, y; t, x) = A^* p(s, y; t, x)\\
+        p(s, y; t, x) \to \delta(x-y) \text{ при} \; t\to s
+    \end{cases}
+        
+    $$
+\end{frame}
+
+\end{document}

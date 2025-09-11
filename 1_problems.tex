@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill Задачи к лекции 1\\
+\today
+
+\hrulefill
+
+Здесь и далее будем считать, что $\xi \sim Be(p)$ если
+$$
+    \xi = \begin{cases}
+        +1, \text{с вер. } p\\
+        -1, \text{с вер. } 1-p
+    \end{cases}
+$$
+
+\begin{problem}
+    Пусть $\xi, \eta$ -- i.i.d. Найти
+    $\E [\xi | \xi + \eta]$. 
+\end{problem}
+\begin{problem}
+(Условное мат. ожидание). Пусть $(X, Y) \sim N(\mu, \Sigma)$ -- двумерный гауссовский вектор. Найти $\E\left[ X | Y\right]$. Убедиться, что 
+\begin{itemize}
+    \item $\E\left[\E\left[ X | Y\right]\right] = \E X$
+    \item Если $\mathrm{cov}(X, Y)=0$, то $\E\left[ X | Y\right] = \E X$.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+    Пусть $\xi_t \sim Be(1/2)$ -- i.i.d., $X_t = \sum_{s=1}^t \xi_s$ -- случайное блуждание. Убедитесь, что процесс $M_t = X_t^2 - t$ мартингал.
+\end{problem}
+
+\begin{problem}
+    Пусть $\xi_t \sim Be(p)$ -- i.i.d., $p\neq 1/2$, $X_t = \sum_{s=1}^t \xi_s$ -- несимметричное случайное блуждание.
+
+    \begin{itemize}
+        \item При каком $\alpha$ процесс $Y_t = X_t - \alpha t$ является мартингалом?
+        \item При каком $\beta$ процесс $Y_t = \beta^{X_t}$ является мартингалом?
+    \end{itemize}
+\end{problem}
+
+\begin{problem}(Задача о разорении)
+    Пусть $X_t$ -- симметричное случайное блуждание, $(\mathcal{F}_t)_{t\geq0}$ -- фильтрация, порождённая $X_t$. Пусть:
+    $$
+        \tau = \inf_{t \geq 0} \{ X_t = a \wedge X_t =-b\}
+    $$где $a, b > 0$ -- целые числа.
+
+    \begin{itemize}
+        \item Убедитесь, что $\tau$ -- момент остановки
+        \item Найти $\mathbb{P}(X_{\tau} = a)$
+        \item Найти $\E \tau$
+    \end{itemize}
+    \textit{Указание} Воспользуйтесь мартингальным свойством $X_t, X_t^2-t$ и теоремой Дуба.
+\end{problem}
+
+\begin{problem}(Задача о разорении)
+    Пусть $\xi_t \sim Be(p)$ -- i.i.d., $p\neq 1/2$, $X_t = \sum_{s=1}^t \xi_s$ -- несимметричное случайное блуждание.Пусть:
+    $$
+        \tau = \inf_{t \geq 0} \{ X_t = a \wedge X_t =-b\}
+    $$где $a, b > 0$ -- целые числа.
+
+    \begin{itemize}
+        \item Найти $\mathbb{P}(X_{\tau} = a)$
+        \item Найти $\mathbb{E}\tau$
+    \end{itemize}
+    \textit{Указание}. Используйте результаты из задачи 3, или выпишите линейное рекуретное соотношение на $\mathbb{P}(X_{\tau} = a)$, используя формулу полной вероятности.
+\end{problem}
+
+\begin{problem}
+    Пусть $\xi_t$ -- квадратично-интегрируемый мартингал, докажите, что:
+    $$
+        \mathrm{cov} (\xi_p - \xi_q, \xi_t - \xi_s) = 0
+    $$ при $s \leq t \leq q \leq p$
+\end{problem}
+
+\begin{problem}
+    Пусть $W_t$ -- броуновское движение относительно непрерывной фильтрации $(\mathcal{F}_t)_{t\geq0}$, т.е.:
+    \begin{itemize}
+        \item $W_0 = 0$
+        \item Траектории $W_t$ непрерывны почти наверное
+        \item $W_t - W_s \sim N(0, t-s)$ и $W_t - W_s \perp \mathcal{F}_s$
+    \end{itemize}
+
+    Докажите, что:
+    \begin{itemize}
+        \item $W_t$ -- мартингал относительно фильтрации $(\mathcal{F}_t)_{t\geq0}$
+        \item $W_t^2 -t$ -- мартингал относительно фильтрации $(\mathcal{F}_t)_{t\geq0}$
+        \item Пусть $\lambda \in \R$. При каких $\alpha$ процесс 
+        $Y_t = e^{\alpha t + \lambda W_t}$ является мартингалом?
+    \end{itemize}
+\end{problem}
+
+\begin{problem}
+    Пусть $\xi \sim N(0, 1)$. Найти замену меры (выписать производную Радона-Никодима), которая переводит $\xi$ в случайную величину с распределением$\xi \sim N(a, 1)$, где $a \in \mathbb{R}$.
+\end{problem}
+
+\begin{problem}
+    Покажите, что в дискретном времени в определении момента остановки достаточно потребовать $\{\tau = t\} \in \mathcal{F}_t, \; \forall t$.  
+\end{problem}
+
+
+\end{document}
