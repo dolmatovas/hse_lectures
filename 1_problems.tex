@@ -94,7 +94,16 @@ $$
 \end{problem}
 
 \begin{problem}
-    Пусть $\xi \sim N(0, 1)$. Найти замену меры (выписать производную Радона-Никодима), которая переводит $\xi$ в случайную величину с распределением$\xi \sim N(a, 1)$, где $a \in \mathbb{R}$.
+    Пусть
+    \begin{itemize}
+        \item $\Omega=\R, \F = \mathcal{B}(\R)$ 
+        \item $\mathbb{P}(dx) = \frac{1}{\sqrt{2\pi}}e^{-0.5x^2}dx$
+        \item $f(x) = e^{-0.5 a^2+a\cdot x}$
+        \item $d\mathbb{Q}(x) = f(x)d\mathbb{P}(x)$
+    \end{itemize}
+
+    Показать, что $\mathbb{Q}$ -- вероятностная мера. Найти $\E^{\mathbb{Q}}\xi$ и распределение $\xi$ относительно меры $\mathbb{Q}$.
+
 \end{problem}
 
 \begin{problem}

@@ -144,7 +144,7 @@
         \item $Z_t \in \F_t$
         \item $\E [Z_t | \F_s] = Z_s$
         \item $\E Z_t = 0$
-        \item $\mathrm{Var} Z_t = \E \int_0^T g^2(t) dt$ -- изометрия Ито.
+        \item $\mathrm{Var} Z_t = \E \left[ \int_0^T g^2(t) dt \right] $ -- изометрия Ито.
     \end{itemize}
     Мартингальность следует из соответствующего результата для дискретного стох. интеграла. 
 \end{frame}
@@ -179,7 +179,7 @@
     \end{align*}
      
     Итого:
-    $$ \mathbb{D} \left[ \int_0^T g(t) dB_t \right] = \mathbb{E} \int_0^T g^2(t) dt$$
+    $$ \mathbb{D} \left[ \int_0^T g(t) dB_t \right] = \mathbb{E} \left[\int_0^T g^2(t) dt\right]$$
 \end{frame}
 
 
@@ -230,7 +230,7 @@
         $$\int_0^T g(t) dB_t = \int_0^s g(t) dB_t + \int_s^T g(t) dB_t, \; 0 < s < T$$
         \item Изометрия Ито:
         $$
-            \mathbb{E} \int_0^T g(t) dB_t = 0, \; \mathbb{D} \int_0^T g(t) dB_t = \int_0^T g^2(t) dt
+            \mathbb{E} \left[\int_0^T g(t) dB_t \right] = 0, \; \mathbb{D} \left[\int_0^T g(t) dB_t = \int_0^T g^2(t) dt\right]
         $$
         \item Таблица умножения стох. дифференциалов:
         $$
@@ -287,24 +287,31 @@
         \mathbb{E}^{\mathcal{F}_s} \left[ \sum_{t_k \geq s} g(t_k) \Delta B_{t_k}\right]
         = \sum_{t_k \geq s} \mathbb{E}^{\mathcal{F}_s} \left[g(t_k) \Delta B_{t_k} \right]
     $$
-     
-    $$
-        \mathbb{E}^{\mathcal{F}_s} \left[g(t_k) \Delta B_{t_k} \right]
+    
+    Рассмотрим отдельное слагаемое:
+    \begin{align*}
+        & \mathbb{E}^{\mathcal{F}_s} \left[g(t_k) \Delta B_{t_k} \right]
         = \mathbb{E}^{\mathcal{F}_s} \left[
-        \mathbb{E}^{F_{t_k}} \left(g(t_k) \Delta B_{t_k}\right) \right] = \mathbb{E}^{\mathcal{F}_s} \left[ g(t_k) \mathbb{E}^{\mathcal{F}_{t_k}} \left(\Delta B_{t_k}\right) \right]= 0
-    $$
+        \mathbb{E}^{\F_{t_k}} \left(g(t_k) \Delta B_{t_k}\right) \right] = \\
+        & = \mathbb{E}^{\mathcal{F}_s} \left[ g(t_k) \mathbb{E}^{\mathcal{F}_{t_k}} \left(\Delta B_{t_k}\right) \right]= 0
+    \end{align*}
     
 \end{frame}
 
 \begin{frame}{Пример. Геометрическое броуновское движение}
-    $$X_t = e^{-0.5 t + B_t}
-    $$ 
-    $$X_t = X_s e^{-0.5 (t - s) + B_t - B_s}
-    $$ 
-    $$\mathbb{E}^{\mathcal{F}_s} X_t = X_s e^{-0.5(t-s)}\mathbb{E}^{\mathcal{F}_s} e^{B_t - B_s}
-    $$ 
-    $$\mathbb{E}^{\mathcal{F}_s} e^{B_t - B_s} = \mathbb{E}_{\xi \sim N(0, t-s)} e^{\xi} = e^{0.5(t-s)}
+    Пусть $B_t$ -- броуновское движение, $X_t = e^{-0.5 t + B_t}$. 
+    Тогда:
     $$
+        X_t = X_s e^{-0.5 (t - s) + B_t - B_s}
+    $$
+    Рассмотрим УМО:
+    $$
+        \E^{\F_{s}} X_t = X_s e^{-0.5(t-s)} \E^{\F_s} e^{B_t - B_s}
+    $$
+    По распределению $B_t - B_s \sim \sqrt{t-s}\cdot \xi$, где $\xi \sim N(0,1)$, откуда:
+    $$
+    \E^{\F_s} e^{B_t - B_s} = \E e^{\sqrt{t-s}\xi} = e^{0.5(t-s)},
+    $$поэтому $\E^{\F_{s}} X_t = X_s$.
 \end{frame}
 
 \begin{frame}{Формула Ито для броуновского движения}
@@ -322,13 +329,13 @@
     \begin{align*}
         f(B_t+dB_t) - f(B_t) = f_x(B_t) dB_t + \dfrac{1}{2} f_{xx}(B_t) dB_t^2 + \ldots = \\
         = f_x(B_t) dB_t + \dfrac{1}{2} f_{xx}(B_t) dt + o(dt)
-    \end{align*}}
+    \end{align*}} \qed
 \end{frame}
 
 \begin{frame}{Пример}
 
 \begin{itemize}
-    \item $f(x) =x^2$. $Y_t = f(W_t) \to $
+    \item $f(x) =x^2$. $Y_t = f(W_t)$
     \begin{align*}
         &dY_t = 2 W_t dW_t + dt  \\
         &Y_t = t + 2 \int_0^t W_s dW_s
@@ -366,10 +373,10 @@
     $$
     Дифференциальная запись:
     $$
-    \begin{cases}
-        d X_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t \\
-        X_0 = x_0
-    \end{cases}
+        \begin{cases}
+            d X_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t \\
+            X_0 = x_0
+        \end{cases}
     $$
 \end{frame}
 

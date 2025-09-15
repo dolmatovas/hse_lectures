@@ -25,8 +25,8 @@
     \end{itemize}
 \end{frame}
 
+% введение: теорвер
 \begin{frame}{Вероятностное пространство}
-
     \begin{block}{Определение}
         Вероятностное пространство это тройка $(\Omega, \F, \PP)$, где:
         \begin{itemize}
@@ -71,7 +71,6 @@
     \end{block}
 
     По определению $\sigma$-алгебры, борелевская $\sigma$-алгебра содержит также все отрезки, лучи, интервалы и полуинтервалы, открытые и закрытые множества.
-    
 \end{frame}
 
 \begin{frame}{Вероятностная мера}
@@ -83,7 +82,7 @@
             \item $\forall A_1, A_2, \ldots \in \F: \PP\left(\bigsqcup_{n=1}^{\infty}A_n\right) = \sum_{n=1}^{\infty} \PP(A_n)$ 
         \end{itemize}
     \end{block}
-    Пример. Пусть $\Omega = {1, 2, \ldots, n}$, $\F=2^{\Omega}$. Тогда $\PP(A)=\dfrac{\#A}{n}$ -- вероятностная мера.
+    Пример. Пусть $\Omega = \{1, 2, \ldots, n\}$, $\F=2^{\Omega}$. Тогда $\PP(A)=\dfrac{\#A}{n}$ -- вероятностная мера.
 \end{frame}
 
 \begin{frame}{Случайные величины}
@@ -126,16 +125,16 @@
         $$Определение корректно, так как $\{\xi < x\} \in \F$
     \end{block}
     \begin{block}{Определение}
-        Распределением $\mu_{\xi}$ с.в. $\xi$ называется вероятностная мера на $\R, \mathcal{B}(\R)$, определённая как:
+        Распределением $\mu_{\xi}$ с.в. $\xi$ называется вероятностная мера на $\left(\R, \mathcal{B}(\R)\right)$, определённая как:
         $$
-            \mu_{\xi}(B) = \PP(\xi \in B) = \PP(\xi^{-1}\left( B \right)) \forall B\in\mathcal{B}(\R)
+            \mu_{\xi}(B) = \PP(\xi \in B) = \PP(\xi^{-1}\left( B \right))\;\forall B\in\mathcal{B}(\R)
         $$
     \end{block}
 \end{frame}
 
 \begin{frame}{Мат. ожидание} 
     \begin{block}{Определение}
-    Мат. ожидание с.в. $\xi$ $\E \xi$ это интеграл Лебега по $\Omega$:
+    Мат. ожидание $\E \xi$ с.в. $\xi$ это интеграл Лебега по $\Omega$:
         $$
             \E \xi = \int_{\Omega}\xi(\omega)d\PP(\omega)
         $$
@@ -145,6 +144,10 @@
         $$
             \E g(\xi) = \int_{\Omega} g(\xi(\omega))d\PP(\omega)=\int_{\R} g(x) d\mu_{\xi}(x) = 
             \int_{\R} g(x) dF(x)
+        $$
+        Если $\mu_{\xi}$ имеет плотность $p_{\xi}(x)$, то:
+        $$
+            \E g(\xi) = \int_{\R} g(x) p_{\xi}(x) dx
         $$
     \end{block}
 \end{frame}
@@ -165,14 +168,15 @@
 
 \begin{frame}{Сигма-алгебры и случайные величины}
     \begin{block}{Теорема}
-        Пусть $(\Omega, \mathcal{F} , P)$ -- вероятностное пространство. Тогда дискретная функция $\xi(\omega)$ измерима $\Longleftrightarrow \forall i \; A_i \in \mathcal{F}$
+        Пусть $(\Omega, \mathcal{F} , P)$ -- вероятностное пространство. Пусть $\xi: \Omega \to \R$ -- принимает конечное число значений $\{a_1, \ldots, a_n\}$.
+        Пусть $A_i = \xi^{-1}(a_i)$. Тогда $\xi(\omega)$ измерима $\Longleftrightarrow \forall i \; A_i \in \mathcal{F}$
     \end{block}
     \textit{Доказательство.}
     $\{ \xi < x \} = \bigcup\limits_{a_i < x} \{ \xi = a_i\} = \bigcup\limits_{a_i < x} A_i$.
 \end{frame}
 
-
-\begin{frame}{Условное мат. ожидание}
+% условное мат. ожидание
+\begin{frame}{УМО}
     Пусть $\left( \Omega, \mathcal{F} , P\right)$ -- вероятностное пространство. Пусть $A, B \in \mathcal{F} $, $P(B) \neq 0$. 
     \begin{block}{Определение}
         Условная вероятность: 
@@ -188,7 +192,7 @@
     Также будем использовать обозначение $\mathbb{E}\left[ \xi | B \right]$
 \end{frame}
 
-\begin{frame}{Дискретный случай}
+\begin{frame}{УМО для дискретной $\sigma$-алгебры}
     Пусть $\mathcal{A} = \{A_i\}_{i=1}^n$ -- разбиение множества $\Omega$, $\mathcal{H} = \sigma(\mathcal{A})$ -- $\sigma$-алгебра, порождённая этим разбиением.
 
     \begin{block}{Определение}
@@ -196,17 +200,18 @@
         $$\mathbb{E}\left[ \xi | \mathcal{H} \right] = \sum_{i=1}^n \mathbb{I}_{A_i} \dfrac{\mathbb{E} \left(\xi \mathbb{I}_{A_i}\right)}{P(A_i)} = 
         \sum_{i=1}^n \mathbb{I}_{A_i} \mathbb{E}^{A_i}\xi$$
     \end{block}
+
     $\mathbb{E}\left[ \xi | \mathcal{H} \right]$ -- дискретная случайная величина:
     $$
         \mathbb{E}\left[ \xi | \mathcal{H} \right](\omega) = \mathbb{E}^{A_i} \xi, \text{если } \omega \in A_i
     $$
-
+    \begin{block}{Задача}
+        Пусть $\xi \sim N(0, 1)$, $\mathcal{H} = \sigma\left( \{\xi \geq 0\}, \{\xi < 0\} \right)$. Найти $\E \left[ \xi | \mathcal{H} \right]$
+    \end{block}
 \end{frame}
 
-\begin{frame}{Условное мат. ожидания, свойства}
-    Пусть $\mathcal{A} = \{A_i\}_{i=1}^n$ -- разбиение множества $\Omega$, $\mathcal{H} = \sigma(\mathcal{A})$ -- $\sigma$-алгебра, порождённая этим разбиением.
-
-    Пусть $\eta = \mathbb{E}\left[ \xi | \mathcal{H} \right]$. Тогда:
+\begin{frame}{УМО: свойства}
+    Пусть $\mathcal{A} = \{A_i\}_{i=1}^n$ -- разбиение, $\mathcal{H} = \sigma(\mathcal{A})$. Пусть $\eta = \mathbb{E}\left[ \xi | \mathcal{H} \right]$. Тогда:
     \begin{itemize}
         \item $\eta \in \mathcal{H}$
         \item $\forall A\in \mathcal{H}$:
@@ -217,7 +222,7 @@
     Первое утверждение очевидно, второе достаточно проверить для $A\in \mathcal{A}$.
 \end{frame}
 
-\begin{frame}{Условное мат. ожидания}
+\begin{frame}{УМО для произвольной $\sigma$-алгебры}
     \begin{block}{Определение}
         Пусть $(\Omega, \F, \PP)$ -- вероятностное пространство, пусть $\xi$ -- интегрируемая с.в. Пусть $\mathcal{H} \subseteq \F$ -- $\sigma$-алгебра. Тогда с.в. $\eta$, удовлетворяющая свойствам:
     \begin{itemize}
@@ -232,24 +237,24 @@
     $$
     \end{block}
     \textit{Замечание} 
-    В отличии от предыдущего определения $\mathcal{H}$ -- произвольная $\sigma$-подалгебра. Можно доказать, что такая с.в. $\eta$ всегда существует и п.н. единственна ([TODO])
+    В отличии от предыдущего определения $\mathcal{H}$ -- произвольная $\sigma$-подалгебра. Можно доказать, что такая с.в. $\eta$ всегда существует и п.н. единственна.
 \end{frame}
 
-\begin{frame}{Свойства условного математического ожидания}
+\begin{frame}{УМО: свойства}
     \begin{itemize}
         \item Линейность
         $$
             \mathbb{E}\left[ \alpha \xi + \beta \eta | \mathcal{H} \right]
-            = \alpha \mathbb{E}\left[ \xi  | \mathcal{H} \right] + \beta \mathbb{E}^H \left[ \eta  | \mathcal{H} \right]
+            = \alpha \mathbb{E}\left[ \xi  | \mathcal{H} \right] + \beta \mathbb{E} \left[ \eta  | \mathcal{H} \right]
         $$
 
         \item Если $\xi \in H$, то $\mathbb{E}\left[ \xi | \mathcal{H} \right] = \xi$
 
         \item Если $\xi \perp H$, то $\mathbb{E}\left[ \xi | \mathcal{H} \right] = \mathbb{E} \xi$
         
-        \item Повторное мат. ожидание. Пусть $G \subseteq H$. 
+        \item Повторное мат. ожидание. Пусть $\mathcal{G} \subseteq H$. 
         $$
-            \mathbb{E} \left[ \mathbb{E}\left[ \xi | \mathcal{H} \right] | G \right] = \mathbb{E}\left[ \xi | \mathcal{G} \right]
+            \mathbb{E} \left[ \mathbb{E}\left[ \xi | \mathcal{H} \right] | \mathcal{G} \right] = \mathbb{E}\left[ \xi | \mathcal{G} \right]
         $$
         В частности:
         $$
@@ -268,7 +273,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Условное мат. ожидание как проекция}
+\begin{frame}{УМО как проекция}
     \begin{block}{Утверждение}
         Пусть $\xi$ -- квадратично-интегрируемая с.в., т.е. $\mathbb{E} \xi^2 < \infty$. Пусть $\mathcal{H}$ -- $\sigma$-подалгебра $\F$. Тогда:
         $$
@@ -277,7 +282,7 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Условное мат. ожидание относительно случайной величины}
+\begin{frame}{УМО относительно случайной величины}
     Пусть $\xi, \eta$ -- случайные величины. Положим:
     $$
         \E\left[\xi | \eta\right] = \mathbb{E}\left[ \xi | \sigma(\eta) \right]
@@ -285,7 +290,7 @@
 
     Так как $\E\left[\xi | \eta\right] \in \sigma(\eta)$, то $\exists g:\R\to\R$: 
     $$
-    \E\left[\xi | \eta\right] = g(\xi)
+    \E\left[\xi | \eta\right] = g(\eta)
     $$
 
     \begin{block}{Задача}
@@ -299,9 +304,9 @@
         \end{pmatrix}$. Найти $\E \left[ X | Y\right]$
     \end{block}
 \end{frame}
-
+% производная Радона-Никодима
 \begin{frame}{Абсолютная непрерывность мер}
-    Пусть $(\Omega, \F)$ -- пространство с $\sigma$-алгеброй.
+    Пусть $(\Omega, \F)$ -- измеримое пространство (множество с $\sigma$-алгеброй). Пусть $\Q, \PP$ -- меры на $(\Omega, \F)$.
 
     \begin{block}{Определение}
         Мера $\Q$ абсолютно непрерывна относительно $\PP$, если $\forall A \in \F$:
@@ -315,26 +320,47 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Абсолютная непрерывность мер}
+\begin{frame}{Абсолютная непрерывность мер: примеры}
     Примеры:
     \begin{itemize}
         \item     Пусть $\Omega = \mathbb{N}, \F=2^{\mathbb{N}}$. Тогда:
     $$
-        \Q \ll \PP \Leftrightarrow \Q(n) \leq \PP(n)
+        \Q \ll \PP \Leftrightarrow \PP(\{n\}) = 0 \to \Q(\{n\}) = 0
     $$
 
-\item     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть $\PP(dx) = p(x)dx, \Q(dx) = q(x) dx$, тогда 
+\item     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть $$\PP(dx) = p(x)dx, \Q(dx) = q(x) dx.$$
+
+Тогда 
     $$
-        \Q \ll \PP \Leftrightarrow \mathrm{supp}\left[q\right] \subseteq\mathrm{supp}\left[p\right] 
+        \Q \ll \PP \Leftrightarrow \mathrm{supp}(p) \subseteq\mathrm{supp}(q)
+    $$
+    где 
+    $$
+        \mathrm{supp}(f) = \{x \in \R : f(x) \neq 0 \}
     $$
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Абсолютная непрерывность мер: примеры}
+    Пусть $\Omega=\R, \F = \mathcal{B}(\R)$
+
+    Пусть $d\PP(x)= \mathbb{I}(x \in [-1, 1])$, $d\Q(x) = \mathbb{I}(x \in [0, 1])$.
+
+    \begin{itemize}
+        \item Верно ли, что $\Q \ll \PP$?
+        \item Верно ли, что $\Q \sim \PP$?
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Производная Радона-Никодима}
-    Пусть $f(\omega) \geq 0 $ -- фунцкия. Введём:
+    Пусть $\PP$ -- мера, $f \in \F$ -- фунцкия, $f(\omega)\geq 0$. Определим меру $\Q$ по формуле:
     $$
         \Q(A) = \int_A f(\omega) d\PP(\omega), \; A \in \F
-    $$Тогда $\Q$ -- мера и $\Q \ll \PP$. $\Q$ -- вероятностная мера, если $\mathbb{E} f=1$. Верно и обратное:
+    $$
+    
+    Тогда $\Q$ -- мера и $\Q \ll \PP$. 
+    
+    Верно и обратное:
     \begin{block}{Теорема Радона-Никодима}
         Пусть $\Q \ll \PP$. Тогда $\exists f \in \F, f(\omega) \geq 0$:
         $$
@@ -351,19 +377,23 @@
          \dfrac{d\Q}{d\PP}(n) = \dfrac{\Q(\{n\})}{\PP(\{n\})} \cdot \mathbb{I}(\PP(\{n\}) \neq 0)
     $$при $n \in \mathbb{N}$.
 
-\item     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть $\PP(dx) = p(x)dx, \Q(dx) = q(x) dx$ и $\Q \ll \PP$. Тогда:
+\item     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть 
+    $$\PP(dx) = p(x)dx, \Q(dx) = q(x) dx$$ и $\Q \ll \PP$. Тогда:
     $$
         \dfrac{d\Q}{d\PP}(x) = \dfrac{q(x)}{p(x)} \cdot \mathbb{I}(p(x) \neq 0)
     $$
     \end{itemize}
 \end{frame}
 
-
-
-
 \begin{frame}{Производная Радона-Никодима: свойства}
-    Пусть $(\Omega, \F)$ -- пространство с $\sigma$-алгеброй, $\PP \sim \Q$ -- две вероятностные меры, $f=\dfrac{d\Q}{d\PP}$.
-    Пусть $\xi \in \F$ -- случайная величина.
+    Пусть 
+    \begin{itemize} 
+        \item $(\Omega, \F)$ -- измеримое пространство
+        \item $\PP \sim \Q$ -- вероятностные меры
+        \item $f=\dfrac{d\Q}{d\PP}$ -- производная Радона-Никодима 
+        \item $\xi \in \F$ -- случайная величина.
+    \end{itemize}
+    Тогда:
     \begin{itemize}
         \item $Q(A) = \int_{A} f(\omega) d\PP(\omega)$
         \item $\E^{\Q} \xi = \int_{\Omega} \xi(\omega) dQ(\omega) = \int_{\Omega} \xi(\omega) f(\omega) d\PP(\omega)
@@ -371,12 +401,15 @@
         \item $\E^{\Q} 1 = \E^{\PP} f = 1$
     \end{itemize}
 
-    \textbf{Задача} Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть 
-    $P(dx) = \dfrac{1}{\sqrt{2\pi}}e^{-0.5x^2}dx$. Пусть $f(x) = e^{-0.5 a^2+a\cdot x}$. 
-    
-    Пусть $\xi(x) = x$ -- случайная величина. Определим меру $\Q$. Найти $\E^{\Q}\xi$. Найти распределение $\xi$ относительно меры $\Q$.
-\end{frame}
+    \begin{block}{Задача}
+        Пусть $\Omega=\R, \F = \mathcal{B}(\R)$, $\PP(dx) = \frac{1}{\sqrt{2\pi}}e^{-0.5x^2}dx$, $\xi(x) = x$. 
 
+        Пусть $f(x) = e^{-0.5 a^2+a\cdot x}$, $d\Q(x) = f(x)d\PP(x)$. 
+        
+        Найти $\E^{\Q}\xi$, распределение $\xi$ относительно меры $\Q$.
+    \end{block}
+\end{frame}
+% случайные процессы
 \begin{frame}{Случайные процессы}
 \begin{block}{Определение}
     Пусть $(\Omega, \F, \PP)$ -- вероятностное пространство. Пусть $\mathcal{T}$ -- некоторое множество индексов. Случайным процессом $\xi$ будем называть совокупность с.в. $\{\xi_t\}_{t\in \mathcal{T}}$, заданных на одном вероятностном пространстве.
@@ -389,9 +422,6 @@
     $\omega \mapsto\xi(t, \omega)$  которое обозначим $\xi_t$ -- сечение процесса $\xi$.
     \item Для фиксированного $\omega$ отображение $t \mapsto \xi(t, \omega)$ -- детерменированная функция, реализация(траектория) случайного процесса.
 \end{itemize}
-
-% TODO изменить H на \mathcal{H} там, где это сигма-алгебра
-% TODO изменить обозначение условного мат. ожидания. Писать E[X | F] вместо E^F X
 \end{frame}
 
 \begin{frame}{Случайные процессы}
@@ -423,10 +453,17 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Пример: случайное блуждание}
+\begin{frame}{Случайные процессы: пример}
+Здесь и далее будем считать, что $\xi \sim Be(p)$ если
+    $$
+        \xi = \begin{cases}
+            +1, \text{с вер. } p\\
+            -1, \text{с вер. } 1-p
+        \end{cases}
+    $$
     Пусть $\mathcal{T}=\mathbb{N}$, $\xi_t \sim Be(1/2)$ -- i.i.d.
     \begin{block}{Определение}
-        Случайное блуждание $X_t$ это случайный процесс:
+        Простое случайное блуждание $X_t$ это случайный процесс:
         \begin{align*}
             & X_t = \sum_{s=1}^{t} \xi_s \\
             & X_0 = 0
@@ -440,7 +477,7 @@
         \item $\mathrm{cov}(X_t, X_s) = \min(t, s)$
     \end{itemize}
 \end{frame}
-
+% фильтрация
 \begin{frame}{Фильтрация}
     Пусть $\mathcal{T} = \mathbb{N}$.
     \begin{block}{Определение}
@@ -475,25 +512,23 @@
 
 \end{frame}
 
+% мартингалы
 \begin{frame}{Мартингалы}
     \begin{block}{Определение}
         Пусть $(\Omega, \F, \PP)$ -- вероятностное пространство, $(\F_t)_{t\geq 0}$ -- фильтрация. Случайный процесс $(\xi_t)_{t\geq 0}$ называется \textbf{мартингалом} относительно фильтрации $(\F_t)_{t\geq 0}$, если:
         \begin{itemize}
             \item $\E |\xi_t| < \infty$ -- интегрируемость
-            \item $\xi_t \in \F_t$ -- адоптированность
+            \item $\xi_t \in \F_t$ -- адаптированность
             \item $\E \left[ \xi_t | \F_s\right] = \xi_s$ для всех $s\leq t$ -- мартингальное свойство.
         \end{itemize}
     \end{block}
     \begin{itemize}
-        \item Если фильтрация явно не указана, в качестве неё берёся естественная фильтрация процесса $(\xi_t)_{t\geq 0}$.
+        \item Если фильтрация явно не указана, в качестве неё берётся естественная фильтрация процесса $(\xi_t)_{t\geq 0}$.
         \item Процесс называется суб(супер) мартингалом, если:
     $$
-        \E \left[ \xi_t | \F_s\right] \leq (\geq) \xi_s
+        \E \left[ \xi_t | \F_s\right] \geq (\leq) \xi_s
     $$
     \end{itemize}
-    
-
-
 \end{frame}
 
 \begin{frame}{Мартингалы: примеры}
@@ -531,7 +566,7 @@
         $$
         \item $\E \xi_n = \E \xi_0 = const$
         \item Если $(\xi_t)_{t\geq 0}$ -- мартингал, $f(x)$ -- выпуклая (вогнутая) функция, то процесс $\eta_t = f(\xi_t)$ -- суб (супер) мартингал.
-        \item Если $\eta$ -- произвольная интегрируемая случайная величина, то процесс $\xi_t = \E \left[ \eta|\F_t\right]$ -- мартингал. В частности, на интервале $[0, T]$ мартингал геренируется своим терминальным значением:
+        \item Мартингалы Леви: если $\eta$ -- произвольная интегрируемая случайная величина, то процесс $\xi_t = \E \left[ \eta|\F_t\right]$ -- мартингал. В частности, на интервале $[0, T]$ мартингал геренируется своим терминальным значением:
         $$
             \xi_t = \E \left[ \xi_T | \F_t \right]
         $$
@@ -564,6 +599,18 @@
         \end{itemize}
         Тогда стохастический интеграл $(X\star Y)$ является мартингалом.
     \end{block}
+
+    \textit{Доказательство}
+    Пусть $Z_t = (X\star Y)_t$, тогда:
+    \begin{align*}
+        & Z_{t} = Z_{t-1} + X_t \cdot (Y_t - Y_{t-1}) \\
+        & \mathbb{E} \left[ Z_t | \F_{t-1} \right] = Z_{t-1} + 
+        \mathbb{E} \left[ X_t \cdot (Y_t - Y_{t-1}) | \F_{t-1} \right]
+        = \\& =Z_{t-1} + X_t \cdot \mathbb{E} \left[ (Y_t - Y_{t-1}) | \F_{t-1} \right] = Z_t
+    \end{align*}
+
+    \qed
+
 \end{frame}
 
 
@@ -618,7 +665,7 @@
     
     Условия теоремы нужны для обоснования сходимости.\qed
 \end{frame}
-\begin{frame}{Теорема Дуба о разолжении}
+\begin{frame}{Теорема Дуба о разложении}
 \only<1>{
     \begin{block}{Теорема}
         Пусть $\xi_t$ -- согласованный интегрируемый процесс. Тогда $\exists! \; (M_t)_{t\geq 0}$ и $(A_t)_{t\geq 0}$ такие, что:
