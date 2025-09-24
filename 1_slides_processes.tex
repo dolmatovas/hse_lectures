@@ -17,7 +17,6 @@
     \begin{itemize}
         \item Вероятностное пространство: определения и свойства
         \item Условное математическое ожидание
-        \item Замена меры, производная Радона-Никодима
         \item Фильтрация: определение и свойства
         \item Случайные процессы: основные опредлеения
         \item Мартингалы, моменты остановки
@@ -130,6 +129,7 @@
             \mu_{\xi}(B) = \PP(\xi \in B) = \PP(\xi^{-1}\left( B \right))\;\forall B\in\mathcal{B}(\R)
         $$
     \end{block}
+    Случайные величины переносят меру $\PP$ c $(\Omega, \F)$ на $(\R, \mathcal{B}(\R))$. 
 \end{frame}
 
 \begin{frame}{Мат. ожидание} 
@@ -162,7 +162,7 @@
         \includegraphics[width=0.25\textwidth]{8_figs/разбиение.png}
     \end{center}
 
-    $H = \sigma(\mathcal{A})$ -- $\sigma$-алгебра, порождённая разбиением. Состоит из элементов вида 
+    $\mathcal{H} = \sigma(\mathcal{A})$ -- $\sigma$-алгебра, порождённая разбиением. Состоит из элементов вида 
     $B = \bigcup_{k} A_{n_k}$.
 \end{frame}
 
@@ -177,17 +177,17 @@
 
 % условное мат. ожидание
 \begin{frame}{УМО}
-    Пусть $\left( \Omega, \mathcal{F} , P\right)$ -- вероятностное пространство. Пусть $A, B \in \mathcal{F} $, $P(B) \neq 0$. 
+    Пусть $\left( \Omega, \mathcal{F} , \PP\right)$ -- вероятностное пространство. Пусть $A, B \in \mathcal{F} $, $\PP(B) \neq 0$. 
     \begin{block}{Определение}
         Условная вероятность: 
         $$
-            P(A|B) = \dfrac{P(A\cap B)}{P(B)}
+            \PP(A|B) = \dfrac{\PP(A\cap B)}{\PP(B)}
         $$
     \end{block}
 
     \begin{block}{Определение}
         Пусть $\xi \in \mathcal{F}$. Условным мат. ожиданием $\xi$ при условии $B$ будем называть число:
-        $$\mathbb{E}^B \xi = \dfrac{\mathbb{E} \left(\xi \mathbb{I}_{B}\right)}{P(B)}$$
+        $$\mathbb{E}^B \xi = \dfrac{\mathbb{E} \left(\xi \mathbb{I}_{B}\right)}{\PP(B)}$$
     \end{block}
     Также будем использовать обозначение $\mathbb{E}\left[ \xi | B \right]$
 \end{frame}
@@ -205,9 +205,32 @@
     $$
         \mathbb{E}\left[ \xi | \mathcal{H} \right](\omega) = \mathbb{E}^{A_i} \xi, \text{если } \omega \in A_i
     $$
+\end{frame}
+
+\begin{frame}{УМО для дискретной $\sigma$-алгебры}
     \begin{block}{Задача}
         Пусть $\xi \sim N(0, 1)$, $\mathcal{H} = \sigma\left( \{\xi \geq 0\}, \{\xi < 0\} \right)$. Найти $\E \left[ \xi | \mathcal{H} \right]$
     \end{block}
+    \textit{Решение}. Пусть $A_1 = \{\xi \geq 0\}, A_2 = \{\xi < 0\}$. Тогда:
+    $$
+        \E^{A_1} \xi = \dfrac{\E \xi \mathbb{I} (\xi \geq 0)}{\PP(A_1)} = 2 \cdot \int_0^{\infty} x p_{\xi}(x) dx = 2 \cdot \dfrac{1}{\sqrt{2\pi}} \int_0^{\infty} x e^{-0.5x^2} dx
+        = \sqrt{\dfrac{2}{\pi}}
+    $$
+    Аналогично:
+    $$
+        \E^{A_2} \xi = -\sqrt{\dfrac{2}{\pi}}
+    $$
+    Откуда:
+    $$
+        \E \left[ \xi | \mathcal{H} \right] = \sqrt{\dfrac{2}{\pi}} \cdot \mathbb{I}(\xi \geq 0) -\sqrt{\dfrac{2}{\pi}} \cdot \mathbb{I}(\xi < 0)
+        = \sqrt{\dfrac{2}{\pi}} \cdot \mathrm{sgn}(\xi)
+    $$где
+    $$
+        \mathrm{sgn}(\xi) = \begin{cases}
+            1, \xi \geq 0 \\
+            -1, \xi < 0
+        \end{cases}
+    $$
 \end{frame}
 
 \begin{frame}{УМО: свойства}
@@ -248,11 +271,11 @@
             = \alpha \mathbb{E}\left[ \xi  | \mathcal{H} \right] + \beta \mathbb{E} \left[ \eta  | \mathcal{H} \right]
         $$
 
-        \item Если $\xi \in H$, то $\mathbb{E}\left[ \xi | \mathcal{H} \right] = \xi$
+        \item Если $\xi \in \mathcal{H}$, то $\mathbb{E}\left[ \xi | \mathcal{H} \right] = \xi$
 
-        \item Если $\xi \perp H$, то $\mathbb{E}\left[ \xi | \mathcal{H} \right] = \mathbb{E} \xi$
+        \item Если $\xi \perp \mathcal{H}$, то $\mathbb{E}\left[ \xi | \mathcal{H} \right] = \mathbb{E} \xi$
         
-        \item Повторное мат. ожидание. Пусть $\mathcal{G} \subseteq H$. 
+        \item Повторное мат. ожидание. Пусть $\mathcal{G}$ -- $\sigma$-подалгебра $\mathcal{H}$. 
         $$
             \mathbb{E} \left[ \mathbb{E}\left[ \xi | \mathcal{H} \right] | \mathcal{G} \right] = \mathbb{E}\left[ \xi | \mathcal{G} \right]
         $$
@@ -277,12 +300,11 @@
     \begin{block}{Утверждение}
         Пусть $\xi$ -- квадратично-интегрируемая с.в., т.е. $\mathbb{E} \xi^2 < \infty$. Пусть $\mathcal{H}$ -- $\sigma$-подалгебра $\F$. Тогда:
         $$
-            \mathbb{E}\left[ \xi | \mathcal{H} \right] = \arg \min_{\eta \in \mathcal{H}} \E (\xi-\eta)^2
+            \mathbb{E}\left[ \xi | \mathcal{H} \right] = \arg \min_{z \in \mathcal{H}} \E (\xi-z)^2
         $$
     \end{block}
-\end{frame}
+    \pause
 
-\begin{frame}{УМО относительно случайной величины}
     Пусть $\xi, \eta$ -- случайные величины. Положим:
     $$
         \E\left[\xi | \eta\right] = \mathbb{E}\left[ \xi | \sigma(\eta) \right]
@@ -290,12 +312,30 @@
 
     Так как $\E\left[\xi | \eta\right] \in \sigma(\eta)$, то $\exists g:\R\to\R$: 
     $$
-    \E\left[\xi | \eta\right] = g(\eta)
+        \E\left[\xi | \eta\right] = g(\eta)
     $$
+    \pause
+    \begin{block}{Утверждение}
+    $$
+        \mathbb{E}\left[ \xi | \eta \right] = \arg \min_{g \in \R \to \R} \E (\xi-g(\eta))^2
+    $$
+    \end{block}
+\end{frame}
+
+\begin{frame}{УМО относительно случайной величины}
+
 
     \begin{block}{Задача}
         Пусть $\xi, \eta$ -- i.i.d. Найти $\E \left[ \xi | \xi + \eta\right]$.
     \end{block}
+    \textit{Решение}. 
+    
+    Пусть $\alpha = \E \left[ \xi | \xi + \eta\right]$. В силу симметрии $$\E \left[ \xi | \xi + \eta\right] = \E \left[ \eta | \xi + \eta\right]$$
+    Складываем левую и правую часть, получим: $$2\alpha =\E \left[ \xi + \eta | \xi + \eta\right] = \xi + \eta$$
+    Откуда
+    $$
+        \E \left[ \xi | \xi + \eta\right] = \E \left[ \eta | \xi + \eta\right] = \dfrac{\xi+\eta}{2}
+    $$
 
     \begin{block}{Задача}
         Пусть $X, Y$ имеют совместное нормальное распределение с параметрами $\mu = (\mu_X, \mu_Y), \Sigma = \begin{pmatrix}
@@ -304,111 +344,112 @@
         \end{pmatrix}$. Найти $\E \left[ X | Y\right]$
     \end{block}
 \end{frame}
-% производная Радона-Никодима
-\begin{frame}{Абсолютная непрерывность мер}
-    Пусть $(\Omega, \F)$ -- измеримое пространство (множество с $\sigma$-алгеброй). Пусть $\Q, \PP$ -- меры на $(\Omega, \F)$.
+% % производная Радона-Никодима
+% \begin{frame}{Абсолютная непрерывность мер}
+%     Пусть $(\Omega, \F)$ -- измеримое пространство (множество с $\sigma$-алгеброй). Пусть $\Q, \PP$ -- меры на $(\Omega, \F)$.
 
-    \begin{block}{Определение}
-        Мера $\Q$ абсолютно непрерывна относительно $\PP$, если $\forall A \in \F$:
-        $$
-            \PP(A) = 0 \to \Q(A) = 0
-        $$Обозначение $\Q \ll \PP$
-    \end{block}
+%     \begin{block}{Определение}
+%         Мера $\Q$ абсолютно непрерывна относительно $\PP$, если $\forall A \in \F$:
+%         $$
+%             \PP(A) = 0 \to \Q(A) = 0
+%         $$Обозначение $\Q \ll \PP$
+%     \end{block}
 
-    \begin{block}{Определение}
-        Мера $\Q$ эквивалентна $\PP$, если $\Q \ll \PP, \PP \ll \Q$. Обозначение $\Q \sim \PP$
-    \end{block}
-\end{frame}
+%     \begin{block}{Определение}
+%         Мера $\Q$ эквивалентна $\PP$, если $\Q \ll \PP, \PP \ll \Q$. Обозначение $\Q \sim \PP$
+%     \end{block}
+% \end{frame}
 
-\begin{frame}{Абсолютная непрерывность мер: примеры}
-    Примеры:
-    \begin{itemize}
-        \item     Пусть $\Omega = \mathbb{N}, \F=2^{\mathbb{N}}$. Тогда:
-    $$
-        \Q \ll \PP \Leftrightarrow \PP(\{n\}) = 0 \to \Q(\{n\}) = 0
-    $$
+% \begin{frame}{Абсолютная непрерывность мер: примеры}
+%     Примеры:
+%     \begin{itemize}
+%         \item     Пусть $\Omega = \mathbb{N}, \F=2^{\mathbb{N}}$. Тогда:
+%     $$
+%         \Q \ll \PP \Leftrightarrow \PP(\{n\}) = 0 \to \Q(\{n\}) = 0
+%     $$
 
-\item     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть $$\PP(dx) = p(x)dx, \Q(dx) = q(x) dx.$$
+% \item     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть $$\PP(dx) = p(x)dx, \Q(dx) = q(x) dx.$$
 
-Тогда 
-    $$
-        \Q \ll \PP \Leftrightarrow \mathrm{supp}(p) \subseteq\mathrm{supp}(q)
-    $$
-    где 
-    $$
-        \mathrm{supp}(f) = \{x \in \R : f(x) \neq 0 \}
-    $$
-    \end{itemize}
-\end{frame}
+% Тогда 
+%     $$
+%         \Q \ll \PP \Leftrightarrow \mathrm{supp}(p) \subseteq\mathrm{supp}(q)
+%     $$
+%     где 
+%     $$
+%         \mathrm{supp}(f) = \{x \in \R : f(x) \neq 0 \}
+%     $$
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{Абсолютная непрерывность мер: примеры}
-    Пусть $\Omega=\R, \F = \mathcal{B}(\R)$
+% \begin{frame}{Абсолютная непрерывность мер: примеры}
+%     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$
 
-    Пусть $d\PP(x)= \mathbb{I}(x \in [-1, 1])$, $d\Q(x) = \mathbb{I}(x \in [0, 1])$.
+%     Пусть $d\PP(x)= \mathbb{I}(x \in [-1, 1]) dx$, $d\Q(x) = \mathbb{I}(x \in [0, 1]) dx$.
 
-    \begin{itemize}
-        \item Верно ли, что $\Q \ll \PP$?
-        \item Верно ли, что $\Q \sim \PP$?
-    \end{itemize}
-\end{frame}
+%     \begin{itemize}
+%         \item Верно ли, что $\Q \ll \PP$?
+%         \item Верно ли, что $\Q \sim \PP$?
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{Производная Радона-Никодима}
-    Пусть $\PP$ -- мера, $f \in \F$ -- фунцкия, $f(\omega)\geq 0$. Определим меру $\Q$ по формуле:
-    $$
-        \Q(A) = \int_A f(\omega) d\PP(\omega), \; A \in \F
-    $$
+% \begin{frame}{Производная Радона-Никодима}
+%     Пусть $\PP$ -- мера, $f \in \F$ -- фунцкия, $f(\omega)\geq 0$. Определим меру $\Q$ по формуле:
+%     $$
+%         \Q(A) = \int_A f(\omega) d\PP(\omega), \; A \in \F
+%     $$
     
-    Тогда $\Q$ -- мера и $\Q \ll \PP$. 
+%     Тогда $\Q$ -- мера и $\Q \ll \PP$. 
     
-    Верно и обратное:
-    \begin{block}{Теорема Радона-Никодима}
-        Пусть $\Q \ll \PP$. Тогда $\exists f \in \F, f(\omega) \geq 0$:
-        $$
-            \Q(A) = \int_A f(\omega) d\PP(\omega)
-        $$Обозначение: $f(\omega) = \dfrac{d\Q}{d\PP}$
-    \end{block}
-\end{frame}
+%     Верно и обратное:
+%     \begin{block}{Теорема Радона-Никодима}
+%         Пусть $\Q \ll \PP$. Тогда $\exists f \in \F, f(\omega) \geq 0$:
+%         $$
+%             \Q(A) = \int_A f(\omega) d\PP(\omega)
+%         $$Обозначение: $f(\omega) = \dfrac{d\Q}{d\PP}$
+%     \end{block}
+% \end{frame}
 
-\begin{frame}{Производная Радона-Никодима: примеры}
-    \begin{itemize}
-        \item     Пусть $\Omega = \mathbb{N}, \F=2^{\mathbb{N}}$, $\Q \ll \PP$.
-        Тогда:
-    $$
-         \dfrac{d\Q}{d\PP}(n) = \dfrac{\Q(\{n\})}{\PP(\{n\})} \cdot \mathbb{I}(\PP(\{n\}) \neq 0)
-    $$при $n \in \mathbb{N}$.
+% \begin{frame}{Производная Радона-Никодима: примеры}
+%     \begin{itemize}
+%         \item     Пусть $\Omega = \mathbb{N}, \F=2^{\mathbb{N}}$, $\Q \ll \PP$.
+%         Тогда:
+%     $$
+%          \dfrac{d\Q}{d\PP}(n) = \dfrac{\Q(\{n\})}{\PP(\{n\})} \cdot \mathbb{I}(\PP(\{n\}) \neq 0)
+%     $$при $n \in \mathbb{N}$.
 
-\item     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть 
-    $$\PP(dx) = p(x)dx, \Q(dx) = q(x) dx$$ и $\Q \ll \PP$. Тогда:
-    $$
-        \dfrac{d\Q}{d\PP}(x) = \dfrac{q(x)}{p(x)} \cdot \mathbb{I}(p(x) \neq 0)
-    $$
-    \end{itemize}
-\end{frame}
+% \item     Пусть $\Omega=\R, \F = \mathcal{B}(\R)$. Пусть 
+%     $$\PP(dx) = p(x)dx, \Q(dx) = q(x) dx$$ и $\Q \ll \PP$. Тогда:
+%     $$
+%         \dfrac{d\Q}{d\PP}(x) = \dfrac{q(x)}{p(x)} \cdot \mathbb{I}(p(x) \neq 0)
+%     $$
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{Производная Радона-Никодима: свойства}
-    Пусть 
-    \begin{itemize} 
-        \item $(\Omega, \F)$ -- измеримое пространство
-        \item $\PP \sim \Q$ -- вероятностные меры
-        \item $f=\dfrac{d\Q}{d\PP}$ -- производная Радона-Никодима 
-        \item $\xi \in \F$ -- случайная величина.
-    \end{itemize}
-    Тогда:
-    \begin{itemize}
-        \item $Q(A) = \int_{A} f(\omega) d\PP(\omega)$
-        \item $\E^{\Q} \xi = \int_{\Omega} \xi(\omega) dQ(\omega) = \int_{\Omega} \xi(\omega) f(\omega) d\PP(\omega)
-        = \E^{\PP} \left[\xi \cdot f\right]$ 
-        \item $\E^{\Q} 1 = \E^{\PP} f = 1$
-    \end{itemize}
+% \begin{frame}{Производная Радона-Никодима: свойства}
+%     Пусть 
+%     \begin{itemize} 
+%         \item $(\Omega, \F)$ -- измеримое пространство
+%         \item $\PP \sim \Q$ -- вероятностные меры
+%         \item $f=\dfrac{d\Q}{d\PP}$ -- производная Радона-Никодима 
+%         \item $\xi \in \F$ -- случайная величина.
+%     \end{itemize}
+%     Тогда:
+%     \begin{itemize}
+%         \item $Q(A) = \int_{A} f(\omega) d\PP(\omega)$
+%         \item $\E^{\Q} \xi = \int_{\Omega} \xi(\omega) dQ(\omega) = \int_{\Omega} \xi(\omega) f(\omega) d\PP(\omega)
+%         = \E^{\PP} \left[\xi \cdot f\right]$ 
+%         \item $\E^{\Q} 1 = \E^{\PP} f = 1$
+%     \end{itemize}
 
-    \begin{block}{Задача}
-        Пусть $\Omega=\R, \F = \mathcal{B}(\R)$, $\PP(dx) = \frac{1}{\sqrt{2\pi}}e^{-0.5x^2}dx$, $\xi(x) = x$. 
-
-        Пусть $f(x) = e^{-0.5 a^2+a\cdot x}$, $d\Q(x) = f(x)d\PP(x)$. 
-        
-        Найти $\E^{\Q}\xi$, распределение $\xi$ относительно меры $\Q$.
-    \end{block}
-\end{frame}
+%     \begin{block}{Задача}
+%         Пусть $\xi \sim N(0, 1)$, $p_{\xi}(x) = \frac{1}{\sqrt{2\pi}}e^{-0.5x^2}$. 
+%         \begin{itemize}
+%             \item Найти меру (плотность) относительно которой $\xi \sim N(a, 1)$.
+%             \item Найти производную Радона-Никодима $f$.
+%             \item Убедиться, что $\Ef = 1, \; \E [f\cdot \xi] = a$.
+%         \end{itemize}
+%     \end{block}
+% \end{frame}
 % случайные процессы
 \begin{frame}{Случайные процессы}
 \begin{block}{Определение}
@@ -441,16 +482,22 @@
     
     \textit{Примеры.}
     \begin{itemize}
-        \item $\mathcal{T}=[0,1]$. Пусть $\eta \sim N(0,1)$. Положим $\xi_t = t \cdot \eta$. 
-        \item Пусть $\mathcal{T}=\mathbb{N}$, $\xi_t \sim Be(1/2)$ -- i.i.d.
+        \item $\mathcal{T}=[0,1]$. Пусть $\eta \sim N(0,1)$. Положим $\xi_t = t \cdot \eta$.
     \end{itemize}
-    \textit{Упражнение.}
-    Для каждого примера: 
+    Свойства:
     \begin{itemize}
-        \item опишите траектории и сечения процесса $\xi_t$,
-        \item выпишите функции конечномерных распределений,
-        \item мат. ожидание и ковариационную функцию.
+        \item $\E \xi_t = 0$
+        \item $\mathbb{D} \xi_t = t^2$
+        \item $cov(\xi_t, \xi_s) = ts$
     \end{itemize}
+    
+    % \begin{figure}[ht]
+    % \centering
+    % \includegraphics[width=1.2\textwidth]{1_figs/process_example_1.png}
+    % \end{figure}
+
+    \noindent\makebox[\textwidth]{\includegraphics[width=1.2\textwidth]{1_figs/process_example_1.png}}
+
 \end{frame}
 
 \begin{frame}{Случайные процессы: пример}
@@ -469,7 +516,6 @@
             & X_0 = 0
         \end{align*}            
     \end{block}
-     
     Свойства:
     \begin{itemize}
         \item $\mathbb{E} X_t = 0, \; \mathbb{D} X_t = t$
@@ -477,11 +523,15 @@
         \item $\mathrm{cov}(X_t, X_s) = \min(t, s)$
     \end{itemize}
 \end{frame}
+
+\begin{frame}{Случайное блуждание: траектории}
+    \noindent\makebox[\textwidth]{\includegraphics[width=1.2\textwidth]{1_figs/process_example_2.png}}
+\end{frame}
 % фильтрация
 \begin{frame}{Фильтрация}
     Пусть $\mathcal{T} = \mathbb{N}$.
     \begin{block}{Определение}
-        \((\Omega, \mathcal{F}, \PP)\) -- вероятностное пространство.
+        Пусть \((\Omega, \mathcal{F}, \PP)\) -- вероятностное пространство.
         
         Фильтрацией $(\mathcal{F}_t)_{t \geq 0}$ называется последовательность вложенных $\sigma$-подалгебр:
         $$
@@ -562,17 +612,17 @@
     \begin{itemize}
         \item В дискретном случае досаточно требовать свойства:
         $$
-            \E \left[ \xi_{t+1} | F_{t}\right] = \xi_t
+            \E \left[ X_{t+1} | F_{t}\right] = X_t
         $$
-        \item $\E \xi_n = \E \xi_0 = const$
-        \item Если $(\xi_t)_{t\geq 0}$ -- мартингал, $f(x)$ -- выпуклая (вогнутая) функция, то процесс $\eta_t = f(\xi_t)$ -- суб (супер) мартингал.
-        \item Мартингалы Леви: если $\eta$ -- произвольная интегрируемая случайная величина, то процесс $\xi_t = \E \left[ \eta|\F_t\right]$ -- мартингал. В частности, на интервале $[0, T]$ мартингал геренируется своим терминальным значением:
+        \item $\E X_n = \E X_0 = const$
+        \item Если $(X_t)_{t\geq 0}$ -- мартингал, $f(x)$ -- выпуклая (вогнутая) функция, то процесс $\eta_t = f(X_t)$ -- суб (супер) мартингал.
+        \item Мартингалы Леви: если $\eta$ -- произвольная интегрируемая случайная величина, то процесс $X_t = \E \left[ \eta|\F_t\right]$ -- мартингал. В частности, на интервале $[0, T]$ мартингал геренируется своим терминальным значением:
         $$
-            \xi_t = \E \left[ \xi_T | \F_t \right]
+            X_t = \E \left[ X_T | \F_t \right]
         $$
-        \item Пусть $\xi_t$ -- квадратично-интегрируемый мартингал, тогда его приращения некоррелированы:
+        \item Пусть $X_t$ -- квадратично-интегрируемый мартингал, тогда его приращения некоррелированы:
         $$
-            \mathrm{cov} (\xi_p - \xi_q, \xi_t - \xi_s) = 0
+            \mathrm{cov} (X_p - X_q, X_t - X_s) = 0
         $$ при $s \leq t \leq q \leq p$
     \end{itemize} 
 \end{frame}
@@ -595,7 +645,7 @@
         \begin{itemize}
             \item $(X_t)_{t\geq 0}$ -- предсказуемый процесс
             \item $ (Y_t)_{t \geq 0}$ -- мартингал
-            \item $\forall t \; X_t \cdot (Y_t-Y_{t-1})$ -- интегрируемая с.в. 
+            \item $\forall t: \; X_t \cdot (Y_t-Y_{t-1})$ -- интегрируемая с.в. 
         \end{itemize}
         Тогда стохастический интеграл $(X\star Y)$ является мартингалом.
     \end{block}
@@ -606,7 +656,7 @@
         & Z_{t} = Z_{t-1} + X_t \cdot (Y_t - Y_{t-1}) \\
         & \mathbb{E} \left[ Z_t | \F_{t-1} \right] = Z_{t-1} + 
         \mathbb{E} \left[ X_t \cdot (Y_t - Y_{t-1}) | \F_{t-1} \right]
-        = \\& =Z_{t-1} + X_t \cdot \mathbb{E} \left[ (Y_t - Y_{t-1}) | \F_{t-1} \right] = Z_t
+        = \\& =Z_{t-1} + X_t \cdot \mathbb{E} \left[ (Y_t - Y_{t-1}) | \F_{t-1} \right] = Z_{t-1}
     \end{align*}
 
     \qed
@@ -616,9 +666,9 @@
 
 \begin{frame}{Момент остановки}
     \begin{block}{Определение}
-    Случайная величина $\tau$, принимающая значения из $\mathcal{T}$ называется моментом остановки (марковским моментом) относительно фильтрации $(F_t)_{t\geq 0}$, если 
+    Случайная величина $\tau$, принимающая значения из $\mathcal{T}$ называется моментом остановки (марковским моментом) относительно фильтрации $(\F_t)_{t\geq 0}$, если 
     $$
-        \forall t \geq 0 \; \{\tau \leq t\} \in F_t   
+        \forall t \geq 0 \; \{\tau \leq t\} \in \F_t   
     $$
     \end{block}
     В любой момент $t$ можем решить, является ли $\tau$ моментом остановки на основании информации до момента $t$.
@@ -627,48 +677,53 @@
     \textit{Пример}. Пусть $X_t$ -- адаптированный процесс. Рассмотрим:
     $$
         \tau = \inf\{t\geq 0, X_t \in A\}
-    $$где $A\subseteq\mathbb{R}$ -- борелевское множество. $\tau$ -- марковский процесс.
+    $$где $A\subseteq\mathbb{R}$ -- борелевское множество. $\tau$ -- марковский момент.
     \pause
     
     \textit{Доказательство:}
     $$
-        \{\tau \leq t\} = \{\exists s \leq t : X_s \in A\} = \bigcup_{s=0}^t \{ X_s \in A\} \in F_t
+        \{\tau \leq t\} = \{\exists s \leq t : X_s \in A\} = \bigcup_{s=0}^t \{ X_s \in A\} \in \F_t
     $$
 \end{frame}
 \begin{frame}{Теорема Дуба}
     \begin{block}{Теорема}
-        Пусть $\xi_t$ -- мартингал, $\tau$ -- момент остановки. Тогда остановленный процесс $\xi_t^{\tau} = \xi_{\min(t, \tau)}$ является мартингалом.
+        Пусть $X_t$ -- мартингал, $\tau$ -- момент остановки. Тогда остановленный процесс $X_t^{\tau} = X_{\min(t, \tau)}$ является мартингалом.
     \end{block}
     \pause
     \textit{Доказательство}
     Введём $h_t = \mathbb{I}(\tau \geq t) =1-\mathbb{I}(\tau \leq t-1) \in F_{t-1}$.
     $$
-        \xi_t^{\tau} = \sum_{s=0}^{t} h_s (\xi_{s} - \xi_{s-1})
-        = (h\star \xi)_t. 
-    $$ Т.е. $\xi_t^{\tau}$ -- стохастический интеграл по мартингалу, значит, тоже мартингал. 
+        X_t^{\tau} = \sum_{s=0}^{t} h_s (X_{s} - X_{s-1})
+        = (h\star X)_t. 
+    $$ Т.е. $X_t^{\tau}$ -- стохастический интеграл по мартингалу, значит, тоже мартингал. 
     \qed
+
+    \begin{center}
+        \includegraphics[width=1.0\textwidth]{1_figs/stopped_process.png}
+    \end{center}
+
 \end{frame}
 
 \begin{frame}{Теорема Дуба об оптимальной остановке}
     \begin{block}{Теорема}
-        Пусть $\xi_t$ -- мартингал, $\tau$ -- момент остановки. Пусть выполнено одно из условий:
+        Пусть $X_t$ -- мартингал, $\tau$ -- момент остановки. Пусть выполнено одно из условий:
         \begin{itemize}
             \item $\tau$ -- ограничено, т.е. $\exists c : \PP(\tau \leq c) = 1$
-            \item $\E \tau < \infty$, $\exists c:  \; \forall t \; \E \left[ |\xi_{t+1}-\xi_t| \F_t\right] \leq c$
-            \item $\xi_t^{\tau}$ равномерно ограничено, т.е. $\exists c : \forall t \; |\xi_t^{\tau}| \leq c$
+            \item $\E \tau < \infty$, $\exists c:  \; \forall t \; \E \left[ |X_{t+1}-X_t| \F_t\right] \leq c$
+            \item $X_t^{\tau}$ равномерно ограничено, т.е. $\exists c : \forall t \; |X_t^{\tau}| \leq c$
         \end{itemize}
-        Тогда $\E \xi_{\tau} = \E \xi_0$
+        Тогда $\E X_{\tau} = \E X_0$
     \end{block}
     \pause
     \textit{Доказательство}
-    По предыдущей теореме $\xi_t^{\tau}$ -- мартингал, откуда $\E \xi_t^{\tau} = \E \xi_0$. Переходим к пределу при $t\to\infty$, получаем $$\E \xi_t^{\tau} = \E \xi_{\min(t, \tau)} \to \E \xi_{\tau}$$
+    По предыдущей теореме $X_t^{\tau}$ -- мартингал, откуда $\E X_t^{\tau} = \E X_0$. Переходим к пределу при $t\to\infty$, получаем $$\E X_t^{\tau} = \E X_{\min(t, \tau)} \to \E X_{\tau}$$
     
     Условия теоремы нужны для обоснования сходимости.\qed
 \end{frame}
 \begin{frame}{Теорема Дуба о разложении}
 \only<1>{
     \begin{block}{Теорема}
-        Пусть $\xi_t$ -- согласованный интегрируемый процесс. Тогда $\exists! \; (M_t)_{t\geq 0}$ и $(A_t)_{t\geq 0}$ такие, что:
+        Пусть $X_t$ -- согласованный интегрируемый процесс. Тогда $\exists! \; (M_t)_{t\geq 0}$ и $(A_t)_{t\geq 0}$ такие, что:
         \begin{itemize}
             \item $M_t$ -- мартингал,
             \item $A_t$ -- предсказуемый процесс и $A_0=0$
@@ -693,6 +748,14 @@
         &= X_{t-1}-A_{t-1}=M_{t-1}
     \end{align*}
     \qed}
+\end{frame}
+
+\begin{frame}{Теорема Дуба о разложении}
+    \textit{Пример}. Пусть $X_t$ -- симметричное случайное блуждание, Тогда $X_t^2 = M_t + A_t$, где 
+    \begin{itemize}
+        \item $A_t = t$ -- предсказуемый процесс (детерминированный)
+        \item $M_t = X_t^2 - t$ -- мартингал (докажите) 
+    \end{itemize}
 \end{frame}
 
 

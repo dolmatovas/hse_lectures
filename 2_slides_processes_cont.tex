@@ -11,7 +11,18 @@
 \titlepage 
 \end{frame}
 
-\section{Броуновское движение}
+\begin{frame}{Рекап прошлой лекции}
+    \begin{itemize}
+        \item УМО относительно $\sigma$-алгебры и с.в.: определение, основные свойства
+        \item Случайный процесс -- совокупность с.в., проиндексированных временем
+        \item Фильтрация -- последовательность вложенных $\sigma$-алгебр, формализуют поток информации, доступный к моменту t
+        \item Мартингал -- $\E \left[ X_{t+1} | \F_t\right] = X_t$. "Непредсказуемый" процесс. Случайное блуждание как пример мартингала.
+        \item Дискретный стохастический интеграл -- PnL торговой стратегии. 
+        \item Теорема Дуба об остановке: $\E X_{\tau} = \E X_0$
+    \end{itemize}
+\end{frame}
+
+%%\section{Броуновское движение}
 
 \begin{frame}{Случайные процессы}
     Пусть $(\Omega, F, \mathbb{P})$ -- вероятностное пространство.
@@ -32,6 +43,50 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Примеры случайных процессов}
+    Пусть $\mathcal{T}=[0,1]$, $\eta \sim N(0,1)$. Положим $\xi_t = t \cdot \eta$.
+    Свойства:
+    \begin{itemize}
+        \item $\E \xi_t = 0$
+        \item $\mathrm{Var} \xi_t = t^2$
+        \item $cov(\xi_t, \xi_s) = ts$
+    \end{itemize}
+    
+    % \begin{figure}[ht]
+    % \centering
+    % \includegraphics[width=1.2\textwidth]{1_figs/process_example_1.png}
+    % \end{figure}
+
+    \noindent\makebox[\textwidth]{\includegraphics[width=1.2\textwidth]{1_figs/process_example_1.png}}
+\end{frame}
+
+\begin{frame}{Примеры случайных процессов}
+
+    Пусть $\mathcal{T}=\mathbb{N}$, $\xi_t \sim Be(1/2)$ -- i.i.d.
+    $$X_t = \sum_{s=1}^{t} \xi_s$$     
+    Свойства:
+    \begin{itemize}
+        \item $\mathbb{E} X_t = 0, \; \mathrm{Var} X_t = t$
+        \item $\mathbb{E} \left[ X_t | X_{t-1} \right] = X_{t-1}$
+        \item $\mathrm{cov}(X_t, X_s) = \min(t, s)$
+        \item Приращения $X_t - X_s \sim Binom(t-s, 0.5)$, независимы.
+    \end{itemize}
+
+    \makebox[\textwidth]{\includegraphics[width=1.2\textwidth]{1_figs/process_example_2.png}}
+\end{frame}
+
+\begin{frame}{Предел случайного блуждания}
+    Пусть $X_k$ -- случайное блуждание. Введём процесс с непрерывным временем:
+    $$
+        B_{n}(t) = \frac{1}{\sqrt{n}} X_{\lfloor n \cdot t \rfloor}
+    $$
+    \begin{itemize}
+        \item $\E B_n(t) = 0, \; \mathrm{Var} B_n(t) = \dfrac{\lfloor n \cdot t \rfloor}{n} \approx t$
+        \item $B_t - W_s \sim \frac{1}{\sqrt{n}} Binom(t-s, 0.5) \to N(0, t-s)$ при $n\to\infty$.
+    \end{itemize}
+    \makebox[\textwidth]{\includegraphics[width=1.2\textwidth]{2_figs/random_walk_limit.png}}
+\end{frame}
+
 \begin{frame}{Броуновское движение}
     \begin{block}{Определение}
         Случайный процесс $B_t$ называется броуновским движением (винеровским процессом), если:
@@ -45,7 +100,7 @@
     \end{block}
 \end{frame}
 %% TODO: поменять везде B_t на W_t
-\begin{frame}{Случайные процессы}
+\begin{frame}{Непрерывность и дифференцируемость в с.к.}
     \begin{block}{Определение}
         Процесс $X_t$ называется непрерывным в среднеквадратичном, если:
         $$
@@ -62,7 +117,7 @@
 
 \begin{frame}{Вариация функции/процесса}
     \begin{block}{Определение}
-        Вариацией функции/процесса $X_t$ называется величина:
+        Полная вариацией функции/процесса $X_t$ называется величина:
         $$
             V_t(X) = \lim_{\delta \to 0} \sum_{k=1}^n |X_{t_k} - X_{t_{k-1}}|
         $$
@@ -75,7 +130,7 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Свойства}
+\begin{frame}{Свойства броуновского движения}
     \begin{itemize}
         \item $B_t \sim N(0, t)$
          
@@ -93,37 +148,30 @@
         $$
             \left[ B \right]_T = \int_0^T (dB_t)^2 = \lim_{n\to \infty} \sum_{k=0}^{n-1} \left(\Delta B_{t_k}\right)^2 = T
         $$
-
         \item Бесконечная полная вариация: $V_t(B) = \infty$.
+        \item $B_t, B_t^2-t$ -- мартингалы
+        \item \href{https://ru.wikipedia.org/wiki/Винеровский_процесс#/media/Файл:Wiener_process_animated.gif}{Самоподобие}: $\forall \alpha > 0$  процесс $C_t = \frac{1}{\sqrt{\alpha}} B_{\alpha t}$ тоже БД.
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Квадратическая вариация броуновского движения}
-    Переписать док-во, чтобы было понятней
-    
-    Квадратическая вариация:
-    $$
-        [B]_t = \int_0^t \left[d B_t \right]^2 = \lim_{n \to \infty} 
-        \sum_{k=0}^{n-1} \left[B_{t_{k+1}} - B_{t_k}\right]^2 = 
-        \lim_{n \to \infty} S_n
-    $$
-    где $t_k = \Delta t \cdot k, \Delta t = \frac{T}{n}$. 
-     
-    $$
-        \mathbb{E} S_n = \sum_{k=0}^{n-1} \mathbb{E} \left[B_{t_{k+1}} - B_{t_k}\right]^2
-        = \sum_{k=0}^{n-1} \mathbb{E} \Delta t = T
-    $$
-     
-    $$
-        \mathbb{D} S_n = \sum_{k=0}^{n-1} \mathbb{D} \left[B_{t_{k+1}} - B_{t_k}\right]^2
-        = \sum_{k=0}^{n-1} 2 (\Delta t)^2 = 2 T \Delta t \to 0
-    $$
+\begin{frame}{Квадратичная вариация броуновского движения}
+    \begin{itemize}
+        \item Пусть $0 = t_0 < t_1 < \ldots < t_n = T$ -- произвольное разбиение с диаметром $\delta$: 
+        $$\delta = \max_k \{t_{k+1} - t_k\}$$
+        \item Пусть $S_n = \sum_{k=0}^{n-1} \left[B_{t_{k+1}} - B_{t_k}\right]^2$. Тогда:
+        $$\mathbb{E} S_n = \sum_{k=0}^{n-1} \mathbb{E} \left[B_{t_{k+1}} - B_{t_k}\right]^2
+        = \sum_{k=0}^{n-1} \mathbb{E} (t_{k+1}-t_k) = T$$
+        $$\mathrm{Var} S_n = \sum_{k=0}^{n-1} \mathrm{Var} \left[B_{t_{k+1}} - B_{t_k}\right]^2
+        = \sum_{k=0}^{n-1} 2 (t_{k+1}-t_k)^2 \leq 2 T \delta$$
+        
+        \item По неравенству Чебышева $S_n \to T$ при $\delta \to 0$.
+        \item $[B]_t = \lim_{\delta\to 0} S_n = T$.
+    \end{itemize}
 \end{frame}
-
-\section{Интеграл Ито}
+%\section{Интеграл Ито}
 
 \begin{frame}{Интеграл Ито для простых процессов}
-    Пусть $B_t$ -- броуновское движение, $F=\{\mathcal{F} _t\}_{t\geq 0}$ -- естественная фильтрация.
+    Пусть $B_t$ -- броуновское движение, $\mathbb{F}=\{\mathcal{F} _t\}_{t\geq 0}$ -- естественная фильтрация.
 
     \begin{block}{Определение}
         Процесс $g(t)$ называется простым, если $\exists$ числа $0 < t_1 < \ldots < t_n = T$ такие, что $g(t) = g(t_k)$ на $t \in [t_k, t_{k+1})$.
@@ -131,7 +179,7 @@
      
     
     \begin{block}{Интеграл Ито для простого процесса}
-        Пусть $g(t)$ -- простой процесс, согласованный с фильтрацией $F$. Будем называть интегралом Ито случайную величину:
+        Пусть $g(t)$ -- простой процесс, согласованный с фильтрацией $\mathbb{F}$. Будем называть интегралом Ито случайную величину:
         $$
             \int_0^T g(t) dB_t = \sum_{k=0}^{n-1} g(t_k)\left[B_{t_{k+1}} - B_{t_k}\right]
         $$
@@ -144,42 +192,35 @@
         \item $Z_t \in \F_t$
         \item $\E [Z_t | \F_s] = Z_s$
         \item $\E Z_t = 0$
-        \item $\mathrm{Var} Z_t = \E \left[ \int_0^T g^2(t) dt \right] $ -- изометрия Ито.
+        \item $\mathrm{Var} Z_t = \E \left[ \int_0^t g^2(t) dt \right] $ -- изометрия Ито.
     \end{itemize}
-    Мартингальность следует из соответствующего результата для дискретного стох. интеграла. 
 \end{frame}
 
 \begin{frame}{Изометрия Ито}
-    Рассмотрим:
-    $$
-        Z_t = \sum_{k=0}^{n-1} g(t_k) \Delta B_{t_k}
-    $$
-    $$
-        \mathbb{D} Z_t = \mathbb{E} Z_t^2
-    $$
-    Вычислим:
+    $$ Z_t = \sum_{k=0}^{n-1} g(t_k) \Delta B_{t_k}$$
+    $$\mathrm{Var} Z_t = \mathbb{E} Z_t^2$$
     \begin{align*}
         &\mathbb{E} Z_t^2 = \mathbb{E} \left(\sum_{k=0}^{n-1} g(t_k)^2 \left(\Delta B_{t_k}\right)^2 + 2 \sum_{i < j} g(t_i)g(t_j) \Delta B_{t_i} \Delta B_{t_j}\right) = \\
         &= A_1 + A_2
     \end{align*}
 \end{frame}
 
-\begin{frame}{Изометрия Ито}
+\begin{frame}{Изометрия Ито: продолжение}
     \begin{align*}
         &A_1 = \mathbb{E} \sum_{k=0}^{n-1} g^2(t_k) \left(\Delta B_{t_k}\right)^2 = 
-        \mathbb{E} \sum_{k=0}^{n-1} \mathbb{E}^{F_{t_k}} \left[g^2(t_k) \left(\Delta B_{t_k}\right)^2 \right] 
+        \mathbb{E} \sum_{k=0}^{n-1} \mathbb{E}^{\F_{t_k}} \left[g^2(t_k) \left(\Delta B_{t_k}\right)^2 \right] 
         = \\ 
-        & = \mathbb{E} \sum_{k=0}^{n-1} g^2(t_k) \mathbb{E}^{F_{t_k}} \left(\Delta B_{t_k}\right)^2 = \mathbb{E} \sum_{k=0}^{n-1} g^2(t_k) \Delta t = \int_0^T g^2(t) dt 
+        & = \mathbb{E} \sum_{k=0}^{n-1} g^2(t_k) \mathbb{E}^{\F_{t_k}} \left(\Delta B_{t_k}\right)^2 = \mathbb{E} \sum_{k=0}^{n-1} g^2(t_k) \Delta t = \E \int_0^T g^2(t) dt 
     \end{align*}
      
     \begin{align*}
         &A_2 = 2 \mathbb{E} \sum_{i < j} g(t_i)g(t_j) \Delta B_{t_i} \Delta B_{t_j} =
-        2 \mathbb{E} \sum_{i < j} \mathbb{E}^{F_{t_j}} \left[g(t_i)g(t_j) \Delta B_{t_i} \Delta B_{t_j}\right] = \\
-        &= 2 \mathbb{E} \sum_{i < j} g(t_i)g(t_j) \Delta B_{t_i} \mathbb{E}^{F_{t_j}} \left[ \Delta B_{t_j}\right] = 0
+        2 \mathbb{E} \sum_{i < j} \mathbb{E}^{\F_{t_j}} \left[g(t_i)g(t_j) \Delta B_{t_i} \Delta B_{t_j}\right] = \\
+        &= 2 \mathbb{E} \sum_{i < j} g(t_i)g(t_j) \Delta B_{t_i} \mathbb{E}^{\F_{t_j}} \left[ \Delta B_{t_j}\right] = 0
     \end{align*}
      
     Итого:
-    $$ \mathbb{D} \left[ \int_0^T g(t) dB_t \right] = \mathbb{E} \left[\int_0^T g^2(t) dt\right]$$
+    $$ \mathrm{Var} \left[ \int_0^T g(t) dB_t \right] = \mathbb{E} \left[\int_0^T g^2(t) dt\right]$$
 \end{frame}
 
 
@@ -230,7 +271,7 @@
         $$\int_0^T g(t) dB_t = \int_0^s g(t) dB_t + \int_s^T g(t) dB_t, \; 0 < s < T$$
         \item Изометрия Ито:
         $$
-            \mathbb{E} \left[\int_0^T g(t) dB_t \right] = 0, \; \mathbb{D} \left[\int_0^T g(t) dB_t = \int_0^T g^2(t) dt\right]
+            \mathbb{E} \left[\int_0^T g(t) dB_t \right] = 0, \; \mathrm{Var} \left[\int_0^T g(t) dB_t\right] = \int_0^T g^2(t) dt
         $$
         \item Таблица умножения стох. дифференциалов:
         $$
@@ -252,68 +293,6 @@
     $$
 \end{frame}
 
-%
-%
-%
-\begin{frame}{Мартингальность}
-    \begin{block}{Определение}
-        Процесс $X_t$ называется мартингалом относительно фильтрации $\mathcal{F}_t$, если $\forall s < t$ выполнено:
-        $$
-            \mathbb{E}^{\mathcal{F}_s} X_t = X_s
-        $$
-    \end{block}
-     
-    Пример -- броуновское движение:
-    $$
-        \mathbb{E}^{\mathcal{F}_s} B_t
-        = \mathbb{E}^{\mathcal{F}_s} \left[ B_s + (B_t - B_s) \right]
-        = B_s + \mathbb{E}^{\mathcal{F}_s} \left[ (B_t - B_s) \right] = B_s
-    $$ 
-    Свойства:
-    \begin{itemize}
-        \item Если $X_t, Y_t$ -- мартингалы, то $\alpha X_t + \beta Y_t$ -- мартингал.
-        \item $\mathbb{E}^{F_s} (X_t - X_s) = 0$
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Пример. Интеграл Ито}
-    Пример -- интеграл Ито:
-    $$
-        \mathbb{E}^{\mathcal{F}_s} \left[ \int_0^t g(u) dB_u\right]= 
-        \int_0^s g(u) dB_u + \mathbb{E}^{F_s} \left[\int_s^t g(u) dB_u\right]
-    $$
-     
-    $$
-        \mathbb{E}^{\mathcal{F}_s} \left[ \sum_{t_k \geq s} g(t_k) \Delta B_{t_k}\right]
-        = \sum_{t_k \geq s} \mathbb{E}^{\mathcal{F}_s} \left[g(t_k) \Delta B_{t_k} \right]
-    $$
-    
-    Рассмотрим отдельное слагаемое:
-    \begin{align*}
-        & \mathbb{E}^{\mathcal{F}_s} \left[g(t_k) \Delta B_{t_k} \right]
-        = \mathbb{E}^{\mathcal{F}_s} \left[
-        \mathbb{E}^{\F_{t_k}} \left(g(t_k) \Delta B_{t_k}\right) \right] = \\
-        & = \mathbb{E}^{\mathcal{F}_s} \left[ g(t_k) \mathbb{E}^{\mathcal{F}_{t_k}} \left(\Delta B_{t_k}\right) \right]= 0
-    \end{align*}
-    
-\end{frame}
-
-\begin{frame}{Пример. Геометрическое броуновское движение}
-    Пусть $B_t$ -- броуновское движение, $X_t = e^{-0.5 t + B_t}$. 
-    Тогда:
-    $$
-        X_t = X_s e^{-0.5 (t - s) + B_t - B_s}
-    $$
-    Рассмотрим УМО:
-    $$
-        \E^{\F_{s}} X_t = X_s e^{-0.5(t-s)} \E^{\F_s} e^{B_t - B_s}
-    $$
-    По распределению $B_t - B_s \sim \sqrt{t-s}\cdot \xi$, где $\xi \sim N(0,1)$, откуда:
-    $$
-    \E^{\F_s} e^{B_t - B_s} = \E e^{\sqrt{t-s}\xi} = e^{0.5(t-s)},
-    $$поэтому $\E^{\F_{s}} X_t = X_s$.
-\end{frame}
-
 \begin{frame}{Формула Ито для броуновского движения}
     \only<1-2>{\begin{block}{Теорема}
     Пусть $B_t$ -- броуновское движение, $f(t, x)$ -- гладкая функция. Тогда:
@@ -329,7 +308,7 @@
     \begin{align*}
         f(B_t+dB_t) - f(B_t) = f_x(B_t) dB_t + \dfrac{1}{2} f_{xx}(B_t) dB_t^2 + \ldots = \\
         = f_x(B_t) dB_t + \dfrac{1}{2} f_{xx}(B_t) dt + o(dt)
-    \end{align*}} \qed
+    \end{align*} \qed} 
 \end{frame}
 
 \begin{frame}{Пример}
@@ -345,6 +324,17 @@
         dY_t = \dfrac{1}{2}Y_t dt + Y_t dW_t
     $$
     \item При каком $\alpha$ процесс $e^{\alpha t + \sigma W_t}$ является мартингалом? 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+Формула Ито позволяет разложить процесс на "предсказуемую" и мартингальную часть:
+$$
+    f(t, W_t) = A_t + M_t
+$$где 
+\begin{itemize}
+    \item $A_t = f(0, 0) + \int_0^t \left[\dfrac{1}{2}f_{xx}(s, B_s) + f_s(s, B_s)\right] ds$ -- процесс ограниченной вариации.
+    \item $M_t = \int_0^t f_x(s, B_s) dB_s$ -- мартингал.
 \end{itemize}
 \end{frame}
 
@@ -365,7 +355,7 @@
     \textit{Доказательство} Аналогично предыдущему случаю \qed
 \end{frame}
 
-\section{Стохастические диф. уравнения}
+%\section{Стохастические диф. уравнения}
 \begin{frame}{Стохастические диф. уравнения}
     Интегральная запись:
     $$
@@ -430,6 +420,110 @@
     $$
         d \beta_t = -\alpha \beta_t dt \longrightarrow    \beta_t = \beta_0 e^{-\alpha t}  
     $$
+\end{frame}
+
+% \section{}
+
+\begin{frame}{Формула Феймана-Каца: мотивировка}
+    \begin{itemize}
+        \item Процесс цены $X_t$:
+        $$
+            dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t
+        $$
+        \item Случайная выплата, зависящая от цены $X_T$: $Y_T = \Phi(X_T)$.
+        \item Ожидание выплаты в момент $t$:
+        $$
+            Y_t = \E \left[ \Phi(X_T) | \F_t \right]
+        $$
+        \item В силу марковости:
+        $$
+            Y_t = \E \left[ \Phi(X_T) | \F_t \right] = \E \left[ \Phi(X_T) | X_t \right] = f(t, X_t)
+        $$для некоторой функции $f : \R^+\times \R \to \R$
+    \end{itemize}
+
+    \begin{block}{Постановка задачи}
+        Найти функцию $f(t,x)$ такую, что:
+        $$
+            f(t, x) = \E[\Phi(X_T) | X_t=x]
+        $$
+    \end{block}
+
+\end{frame}
+
+\begin{frame}{Формула Феймана-Каца}
+    \begin{itemize}
+        \item Предположим, что $f(t, x)$ гладкая, тогда по формуле Ито:
+        $$
+            dY_t = \mu^Y_t dt + \sigma^Y_t dW_t,
+        $$где \noident
+        \begin{align*}
+            &\mu^Y_t = f_t(t, X_t) + f_x(t, X_t) \mu(t, X_t) + 0.5 \cdot f_{xx}(t, X_t) \sigma^2(t,X_t) \\
+            &\sigma_t^Y = f_x(t, X_t) \sigma^2(t, X_t) 
+        \end{align*}
+        \item $Y_t$ -- мартингал Леви, поэтому $\mu^Y_t = 0$, откуда:\noident
+        \begin{align*}
+            &f_t(t, x) + f_x(t, x) \mu(t, x) + 0.5 \cdot f_{xx}(t, x) \sigma^2(t, x) = 0 \\
+            &f(T, x) = \Phi(x)
+        \end{align*}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Формула Феймана-Каца}
+    Пусть $X_t$ удовлетворяет СДУ $dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t$. 
+    \begin{block}{Теорема}
+    \begin{itemize}
+        \item Пусть $f(t, x)$ удовлетворяет УРЧП:
+        \begin{align*}
+            &f_t(t, x) + f_x(t, x) \mu(t, x) + 0.5 \cdot f_{xx}(t, x) \sigma^2(t, x) = 0 \\
+            &f(T, x) = \Phi(x)
+        \end{align*} Тогда:
+        $$
+            Y_t = \E[\Phi(X_T) | \F_t] = f(t, X_t)
+        $$
+
+        \item Пусть $f(t, x) = \E[\Phi(X_T) | X_t = x]$. Тогда $f(t, x)$ удовлетворяет уравнению:
+        \begin{align*}
+            &f_t(t, x) + f_x(t, x) \mu(t, x) + 0.5 \cdot f_{xx}(t, x) \sigma^2(t, x) = 0 \\
+            &f(T, x) = \Phi(x)
+        \end{align*}
+
+    \end{itemize}
+
+    \end{block}
+\end{frame}
+
+\begin{frame}{Пример}
+    Решить УРЧП:
+    \begin{align*}
+        &f_t(t, x) + 0.5 \cdot f_{xx}(t, x)  = 0 \\
+        &f(T, x) = x^2
+    \end{align*}
+
+    \pause
+    \begin{itemize}
+        \item $\mu(t, x) = 0, \; \sigma(t, x) = 1 \to X_t = B_t$. 
+
+        \item По формуле Феймана-Каца:
+        $$
+            f(t, x) = \E[B_T^2 | B_t = x] = \E[ (x + (B_T-B_t))^2 | B_t = x ] = \E(x+\xi)^2
+        $$где $\xi \sim N(0, T-t)$.
+
+        \item Отсюда:
+        $$
+            f(t, x) = x^2 + (T-t)
+        $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Рекап второй лекции}
+    \begin{itemize}
+        \item Броуновское движение как предел случайных блужданий. 
+        \item Основные свойства: мартингальность, самоподобие, бесконечная полная вариация, конечная квадратичная вариация.
+        \item Интеграл Ито: непрерывный аналог дискретного стохастического интеграла
+        \item Изометрия Ито. Таблица умножения стохастических дифференциалов.
+        \item Лемма/формула Ито: формула замены переменных в стохастическом интеграле
+        \item Формула Феймана-Каца -- связь между УРЧП и СДУ.
+    \end{itemize}
 \end{frame}
 
 \end{document}
