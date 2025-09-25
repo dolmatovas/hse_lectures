@@ -1,0 +1,30 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill ДЗ к лекции 2\\
+\today
+
+\hrulefill
+
+\begin{problem}
+    Докажите, что у броуновского движения почти наверное бесконечная полная вариация.
+\end{problem}
+
+\textit{Доказательство}
+\begin{itemize}
+    \item От противного. Пусть первая вариация равна $V < \infty$.
+    \item Пусть $0 = t_0 < t_1 < \ldots < t_n = T$ -- произвольное разбиение с диаметром $\delta$: 
+        $$\delta = \max_k \{t_{k+1} - t_k\}$$ 
+    \item Вычислим сумму из определения квадратичной вариации: $$
+        \sum_{k=0}^{n-1} \left[B_{t_{k+1}} - B_{t_k}\right]^2 \leq 
+        \max_{k} |B_{t_{k+1}} - B_{t_k}| \cdot \sum_{k=0}^{n-1} |B_{t_{k+1}} - B_{t_k}|
+        \leq \max_{k} |B_{t_{k+1}} - B_{t_k}| \cdot V
+    $$
+    \item В силу непрерывности $\max_{k} |B_{t_{k+1}} - B_{t_k}|\to 0$ при $\delta \to 0$
+    \item Отсюда квадратичная вариация стремится к нулю, противоречие. \qed
+\end{itemize}
+ 
+\end{document}

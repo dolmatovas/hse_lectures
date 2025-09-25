@@ -10,37 +10,50 @@
 \hrulefill
 
 \begin{problem}
-    Пусть $X_t = W_t^4$, где $W_t$ -- броуновское движение. Найти $\E X_t$. 
+    Докажите, что у броуновского движения почти наверное бесконечная полная вариация.
 \end{problem}
-    \begin{problem}
-        Пусть
-        $$\begin{cases}
-            dX_t = X_t (\mu_x dt + \sigma_x dW_t), \\
-            dY_t = Y_t (\mu_y dt + \sigma_y dZ_t),
-        \end{cases}$$
-        где $dW_t\cdot dZ_t = \rho dt$ -- броуновские движения с корреляций $\rho$. Выписать уравнения для процессов $X_t^{\alpha}, X_t \cdot Y_t, \dfrac{X_t}{Y_t}$
-    \end{problem}
-    \begin{problem}{Теорема Гирсанова}
-        123
-    \end{problem}
 
-    \begin{problem}{Свойства отражения}
-        123
-    \end{problem}
+\begin{problem}
+    Пусть $B_t$ -- броуновское движение. Вычислить:
+    $$
+        Z_t = \int_0^t 2B_t dB_t
+    $$
+\end{problem}
 
-    \begin{problem}
-        Пусть процесс $X_t$ удовлетворяет следующуему СДУ:
-        $$
-            dX_t = \alpha X_t dt + \sigma_t dW_t
-        $$для некоторого процесса $\sigma_t$ и $\alpha \in \R$. Найти $\mu(t)=\E X_t$.
-    \end{problem}
+\begin{problem}
+    Доказать формулу Ито для процесса Ито.
+\end{problem}
 
-    \begin{problem}[Уравнение Орнштейна-Уленбека]
-        Решить стохастическое дифференциальное уравнение на $X_t$:
-        $$
-            dX_t = \alpha (\theta -  X_t) dt + \sigma dW_t
-        $$где $\alpha, \theta \in \R, \sigma \in \R^+$.
-        \\
-        При каком распределении $X_0$ процесс $X_t$ стационарен?
-    \end{problem}
+\begin{problem}
+    При каком $\alpha$ процесс $X_t = e^{\alpha t + \sigma B_t}$ является мартингалом? 
+\end{problem}
+
+\begin{problem}
+    Пусть $X_t = B_t^4$, где $B_t$ -- броуновское движение. Найти $\E X_t$. 
+\end{problem}
+
+\begin{problem}
+    Пусть
+    $$\begin{cases}
+        dX_t = X_t (\mu_x dt + \sigma_x dB_t), \\
+        dY_t = Y_t (\mu_y dt + \sigma_y dZ_t),
+    \end{cases}$$
+    где $dB_t\cdot dZ_t = \rho dt$ -- броуновские движения с корреляций $\rho$. Выписать уравнения для процессов $X_t^{\alpha}, X_t \cdot Y_t, \dfrac{X_t}{Y_t}$
+\end{problem}
+
+\begin{problem}
+    Пусть процесс $X_t$ удовлетворяет следующуему СДУ:
+    $$
+        dX_t = \alpha X_t dt + \sigma_t dB_t
+    $$для некоторого процесса $\sigma_t$ и $\alpha \in \R$. Найти $\mu(t)=\E X_t$.
+\end{problem}
+
+\begin{problem}[Уравнение Орнштейна-Уленбека]
+    Решить стохастическое дифференциальное уравнение на $X_t$:
+    $$
+        dX_t = \alpha (\theta -  X_t) dt + \sigma dB_t
+    $$где $\alpha, \theta \in \R, \sigma \in \R^+$.
+    \\
+    При каком распределении $X_0$ процесс $X_t$ стационарен?
+\end{problem}
 \end{document}

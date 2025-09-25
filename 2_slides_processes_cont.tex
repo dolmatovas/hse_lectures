@@ -99,7 +99,24 @@
         \end{itemize}
     \end{block}
 \end{frame}
-%% TODO: поменять везде B_t на W_t
+%% TODO: поменять везде B_t на B_t
+
+\begin{frame}{Марковский процесс}
+    \begin{block}{Определение}
+        Процесс $X_t$ называется марковским, если он удовлетворяет марковскому свойству:
+        $$
+            \PP(X_t \in A | \F_s) = \PP (X_t \in A | X_s)
+        $$где $(\F_t)_{t\geq0}$ -- естественная фильтрация.
+    \end{block}
+    Эквивалентное определение: $\forall f$ -- ограниченная измеримая функция, выполнено:
+    $$
+        \E \left[ f(X_t) | \F_s \right] = \E \left[ f(X_t) | X_s \right] \left(= g_f(X_s)\right)
+    $$
+
+    Будущее, при условии настоящего, не зависит от прошлого.
+\end{frame}
+
+
 \begin{frame}{Непрерывность и дифференцируемость в с.к.}
     \begin{block}{Определение}
         Процесс $X_t$ называется непрерывным в среднеквадратичном, если:
@@ -187,7 +204,7 @@
 \end{frame}
 
 \begin{frame}{Интеграл Ито для простых процессов: свойства}
-    Пусть $Z_t = \int_0^t g(s) dW_s$. Тогда:
+    Пусть $Z_t = \int_0^t g(s) dB_s$. Тогда:
     \begin{itemize}
         \item $Z_t \in \F_t$
         \item $\E [Z_t | \F_s] = Z_s$
@@ -231,36 +248,40 @@
         $$
             \int_0^t \E [g_n(s)-g(s)]^2 ds \to 0, n \to \infty
         $$
-        \item Для каждого $n$ определим $Z_n = \int_0^t g_n(s)dW_s$
+        \item Для каждого $n$ определим $Z_n = \int_0^t g_n(s)dB_s$
 
         \item Можно показать, что $\exists Z$ такой, что $Z_n \to Z$ в с.к.. 
         
         \item Определим интеграл как:
         $$
-            \int_0^t g(s)dW_s =  \lim_{n\to \infty}\int_0^T g_n(t) dB_t = \lim_{n \to \infty} \sum_{k=0}^{n-1} g_n(t_k)\left[B_{t_{k+1}} - B_{t_k}\right]
+            \int_0^t g(s)dB_s =  \lim_{n\to \infty}\int_0^T g_n(t) dB_t = \lim_{n \to \infty} \sum_{k=0}^{n-1} g_n(t_k)\left[B_{t_{k+1}} - B_{t_k}\right]
         $$
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Пример}
-    Вычислить
-    $$
-        \int_0^T 2 B_t dB_t = \ldots
-    $$
-     
+    \begin{block}{Задача}
+        Вычислить
+        $$
+            \int_0^t 2 B_s dB_s = \ldots
+        $$
+    \end{block}
+    \pause
     Детерминированный случай:
     $$
-        \int_0^T 2 f(t) df(t) = \int_0^T d f^2 = f^2(T)
+        \int_0^t 2 f(s) df(s) = \int_0^t d f^2 = f^2(t)
     $$ 
+    \pause
     Стохастический случай:
     \begin{align*}
-        &\Delta \left(B_t^2\right) = B_{t+1}^2 - B_t^2 = \left( B_{t_{k+1}}-B_{t_k} \right)
+        &\Delta \left(B_{t_k}^2\right) = B_{t_{k+1}}^2 - B_{t_k}^2 = \left( B_{t_{k+1}}-B_{t_k} \right)
         \left( B_{t_{k+1}}+B_{t_k} \right)\\ 
         &= \Delta B_{t_k} \left( 2 B_{t_k} + \Delta B_{t_k}\right) = 2 B_{t_k} \Delta B_{t_k} + \left[\Delta B_{t_k}\right]^2
     \end{align*} 
+    \pause
     $$
         \sum_{k=0}^{n-1} 2 B_{t_k} \Delta B_{t_k} = 
-        \sum_{k=0}^{n-1}\Delta \left(B_{t_k}^2\right) - \left[\Delta B_{t_k}\right]^2 = B_T^2 - \sum_{k=0}^{n-1} \left[\Delta B_{t_k}\right]^2 \to B_T^2 - T 
+        \sum_{k=0}^{n-1}\Delta \left(B_{t_k}^2\right) - \left[\Delta B_{t_k}\right]^2 = B_t^2 - \sum_{k=0}^{n-1} \left[\Delta B_{t_k}\right]^2 \to B_t^2 - t 
     $$
 \end{frame}
 
@@ -282,6 +303,7 @@
 
 \begin{frame}{Процесс Ито}
     \begin{block}{Определение}
+        Пусть $\mu_t, \sigma_t$ -- согласованные с $(\F_t)_{t\geq 0}$ процессы, $X_0 \in \F_0$.
         Будем называть процессом Ито процесс вида:
         $$
             X_t = X_0 + \int_0^t \mu_s ds + \int_0^t \sigma_s dB_s
@@ -291,6 +313,13 @@
     $$
         dX_t = \mu_t dt + \sigma_t dB_t
     $$
+    \pause \noident
+    \begin{block}{Интеграл Ито по процессу Ито}
+        Пусть $X_t$ -- процесс Ито, $g_t$ -- согласованный процесс. Определим:
+        $$
+            \int_0^T g_t dX_t = \int_0^T \mu_t g_t dt + \int_0^T \sigma_t g_t dB_t
+        $$
+    \end{block}
 \end{frame}
 
 \begin{frame}{Формула Ито для броуновского движения}
@@ -314,23 +343,23 @@
 \begin{frame}{Пример}
 
 \begin{itemize}
-    \item $f(x) =x^2$. $Y_t = f(W_t)$
+    \item $f(x) =x^2$. $Y_t = f(B_t)$
     \begin{align*}
-        &dY_t = 2 W_t dW_t + dt  \\
-        &Y_t = t + 2 \int_0^t W_s dW_s
+        &dY_t = 2 B_t dB_t + dt  \\
+        &Y_t = t + 2 \int_0^t B_s dB_s
     \end{align*}
-    \item $f(x) = e^{x}, Y_t = f(W_t)$
+    \item $f(x) = e^{x}, Y_t = f(B_t)$
     $$
-        dY_t = \dfrac{1}{2}Y_t dt + Y_t dW_t
+        dY_t = \dfrac{1}{2}Y_t dt + Y_t dB_t
     $$
-    \item При каком $\alpha$ процесс $e^{\alpha t + \sigma W_t}$ является мартингалом? 
+    \item При каком $\alpha$ процесс $e^{\alpha t + \sigma B_t}$ является мартингалом? 
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-Формула Ито позволяет разложить процесс на "предсказуемую" и мартингальную часть:
+\begin{frame}{Формула Ито}
+Формула Ито позволяет разложить процесс $Y_t = f(t, B_t)$ на "предсказуемую" и мартингальную часть:
 $$
-    f(t, W_t) = A_t + M_t
+    f(t, B_t) = A_t + M_t
 $$где 
 \begin{itemize}
     \item $A_t = f(0, 0) + \int_0^t \left[\dfrac{1}{2}f_{xx}(s, B_s) + f_s(s, B_s)\right] ds$ -- процесс ограниченной вариации.
@@ -342,10 +371,10 @@ $$где
     \begin{block}{Теорема}
     Пусть $X_t$ -- процесс Ито:
     $$
-        dX_t = \mu_t dt + \sigma_t dW_t,
+        dX_t = \mu_t dt + \sigma_t dB_t,
     $$ $f(t, x)$ -- гладкая функция. Тогда $Y_t = f(t, X_t)$ процесс Ито:
     $$
-        dY_t = \mu^Y_t dt + \sigma^Y_t dW_t,
+        dY_t = \mu^Y_t dt + \sigma^Y_t dB_t,
     $$где 
     \begin{align*}
         &\mu^Y_t = f_t(t, X_t) + f_x(t, X_t) \mu_t + \dfrac{1}{2} f_{xx}(t, X_t) \sigma_t^2 \\
@@ -359,12 +388,12 @@ $$где
 \begin{frame}{Стохастические диф. уравнения}
     Интегральная запись:
     $$
-        X_t = X_0 + \int_0^t \mu(s, X_s) ds + \int_0^t \sigma(s, X_s) dW_s
+        X_t = X_0 + \int_0^t \mu(s, X_s) ds + \int_0^t \sigma(s, X_s) dB_s
     $$
     Дифференциальная запись:
     $$
         \begin{cases}
-            d X_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t \\
+            d X_t = \mu(t, X_t) dt + \sigma(t, X_t) dB_t \\
             X_0 = x_0
         \end{cases}
     $$
@@ -378,6 +407,8 @@ $$где
     $$
         X_t = X_0 + \mu t + \sigma B_t
     $$
+    \pause
+    \makebox[\textwidth]{\includegraphics[width=1.0\textwidth]{2_figs/BM with drift.png}}
 \end{frame}
 
 \begin{frame}{Пример. Геометрическое броуновское движение}
@@ -406,11 +437,13 @@ $$где
             \sigma B_t
         \right] =   e^{\mu t}
     $$
+    \pause
+    \makebox[\textwidth]{\includegraphics[width=1.0\textwidth]{2_figs/GBM.png}}
 \end{frame}
 
-\begin{frame}{Процесс Орнштейна-Уленбека}
+\begin{frame}{Пример. Процесс Орнштейна-Уленбека}
     $$
-        d X_t = -\alpha X_t dt + \sigma dW_t
+        d X_t = -\alpha X_t dt + \sigma dB_t
     $$
       
     $$
@@ -420,15 +453,38 @@ $$где
     $$
         d \beta_t = -\alpha \beta_t dt \longrightarrow    \beta_t = \beta_0 e^{-\alpha t}  
     $$
+    \pause
+    \makebox[\textwidth]{\includegraphics[width=0.8\textwidth]{2_figs/OU.png}}
 \end{frame}
+\begin{frame}{Теорема существования}
+    Пусть задано стохастическое дифф. уравнение:
+    $$
+        dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dB_t
+    $$
+    \begin{block}{Теорема}
+        Пусть 
+        \begin{itemize}
+            \item $|\mu(t, x) - \mu(t, y)| \leq K |x - y|$
+            \item $|\sigma(t, x) - \sigma(t, y)| \leq K |x - y|$
+            \item $|\mu(t, x)| + |\sigma(t, y)| \leq K (1 + |x|)$
+        \end{itemize}
 
+        Тогда $\exists !$ решение СДУ $(X_t)_{t\geq 0}$, причем:
+        \begin{itemize}
+            \item $(X_t)_{t\geq 0}$ адаптированный к $(\F_t)_{t\geq0}$ процесс,
+            \item $(X_t)_{t\geq 0}$ имеет непрерывные траектории,
+            \item $(X_t)_{t\geq 0}$ -- марковский процесс,
+            \item $\exists C \in \R^+: \;\E X_t^2 \leq Ce^{Ct}(1+x_0^2)$
+        \end{itemize}
+    \end{block}
+\end{frame}
 % \section{}
 
 \begin{frame}{Формула Феймана-Каца: мотивировка}
     \begin{itemize}
         \item Процесс цены $X_t$:
         $$
-            dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t
+            dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dB_t
         $$
         \item Случайная выплата, зависящая от цены $X_T$: $Y_T = \Phi(X_T)$.
         \item Ожидание выплаты в момент $t$:
@@ -454,7 +510,7 @@ $$где
     \begin{itemize}
         \item Предположим, что $f(t, x)$ гладкая, тогда по формуле Ито:
         $$
-            dY_t = \mu^Y_t dt + \sigma^Y_t dW_t,
+            dY_t = \mu^Y_t dt + \sigma^Y_t dB_t,
         $$где \noident
         \begin{align*}
             &\mu^Y_t = f_t(t, X_t) + f_x(t, X_t) \mu(t, X_t) + 0.5 \cdot f_{xx}(t, X_t) \sigma^2(t,X_t) \\
@@ -469,7 +525,7 @@ $$где
 \end{frame}
 
 \begin{frame}{Формула Феймана-Каца}
-    Пусть $X_t$ удовлетворяет СДУ $dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dW_t$. 
+    Пусть $X_t$ удовлетворяет СДУ $dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dB_t$. 
     \begin{block}{Теорема}
     \begin{itemize}
         \item Пусть $f(t, x)$ удовлетворяет УРЧП:
