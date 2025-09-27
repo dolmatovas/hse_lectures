@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usepackage{preamble_beamer}
 
 
@@ -57,7 +57,7 @@
     % \includegraphics[width=1.2\textwidth]{1_figs/process_example_1.png}
     % \end{figure}
 
-    \noindent\makebox[\textwidth]{\includegraphics[width=1.2\textwidth]{1_figs/process_example_1.png}}
+    \noindent\makebox[\textwidth]{\includegraphics[width=1.0\textwidth]{1_figs/process_example_1.png}}
 \end{frame}
 
 \begin{frame}{Примеры случайных процессов}
@@ -69,10 +69,10 @@
         \item $\mathbb{E} X_t = 0, \; \mathrm{Var} X_t = t$
         \item $\mathbb{E} \left[ X_t | X_{t-1} \right] = X_{t-1}$
         \item $\mathrm{cov}(X_t, X_s) = \min(t, s)$
-        \item Приращения $X_t - X_s \sim Binom(t-s, 0.5)$, независимы.
+        \item Приращения $X_t - X_s \sim Binom^*(t-s, 0.5)$, независимы.
     \end{itemize}
 
-    \makebox[\textwidth]{\includegraphics[width=1.2\textwidth]{1_figs/process_example_2.png}}
+    \makebox[\textwidth]{\includegraphics[width=1.0\textwidth]{1_figs/process_example_2.png}}
 \end{frame}
 
 \begin{frame}{Предел случайного блуждания}
@@ -82,9 +82,9 @@
     $$
     \begin{itemize}
         \item $\E B_n(t) = 0, \; \mathrm{Var} B_n(t) = \dfrac{\lfloor n \cdot t \rfloor}{n} \approx t$
-        \item $B_t - W_s \sim \frac{1}{\sqrt{n}} Binom(t-s, 0.5) \to N(0, t-s)$ при $n\to\infty$.
+        \item $B_n(t) - B_n(s) \sim \frac{1}{\sqrt{n}} Binom^*(\lfloor n \cdot t \rfloor - \lfloor n \cdot s \rfloor, 0.5) \to N(0, t-s)$ при $n\to\infty$.
     \end{itemize}
-    \makebox[\textwidth]{\includegraphics[width=1.2\textwidth]{2_figs/random_walk_limit.png}}
+    \makebox[\textwidth]{\includegraphics[width=1.0\textwidth]{2_figs/random_walk_limit.png}}
 \end{frame}
 
 \begin{frame}{Броуновское движение}
@@ -103,7 +103,7 @@
 
 \begin{frame}{Марковский процесс}
     \begin{block}{Определение}
-        Процесс $X_t$ называется марковским, если он удовлетворяет марковскому свойству:
+        Процесс $X_t$ называется \textbf{марковским}, если он удовлетворяет марковскому свойству:
         $$
             \PP(X_t \in A | \F_s) = \PP (X_t \in A | X_s)
         $$где $(\F_t)_{t\geq0}$ -- естественная фильтрация.
@@ -114,6 +114,21 @@
     $$
 
     Будущее, при условии настоящего, не зависит от прошлого.
+\end{frame}
+
+\begin{frame}{Гауссовский процесс}
+    \begin{block}{Определение}
+        Процесс $X_t$ называется \textbf{гауссовским}, если $\forall t_1 < \ldots < t_n$ случайный вектор $X_{t_1}, \ldots, X_{t_n}$ имеет многомерное нормальное распределение.
+        Распределение гауссовского процесса однозначно задаётся функцией мат. ожидания и ковариацией:
+        $$
+            m(t) = \E X_t
+        $$
+        $$
+            c(t, s) = \mathrm{cov}(X_t, X_s)
+        $$
+
+        При этом $\left(X_{t_1}, \ldots, X_{t_n}\right) \sim N(\mu, \Sigma)$, где $\mu_i = m(t_i), \Sigma_{i,j} = c(t_i, t_j)$.
+    \end{block}
 \end{frame}
 
 
@@ -136,15 +151,15 @@
     \begin{block}{Определение}
         Полная вариацией функции/процесса $X_t$ называется величина:
         $$
-            V_t(X) = \lim_{\delta \to 0} \sum_{k=1}^n |X_{t_k} - X_{t_{k-1}}|
-        $$
-    \end{block} Для дифференцируемых функций $V_t(X)=\int_0^t |X'_t|dt$. 
-    \begin{block}{Определение}
+            V_t(X) = \sup_{P} \sum_{k=1}^n |X_{t_k} - X_{t_{k-1}}|
+        $$где $\sup$ берётся по всем разбиением $P$ отрезка $[0, t]$.
+    \end{block} \only<1>{Для дифференцируемых функций $V_t(X)=\int_0^t |X'_t|dt$.}
+    \only<2>{\begin{block}{Определение}
         Квадратичной вариацией процесса $X_t$ называется процесс:
         $$
             [X]_t = \lim_{\delta \to 0} \sum_{k=1}^n (X_{t_k} - X_{t_{k-1}})^2
         $$где предел берётся по всем разбиениям интервала $[0, t]$ с диаметром $\delta$, стремящимся к нулю.
-    \end{block}
+    \end{block}}
 \end{frame}
 
 \begin{frame}{Свойства броуновского движения}
@@ -407,7 +422,6 @@ $$где
     $$
         X_t = X_0 + \mu t + \sigma B_t
     $$
-    \pause
     \makebox[\textwidth]{\includegraphics[width=1.0\textwidth]{2_figs/BM with drift.png}}
 \end{frame}
 
@@ -435,27 +449,35 @@ $$где
     $$
         \mathbb{E} X_t =   \exp \left[ \left( \mu - \dfrac{1}{2}\sigma^2 \right) t \right] \mathbb{E} \exp \left[
             \sigma B_t
-        \right] =   e^{\mu t}
+        \right] = X_0 e^{\mu t}
     $$
-    \pause
     \makebox[\textwidth]{\includegraphics[width=1.0\textwidth]{2_figs/GBM.png}}
 \end{frame}
 
 \begin{frame}{Пример. Процесс Орнштейна-Уленбека}
     $$
-        d X_t = -\alpha X_t dt + \sigma dB_t
+        d X_t = \alpha (\theta - X_t) dt + \sigma dB_t
     $$
-      
-    $$
-        \mathbb{E} X_t = \beta_t = \ldots
-    $$
-      
-    $$
-        d \beta_t = -\alpha \beta_t dt \longrightarrow    \beta_t = \beta_0 e^{-\alpha t}  
-    $$
-    \pause
-    \makebox[\textwidth]{\includegraphics[width=0.8\textwidth]{2_figs/OU.png}}
+
+    \makebox[\textwidth]{\includegraphics[width=1\textwidth]{2_figs/OU.png}}
 \end{frame}
+
+\begin{frame}{Пример. Броуновский мост}
+    \begin{block}{Определение}
+        Броуновский мост это гауссовский процесс $X_t$, $t\in[0, 1]$:
+        \begin{itemize}
+            \item $\E X_t = 0$
+            \item $\mathrm{cov}(X_t, X_s) = s\cdot (1 - t), \; s \leq t$
+        \end{itemize}
+        Если $B_t$ -- БД, то $X_t = B_t - t \cdot B_1$ -- броуновский мост.
+    \end{block}
+    Броуновский мост как процесс Ито
+    $$
+        d X_t = a(t) X_t dt + \sigma dB_t
+    $$
+    \makebox[\textwidth]{\includegraphics[width=0.6\textwidth]{2_figs/BrownianBridge.png}}
+\end{frame}
+
 \begin{frame}{Теорема существования}
     Пусть задано стохастическое дифф. уравнение:
     $$
@@ -473,8 +495,7 @@ $$где
         \begin{itemize}
             \item $(X_t)_{t\geq 0}$ адаптированный к $(\F_t)_{t\geq0}$ процесс,
             \item $(X_t)_{t\geq 0}$ имеет непрерывные траектории,
-            \item $(X_t)_{t\geq 0}$ -- марковский процесс,
-            \item $\exists C \in \R^+: \;\E X_t^2 \leq Ce^{Ct}(1+x_0^2)$
+            \item $(X_t)_{t\geq 0}$ -- марковский процесс
         \end{itemize}
     \end{block}
 \end{frame}
