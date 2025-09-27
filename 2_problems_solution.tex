@@ -4,7 +4,7 @@
 
 
 \begin{document}
-\noindent Количественные финансы, осень 2025\hfill ДЗ к лекции 2\\
+\noindent Количественные финансы, осень 2025\hfill Семинар 2\\
 \today
 
 \hrulefill
@@ -26,5 +26,61 @@
     \item В силу непрерывности $\max_{k} |B_{t_{k+1}} - B_{t_k}|\to 0$ при $\delta \to 0$
     \item Отсюда квадратичная вариация стремится к нулю, противоречие. \qed
 \end{itemize}
+
+\begin{problem}
+    Пусть 
+    $$
+        X_t = \mu t + \sigma B_t
+    $$
+    Пусть $a, b > 0$. Пусть $\tau = \inf_{t \geq 0} \{t: X_t = a \lor X_t = -b\}$.
+    \\ Найти $\mathbb{P}(X_{\tau} = a), \E \tau$.
+\end{problem}
+
+\textit{Решение}
+\begin{itemize}
+    \item Пусть $\mathbb{P}(X_{\tau} = a) = p, \mathbb{P}(X_{\tau} = b) = 1-p$
+    \item Пусть функция $g(x)$ такая, что процесс $Y_t = g(X_t)$ -- мартингал.
+    \item Тогда с одной стороны:
+    $$
+        \E Y_{\tau} = \E Y_0 = g(0)
+    $$С другой стороны:
+    $$
+    \E Y_{\tau} = p \cdot g(a) + (1-p) \cdot g(-b) = p(g(a) - g(-b)) + g(-b)
+    $$Отсюда:
+    $$
+        p = \dfrac{g(0) - g(-b)}{g(a) - g(-b)}
+    $$
+    \item Формула Ито для процесса $Y_t$:
+    $$
+        dY_t = g'(X_t) dX_t + 0.5 g''(X_t) dX_t^2 = \left( g'(X_t) \mu + 0.5 \sigma^2 g''(X_t) \right) dt + g'(X_t) \sigma dB_t
+    $$
+    \item Хотим, чтобы $Y_t$ был мартингалом, отсюда уравнение на $g$:
+    $$
+        g' \mu = -0.5 \sigma^2 g''
+    $$
+    \item Замена переменых: $g' = u$
+    $$
+        u' = -\dfrac{2 \mu}{\sigma^2} u \to u = C \exp\left(-\dfrac{2 \mu}{\sigma^2}x\right)
+    $$
+    $$
+        g = C_1 + C_2 \exp\left(-\dfrac{2 \mu}{\sigma^2}x\right)
+    $$Положим для простоты $C_1 = 0, C_2 = 1$. Итого решение:
+    $$
+        p = \dfrac{g(0) - g(-b)}{g(a) - g(-b)} = \dfrac{1 - \exp(\dfrac{2 \mu}{\sigma^2}b)}{\exp(-\dfrac{2 \mu}{\sigma^2}a)-\exp(\dfrac{2 \mu}{\sigma^2}b)}
+    $$
+    \item При $\mu = 0$ по правилу Лопиталя получим:
+    $$
+        p(\mu = 0.5) = \dfrac{b}{a+b}
+    $$
+    \item $\E \tau$:
+    $$
+        \E X_t = \mu \E \tau + \sigma \E B_{\tau} = \mu \E \tau \to \E \tau = \dfrac{\E X_t}{\mu}
+    $$
+    \item В свою очередь:
+    $$
+       \E X_t = p a - (1-p)b = p(a + b) - b = \ldots
+    $$
+\end{itemize}
+
  
 \end{document}

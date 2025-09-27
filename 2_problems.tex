@@ -4,7 +4,7 @@
 
 
 \begin{document}
-\noindent Количественные финансы, осень 2025\hfill ДЗ к лекции 2\\
+\noindent Количественные финансы, осень 2025\hfill Семинар 2\\
 \today
 
 \hrulefill
@@ -29,7 +29,25 @@
 \end{problem}
 
 \begin{problem}
-    Пусть $X_t = B_t^4$, где $B_t$ -- броуновское движение. Найти $\E X_t$. 
+    Пусть 
+    $$
+        X_t = \mu t + \sigma B_t
+    $$
+    Пусть $a, b > 0$. Пусть $\tau = \inf_{t \geq 0} \{t: X_t = a \lor X_t = -b\}$.
+    \\ Найти $\mathbb{P}(X_{\tau} = a), \E \tau$.
+\end{problem}
+
+\begin{problem}
+    Пусть $X_t$ удовлетворяет СДУ:
+    $$
+        dX_t = \alpha (\theta -  X_t) dt + \sigma dB_t
+    $$где $\alpha, \theta \in \R, \sigma \in \R^+$. \\
+    Найти $\E X_t, \mathrm{Var}(X_t)$. 
+\end{problem}
+ 
+\begin{problem}
+    Пусть $X_t = B_t^4 + f(t) B_t^2 + g(t)$, где $B_t$ -- броуновское движение, $f(t), g(t)$ -- детерминированные функции. 
+    \\ При каких $f, g$ процесс $X_t$ является мартингалом? 
 \end{problem}
 
 \begin{problem}
@@ -38,14 +56,42 @@
         dX_t = X_t (\mu_x dt + \sigma_x dB_t), \\
         dY_t = Y_t (\mu_y dt + \sigma_y dZ_t),
     \end{cases}$$
-    где $dB_t\cdot dZ_t = \rho dt$ -- броуновские движения с корреляций $\rho$. Выписать уравнения для процессов $X_t^{\alpha}, X_t \cdot Y_t, \dfrac{X_t}{Y_t}$
+    где $dB_t\cdot dZ_t = \rho dt$ -- броуновские движения с корреляций $\rho$. 
+    \\ Выписать уравнения для процессов $X_t^{\alpha}, X_t \cdot Y_t, \dfrac{X_t}{Y_t}$
+\end{problem}
+
+\begin{problem}
+    Пусть
+    $$\begin{cases}
+        dX_t = \alpha X_t dt - Y_t dB_t, \\
+        dY_t = \alpha Y_t dt + X_t dB_t,
+    \end{cases},$$ $X_0=x_0, Y_0=y_0$, где $x_0, y_0$ -- константы.
+    \\ Найти $R_t = X_t^2 + Y_t^2$. Вычислить $\E X_t$.
+\end{problem}
+
+\begin{problem}[Variance swap]
+    Пусть $dX_t = X_t \sigma_t dB_t$ -- процесс Ито, $\sigma_t$ -- согласованный процесс.
+    \\ Покажите, что:
+    $$
+        \int_0^T \sigma^2_t dt = -2\ln \dfrac{X_T}{X_0} + \int_0^T \dfrac{2}{X_t}dX_t
+    $$
 \end{problem}
 
 \begin{problem}
     Пусть процесс $X_t$ удовлетворяет следующуему СДУ:
     $$
         dX_t = \alpha X_t dt + \sigma_t dB_t
-    $$для некоторого процесса $\sigma_t$ и $\alpha \in \R$. Найти $\mu(t)=\E X_t$.
+    $$для некоторого процесса $\sigma_t$ и $\alpha \in \R$. 
+    \\ Найти $\mu(t)=\E X_t$.
+\end{problem}
+
+\begin{problem}[Броуновский мост]
+    Пусть $X_t$ удовлетворяет СДУ:    
+    $$
+        dX_t = a(t) X_t + dB_t
+    $$ где $a(t)$ -- детерменированная функция, $B_t$ -- броуновское движение. 
+    Найдите $a(t)$ такое, что процесс $X_t$, определённый по формуле выше, является броуновским мостом.
+    \\ Броуновский мост это гауссовский процесс $X_t$: $\E X_t = 0, \; \mathrm{cov}(X_t, X_s) = s\cdot (1 - t), \; s \leq t$
 \end{problem}
 
 \begin{problem}[Уравнение Орнштейна-Уленбека]

@@ -1,0 +1,35 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill ДЗ 2\\
+\today
+
+\hrulefill
+
+\begin{problem}[Стохастический интеграл 2]
+    Пусть $B_t$ -- броуновское движение.  Введём forward-looking стохастический интеграл по формуле:
+    $$
+        \int_0^t g_s \circ dB_s := \lim_{\delta \to 0} \sum_{k=0}^n g_{t_{k+1}} (B_{t_{k+1}} - B_{})
+    $$где $0=t_0 < \ldots < t_n = t$ -- разбиение $[0, t]$, предел берётся по всем разбиениям при диаметре $\delta \to 0$. Вычислить
+    $$
+        2 \int_0^t B_s \circ dB_s
+    $$Сравнить ответ с интегралом Ито.
+\end{problem}
+
+\begin{problem}
+    Доказать формулу Ито для процесса Ито.
+\end{problem}
+
+\begin{problem}
+    При каком $\alpha$ процесс $X_t = e^{\alpha t + \sigma B_t}$ является мартингалом? Решить с помощью леммы Ито.
+\end{problem}
+ 
+\begin{problem}
+    Пусть $X_t = B_t^4 + f(t) B_t^2 + g(t)$, где $B_t$ -- броуновское движение, $f(t), g(t)$ -- детерминированные функции. 
+    \\ При каких $f, g$ процесс $X_t$ является мартингалом? 
+\end{problem}
+
+\end{document}
