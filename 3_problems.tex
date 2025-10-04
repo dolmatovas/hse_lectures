@@ -1,0 +1,113 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill Семинар 3\\
+\today
+
+\hrulefill
+\begin{problem}
+    Пусть $X_t$ удовлетворяет СДУ:
+    $$
+        dX_t = \alpha (\theta -  X_t) dt + \sigma dB_t
+    $$где $\alpha, \theta \in \R, \sigma \in \R^+$. \\
+    Найти $\E X_t, \mathrm{Var}(X_t)$. 
+\end{problem}
+ 
+\begin{problem}
+    Пусть
+    $$\begin{cases}
+        dX_t = X_t (\mu_x dt + \sigma_x dB_t), \\
+        dY_t = Y_t (\mu_y dt + \sigma_y dZ_t),
+    \end{cases}$$
+    где $dB_t\cdot dZ_t = \rho dt$ -- броуновские движения с корреляций $\rho$. 
+    \\ Выписать уравнения для процессов $X_t^{\alpha}, X_t \cdot Y_t, \dfrac{X_t}{Y_t}$
+\end{problem}
+
+\begin{problem}
+    Пусть
+    $$\begin{cases}
+        dX_t = \alpha X_t dt - Y_t dB_t, \\
+        dY_t = \alpha Y_t dt + X_t dB_t,
+    \end{cases},$$ $X_0=x_0, Y_0=y_0$, где $x_0, y_0$ -- константы.
+    \\ Найти $R_t = X_t^2 + Y_t^2$. Вычислить $\E X_t$.
+\end{problem}
+
+\begin{problem}[Variance swap]
+    Пусть $dX_t = X_t \sigma_t dB_t$ -- процесс Ито, $\sigma_t$ -- согласованный процесс.
+    \\ Покажите, что:
+    $$
+        \int_0^T \sigma^2_t dt = -2\ln \dfrac{X_T}{X_0} + \int_0^T \dfrac{2}{X_t}dX_t
+    $$
+\end{problem}
+
+\begin{problem}
+    Пусть процесс $X_t$ удовлетворяет следующуему СДУ:
+    $$
+        dX_t = \alpha X_t dt + \sigma_t dB_t
+    $$для некоторого процесса $\sigma_t$ и $\alpha \in \R$. 
+    \\ Найти $\mu(t)=\E X_t$.
+\end{problem}
+
+\begin{problem}[Броуновский мост]
+    Пусть $X_t$ удовлетворяет СДУ:    
+    $$
+        dX_t = a(t) X_t + dB_t
+    $$ где $a(t)$ -- детерменированная функция, $B_t$ -- броуновское движение. 
+    Найдите $a(t)$ такое, что процесс $X_t$, определённый по формуле выше, является броуновским мостом.
+    \\ Броуновский мост это гауссовский процесс $X_t$: $\E X_t = 0, \; \mathrm{cov}(X_t, X_s) = s\cdot (1 - t), \; s \leq t$
+\end{problem}
+
+\begin{problem}[Уравнение Орнштейна-Уленбека]
+    Решить стохастическое дифференциальное уравнение на $X_t$:
+    $$
+        dX_t = \alpha (\theta -  X_t) dt + \sigma dB_t
+    $$где $\alpha, \theta \in \R, \sigma \in \R^+$.
+    \\
+    При каком распределении $X_0$ процесс $X_t$ стационарен?
+\end{problem}
+
+\begin{problem}[Формула Башелье]
+    Решить УРЧП:
+    \begin{align*}
+        &f_t + \mu f_x + \dfrac{\sigma^2}{2} f_{xx} = 0, 0 \leq t < T, x \in \R \\
+        &f(T, x) = \max(x - K, 0)
+    \end{align*}
+    где $\sigma > 0, \mu \in \R, K \in \R$ -- константы.
+\end{problem}
+
+\begin{problem}[Формула Блэка-Шоулза]
+    Решить УРЧП:
+    \begin{align*}
+        &f_t + \mu \cdot x \cdot f_x + \dfrac{\sigma^2 x^2}{2} f_{xx} = 0, 0 \leq t < T, x \geq 0 \\
+        &f(T, x) = \max(x - K, 0)
+    \end{align*}
+    где $\sigma > 0, K > 0, \mu \in \R$ -- константы.
+\end{problem}
+
+\begin{problem}[Процесс Орнштейна-Уленбека]
+    Пусть $X_t$ удовлетворяет СДУ:
+    \begin{align}
+        &dX_t = \alpha (\theta - X_t) dt + \sigma dW_t \\
+        &X_0 = x_0
+    \end{align}
+    Выпишите прямое уравнение Колмогорова на плотность процесса $X_t$. Найдите стационарное решение (плотность, для которой $\dfrac{\partial p(t, x)}{\partial t} = 0$).
+\end{problem}
+
+\begin{problem}
+    Пусть $u(x, y)$ удовлетворяет уравнению Лапласа в области $x^2+y^2 \leq 1$:
+    $$
+        \dfrac{\partial^2 u}{\partial x^2} + \dfrac{\partial^2 u}{\partial y^2} = 0 
+    $$и граничным условиям $u(x, y) = f(x, y)$ при $x^2+y^2=1$. 
+    \\ Найти $u(x, y)$.
+    \\ Доказать, что:
+    $$
+        u(x, y) = \E \left[f(X_{\tau}, Y_{\tau}) | (X_0 = x, Y_0 = y)\right]
+    $$где $(X_t, Y_t)$ -- двумерное броуновское движение, стартующее из точки $(x, y)$, момент остановки $\tau$ определяется как:
+    $$
+        \tau = \inf_{t} \{ X_t^2 + Y_t^2 \geq 1 \}
+    $$
+\end{problem}
+\end{document}

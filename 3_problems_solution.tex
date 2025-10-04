@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill Семинар 3\\
+\today
+
+\hrulefill
+\begin{problem}
+    Решить СДУ:
+    $$
+        dX_t = \alpha (\theta -  X_t) dt + \sigma dB_t
+    $$
+    где $\alpha, \theta \in \R, \sigma \in \R^+$. \\
+    Найти $\E X_t, \mathrm{Var}(X_t)$. 
+\end{problem}
+\textit{Решение}
+Рассмотрим случай $\sigma = \theta = 0$. Уравнение сводится к:
+$$
+    dX_t = -\alpha X_t dt \to X_t = C e^{-\alpha t}.
+$$
+Будем искать решение общей задачи в виде $X_t = Y_t \cdot e^{-\alpha t}$, где $Y_t$ -- процесс Ито. По формуле Ито:
+$$
+    dY_t = d(e^{\alpha t}X_t) = e^{\alpha t} dX_t + \alpha e^{\alpha t} X_t dt 
+    = e^{\alpha t} \left( \alpha (\theta - X_t) dt + \sigma dB_t \right) + \alpha e^{\alpha t} X_t dt
+    = e^{\alpha t} \left( \alpha \theta dt + \sigma dB_t \right).
+$$
+Правая часть не зависит от $Y_t$, поэтому можем проинтегрировать, откуда:
+$$
+    Y_t = Y_0 + \theta (e^{\alpha t} - 1) + \sigma \int_0^t e^{\alpha s} dB_s.
+$$ Делая обратную замену, получим:
+$$
+    X_t = X_0 e^{-\alpha t} + \theta (1 - e^{-\alpha t}) + \sigma \int_0^t e^{-\alpha (t-s)} dB_s.
+$$
+Отсюда:
+$$
+    \E X_t = X_0 e^{-\alpha t} + \theta (1 - e^{-\alpha t}).
+$$
+$$
+    \mathrm{Var} X_t = \sigma^2 \int_0^t e^{-2\alpha (t-s)} ds = \sigma^2 \dfrac{1-e^{-2\alpha t}}{2\alpha}.
+$$
+Сечения процесса $X_t$ имеют нормальное распределение:
+$$X_t \sim \mathcal{N}\left(X_0 e^{-\alpha t} + \theta (1 - e^{-\alpha t}), \; \sigma^2 \dfrac{1-e^{-2\alpha t}}{2\alpha}\right).$$
+При $t \to \infty$ $\E X_t \to \theta, \mathrm{Var} X_t \to \dfrac{\sigma^2}{2\alpha}$. 
+
+\begin{problem}[Формула Башелье]
+    Решить УРЧП:
+    \begin{align*}
+        &f_t + \overline{\mu} f_x + \dfrac{\overline{\sigma}^2}{2} f_{xx} = 0, 0 \leq t < T, x \in \R \\
+        &f(T, x) = \max(x - K, 0)
+    \end{align*}
+    где $\overline{\sigma} > 0, \overline{\mu} \in \R, K \in \R$ -- константы.
+\end{problem}
+\textit{Решение}
+
+Формула Феймана-Каца:
+$$
+    \dfrac{\partial f}{\partial t} + \mu(t, x) \dfrac{\partial f}{\partial x}
+    + \dfrac{1}{2}\sigma^2(t, x) \dfrac{\partial^2 f}{\partial x^2} = 0 \Leftrightarrow f(t, x) = \E \left[ f(t, X_t) | X_t = x \right]
+$$где процесс $X_t$ удовлетворяет СДУ:
+$$
+    dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dB_t
+$$
+Смотрим внимательно на наше УРЧП и на формулу Феймана-Каца и замечаем, что в нашем случае:
+$$
+    \mu(t, X_t) = \overline{\mu}, \sigma(t, X_t) = \overline{\sigma}
+$$Поэтому в нашей задаче:
+$$
+    f(t, x) = \E \left[ \max(X_T - K, 0) | X_t = x \right]
+$$где $X_t$ удовлетворяет СДУ:
+$$
+    dX_t = \overline{\mu} dt + \overline{\sigma} dB_t
+$$Проинтегрируем уравнение от $t$ до $T$, учитывая условие $X_t = x$:
+$$
+    X_T = x + \overline{\mu} (T - t) + \sigma (B_T - B_t)
+$$Нетрудно видеть, что $X_T \sim \mathcal{N}\left( x + \overline{\mu} (T - t), \overline{\sigma}^2 (T-t) \right)$. Поэтому:
+$$
+    f(t, x) = \E \max(\xi, 0)
+$$где $\xi \sim \mathcal{N}\left( x + \overline{\mu} (T - t) - K, \overline{\sigma}^2 (T-t) \right)$. Обозначим $\gamma = x + \overline{\mu} (T - t) - K$ 
+$$
+    \xi = \gamma + \sigma \sqrt{T-t} \eta
+$$тогда $\eta \sim N(0, 1)$
+$$
+    f(t, x) = \E \max(\gamma + \sigma \sqrt{T-t} \eta, 0) = 
+    \dfrac{1}{\sqrt{2\pi}} \int_{-\frac{\gamma}{\sigma \sqrt{T-t}}}^{\infty} (\gamma + \sigma \sqrt{T-t} x) e^{-0.5 x^2}dx = ...
+$$
+
+\end{document}
