@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+\usepackage{amsmath}
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill Семинар 4\\
+\today
+
+\hrulefill
+
+\begin{problem}
+    Пусть $C(t, S; T, K)$ -- цена колл-опциона в модели БШ:
+    $$C(t, S; T, K) = S \cdot N(d_1) - e^{-r(T-t)} K \cdot N(d_2)$$
+    где 
+    \begin{align*}
+        &d_1 =\dfrac{\log(S / K) + r(T-t)}{\sigma{\sqrt{T-t}}} + \dfrac{\sigma{\sqrt{T-t}}}{2}\\
+        &d_2 = d_1 - \sigma \sqrt{T-t}
+    \end{align*}
+    Вычислить греки:
+    \begin{align*}
+        &\Delta = \dfrac{\partial C}{\partial S} \\
+        &\Gamma = \dfrac{\partial^2 C}{\partial S^2} \\
+        &\nu = \dfrac{\partial C}{\partial \sigma} \\
+        &\Theta = \dfrac{\partial C}{\partial t}
+    \end{align*}
+\end{problem}\\
+\noindent \textit{Решение.} Пусть $\tau = T - t$, $n(x) = N'(x) = \frac{\exp(-0.5x^2)}{\sqrt{2\pi}}$
+$$
+    \dfrac{\partial C}{\partial S} = 
+    N(d_1) + S n(d_1) \dfrac{\partial d_1}{\partial S}
+    - e^{-r\tau} K n(d_2) \dfrac{\partial d_2}{\partial S}
+    = N(d_1) + \dfrac{\partial d_1}{\partial S}
+    \left( S n(d_1) - e^{-r\tau} K n(d_2) \right)
+$$
+Рассмотрим выражение в скобках:
+\begin{align*}
+    n(d_2) = n(d_1 - \sigma \sqrt{\tau})
+    = \frac{1}{\sqrt{2\pi}} \exp(-\frac{d_1^2 - 2d_1 \sigma \sqrt{\tau} + \sigma^2 \tau}{2})
+= n(d_1) \exp(d_1 \sigma \sqrt{\tau} - \frac{\sigma^2 \tau}{2})
+\end{align*}
+Подставим определение $d_1$, получим:
+$$
+    d_1 \sigma \sqrt{\tau} - \frac{\sigma^2 \tau}{2}
+    = \log(S / K) + r\tau
+$$Откуда:
+$$
+    n(d_2) = n(d_1) e^{r\tau} \dfrac{S}{K}
+$$Поэтому
+$$
+\left( S \cdot n(d_1) - e^{-r\tau} K \cdot n(d_2)\right) 
+= n(d_1) \left( S - e^{-r\tau} K e^{r\tau} \dfrac{S}{K}\right) = 0
+$$Итого
+$$
+\dfrac{\partial C}{\partial S} = N(d_1)
+$$
+
+$$
+    \Gamma = \dfrac{\partial \Delta}{\partial S}
+    = n(d_1) \dfrac{\partial d_1}{\partial S}
+    = \dfrac{n(d_1)}{S \sigma \sqrt{\tau}}
+$$
+
+$$
+    \dfrac{\partial C}{\partial \sigma}
+    = S n(d_1) \dfrac{\partial d_1}{\parital \sigma}
+    - e^{-r\tau} K n(d_2) \dfrac{\partial d_2}{\parital \sigma}
+$$Заметим, что $\dfrac{\partial d_2}{\parital \sigma}
+= \dfrac{\partial d_1}{\parital \sigma} - \sqrt{\tau}$.
+Отсюда:
+$$
+    \dfrac{\partial C}{\partial \sigma}
+    = e^{-r\tau} K n(d_2) \sqrt{\tau}
+    + \dfrac{\partial d_1}{\parital \sigma} \left( Sn(d_1) - e^{-r\tau} K n(d_2)\right)
+    = e^{-r\tau} K n(d_2) \sqrt{\tau}
+$$Это также можно переписать как:
+$$
+    \dfrac{\partial C}{\partial \sigma}
+    = n(d_1) S \sqrt{\tau}
+$$
+\begin{align*}
+    &\dfrac{\partial C}{\partial t}
+    = rC - \Delta r S - 0.5 \sigma^2 S^2 \Gamma =\\
+    &= -rK e^{-r\tau} N(d_2) - \dfrac{\sigma S \phi(d_1)}{2 \sqrt{\tau}}
+\end{align*}
+\begin{problem}
+    Рассмотрим контракт с пэйоффом:
+    $$
+        \Phi(S_T) = C(T, S_T; T', S_T)
+    $$т.е. контракт, который в момент $T$ выплачивает стоимость ATM опциона с датой погашения $T'$.
+    Найти его стоимость $p(t, \Phi)$.
+\end{problem}\\
+\noindent \textit{Решение}
+$$
+    \Phi(S_T) = S_T N(d_1) - e^{-r(T'-T)}S_TN(d_2)
+    = S_T (N(d_1) - e^{-r(T'-T)} N(d_2))
+$$где $d_1, d_2$ задаются формулами:
+\begin{align*}
+    &d_1 = \dfrac{\log(S_T / S_T) + r(T'-T)}{\sigma \sqrt{T'-T}}
+    + \dfrac{\sigma \sqrt{T'-T}}{2}
+    = \dfrac{r\sqrt{T'-T}}{\sigma} + \dfrac{\sigma \sqrt{T'-T}}{2}\\
+    &d_2 = \dfrac{r\sqrt{T'-T}}{\sigma} - \dfrac{\sigma \sqrt{T'-T}}{2}
+\end{align*}
+Отсюда:
+$$
+    p(t, \Phi) = \E \left[ e^{-r(T-t)} \Phi(S_T) | F_t \right]
+    = (N(d_1) - e^{-r(T'-T)} N(d_2)) \cdot 
+    \E \left[ e^{-r(T-t)} S_T | F_t \right]
+    = (N(d_1) - e^{-r(T'-T)} N(d_2)) \cdot S_t
+$$
+\end{document}

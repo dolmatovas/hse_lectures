@@ -1,9 +1,9 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usepackage{preamble_beamer}
 
 \newcommand*{\QEDB}{\null\nobreak\hfill\ensuremath{\square}}
 
-\title[Модель Блэка-Шоулза]{Лекция 4. Рынок с непрерывным временем} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Модель Блэка-Шоулза]{Лекция 4. Модель Блэка-Шоулза} % The short title appears at the bottom of every slide, the full title is only on the title page
 
 
 \begin{document}
@@ -12,35 +12,48 @@
 \titlepage 
 \end{frame}
 
-\begin{frame}
-\frametitle{План курса} 
+\begin{frame}{Рекап прошлой лекции} 
 \begin{itemize} 
-    \item Введение
-    \begin{itemize}
-        \item Модели: математические аспекты моделирования
-        \item Рынки: моделирование рынков и равновесия в экономике
-        \item Цены: основные постулаты финансовой математики
-        \item Активы: финансовые инструменты и корп. финансы
-    \end{itemize}
-    \item Классические модели
-    \begin{itemize}
-        \item Прайсинг деривативов: дискретное время 
-        \item Прайсинг деривативов: непрерывное время
-        \item Моделирование базовых контрактов. Формула Блэка-Шоулса
-        \item Модели локальной и стохастической волатильности
-        \item Численные методы для оценки стоимости деривативов
-    \end{itemize}
-    \item Тоже классические модели, но более новые
-    \begin{itemize}
-        \item Поправки XVA
-        \item Трейдинг, микроструктура рынка и транзакционные издержки
-    \end{itemize}
+    \item Стохастические дифф. уравнения. Теорема существования, марковость.
+    \item Формула Феймана-Каца.
+    \item Прямое и обратное уравнение Колмогорова.
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \centering
-\Large Динамика актива
+\begin{frame}{Динамика портфелей}
+    \begin{itemize}
+        \item $N$ -- число торгуемых активов (акций)
+        \item $h^i_t$ -- число $i$-ых акций на интервале $[t, t + \Delta)$
+        \item возможны короткие, длинные и дробные позиции $h^i_t \in \R$
+        \item нет транзакционных издержек 
+        \item рынок абсолютно ликвиден: нет маркет-импакта
+        \item $h_t = [h^1_t, \ldots, h^N_t]$ -- портфель
+        \item $S^i_t$ -- цена $i$-го актива в момент $t$
+        \item $V_t = \sum_i h^i_t S^i_t = h_t \cdot S_t$ -- капитал портфеля $h$ в момент $t$
+        \item Приращение:
+        $$
+            \Delta V^h_t = V^h_{t + \Delta} - V^h_t = h_t \cdot \Delta S_t + \Delta h_t \cdot S_t + \Delta h_t \cdot \Delta S_t
+        $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Уравнение самофинансируемости}
+    \begin{block}{Определение}
+        Портфель называется \textbf{самофинансируемым}, если покупка новых активов производится только за счёт продажи старых. 
+        \\ Условие самофинансируемости:
+        \begin{align*}
+            & V^h_{t+\Delta} = h_t \cdot S_{t+\Delta} = h_{t+\Delta} \cdot S_{t+\Delta} \\
+            & \Delta V^h_t = h_t \cdot \Delta S_t \\
+            & \Delta h_t \cdot S_t + \Delta h_t \cdot \Delta S_t = 0
+        \end{align*}
+    \end{block}
+    При непрерывной торговле $\Delta \to 0$ уравнение самофинансируемости запиывается как:
+    $$
+        d V^h_t = h_t \cdot dS_t 
+    $$
+    $$
+        V^h_t = V^h_0 + \int_0^t h_u \cdot dS_u
+    $$
 \end{frame}
 
 \begin{frame}{Модель Блэка-Шоулза}
@@ -49,96 +62,49 @@
     
     Банковский счёт:
     \begin{align*}
-        &B_0 = 1 \\
-        &dB_t = r B_t dt\\
-    \end{align*}
-    \pause
-    Акция:
+        &dB_t = r B_t dt \\
+        &B_0 = 1
+    \end{align*}\noident Акция:
     \begin{align*}
         &dS_t = S_t \mu dt + S_t \sigma dW_t \\
-        &S_t = S_0 e^{ \left(\mu - 0.5 \sigma^2 \right) t + \sigma W_t}
+        &S_t = S_0 \exp\left( \left(\mu - 0.5 \sigma^2 \right) t + \sigma W_t \right)
     \end{align*}
-\end{frame}
-
-\begin{frame}
-  \centering
-\Large Динамика портфелей
-\end{frame}
-
-\begin{frame}{Самофинансируемый порфель}
-    \onslide<1-> {\begin{block}{Определение}
-        Портфель $h_t = (x_t, y_t) \in \mathcal{F}_t$ -- согласованный с фильтрацией $(\mathcal{F}_t)_{t\geq 0}$ случайный процесс. $x_t$ -- число акций, $y_t$ -- количество денег на банковском счёте.
-    \end{block}}
-
-    \only<2>{Пусть
-    \begin{itemize}
-        \item возможны короткие, длинные и дробные позиции, $x_t, y_t \in \mathbb{R}$
-        \item нет транзакционных издержек 
-        \item рынок абсолютно ликвиден: нет маркет-импакта
-    \end{itemize}}
-    \onslide<3->
-    {Стоимость портфеля:
+    Динамика самофинансируемого портфеля $h_t = (x_t, y_t)$
     $$
-        V_t = x_t S_t + y_t
-    $$}
-
-    \onslide<4->
-    {Уравнение самофинансируемости:
-    \begin{align*}
-        &dV_t = x_t dS_t + y_t r dt \\
-        &dV_t =
-        r V_t dt + x_t (dS_t - r S_t dt)
-    \end{align*}}
-    \onslide<5->
-    {Относительный портфель:
+        dV_t^h = x_t dS_t + y_t dB_t = x_t dS_t + (V_t^h - x_t\cdot S_t) r dt 
     $$
-        \widetilde{V}_t = \dfrac{V_t}{B_t}, \widetilde{S}_t = \dfrac{S_t}{B_t} \to 
-        d \widetilde{V}_t = x_t d\widetilde{S_t}
-    $$}
 \end{frame}
 
 \begin{frame}{Платежные обязательства}
-    \onslide<1->\begin{block}{Определение}
-        Случайным платёжным обязательством (деривативом) называется контракт, который в момент времени $T$ платит случайную сумму денег $X \in \mathcal{F}_T$. Платёжное обязательство называется простым, если $X = \Phi(S_T)$.
-    \end{block}
-
-    \onslide<2->{Основная цель -- определить "справедливую" стоимость $p(t, \Phi)$ платёжного обязательства в произвольный момент времени $t \leq T$.}
-\end{frame}
-
-\begin{frame}{Платежные обязательства}
+    Пусть $(\Omega, \mathcal{F}, \mathbb{P})$ -- вероятностное пространство, 
+    $W_t$ -- броуновское движение, $(\mathcal{F}_t)_{t\geq 0}$ -- фильтрация, порождённая $W_t$.
     \begin{block}{Определение}
-        Платёжное обязательство называется реплицируемым, если $\exists$ самофинансируемый портфель $h_t=(x_t, y_t)$ такой, что:
-        $$
-            V_T^h \overset{a.s.}{=} \Phi(S_T)
-        $$
+        Дериватив -- контракт, который платит в момент $T$ случайную сумму денег $X \in \F_T$.
     \end{block}
-    \textit{Пример} Пусть $\Phi(S_T) = S_T - K$. Реплицирующий портфель:
-    $$
-        x_t = 1, \; y_0 = -K e^{-rT}, \; y_t = -K e^{-r(T-t)}
-    $$
-
-    \begin{block}{Теорема}
-        Цена реплицируемого обязательства $\Phi$ равна стоимости реплицирующего портфеля $h_t=(x_t, y_t)$:
-        $$
-            p(t, \Phi) = V_t^h = x_t \cdot S_t + y_t
-        $$
+    \pause
+    \textit{Пример} Европейский колл-опцион: $X = (S_T - K)^+$
+    \pause
+    \begin{block}{Определение}
+        Дериватив называется простым, если $X = \Phi(S_T)$. $\Phi$ -- функция выплаты.
     \end{block}
-    \textit{Пример}.
-    $$
-        p(t, S_T - K) = S_t - K e^{-r(T-t)}
-    $$
-    
-    
+    \pause
+    \textit{Пример} Для европейского колл-опциона $\Phi(x) = (x-K)^+$. \\
+    \pause
+    \textit{Пример} Азиатский опцион $X = \left( \dfrac{1}{T} \int_0^T S_u du - K\right)^+$ не является простым. 
 \end{frame}
 
-\begin{frame}{Арбитраж}
+\begin{frame}{Общая задача финансовой математики}
+    Основная задача -- найти \textit{справедливую} стоимость контракта $p(t, X) \in \F_t$ в произвольный момент времени $t < T$.
+\end{frame}
+
+\begin{frame}{Безарбитражность}
     \onslide<1->\begin{block}{Определение}
     Портфель $h$ арбитражный, если 
     $$
         \begin{gathered}
-            V_0^h = 0 \\
-            \mathbb{P}(V_T^h \geq 0) = 1 \; \& \; 
-            \mathbb{P}(V_T^h > 0) > 0
+            V^h_0 = 0 \\
+            \mathbb{P}(V^h_T \geq 0) = 1 \; \land \; 
+            \mathbb{P}(V^h_T > 0) > 0
         \end{gathered}
     $$
     \end{block}
@@ -152,13 +118,39 @@
     $$Построить арбитражный порфель.}
 \end{frame}
 
+\begin{frame}{Реплицируемый дериватив}
+    \begin{block}{Определение}
+        Дериватив называется реплицируемым, если $\exists$ самофинансируемый портфель $h_t=(x_t, y_t)$ такой, что:
+        $$
+            V_T^h \overset{a.s.}{=} \Phi(S_T)
+        $$
+    \end{block}
+    \pause
+    \textit{Пример} Пусть $\Phi(S_T) = S_T - K$. Реплицирующий портфель:
+    $$
+        x_t = 1, \; y_t = -K e^{-rT}
+    $$
+    \pause
+    \begin{block}{Теорема}
+        Цена реплицируемого дериватива $\Phi$ равна стоимости реплицирующего портфеля $h_t=(x_t, y_t)$:
+        $$
+            p(t, \Phi) = V_t^h = x_t S_t + y_t B_t
+        $$
+    \end{block}
+    \pause
+    \textit{Пример}.
+    $$
+        p(t, S_T - K) = S_t - K e^{-r(T-t)}
+    $$
+\end{frame}
+
 \begin{frame}{Цены}
-    \onslide<1->{Пусть $h_t = (x_t, y_t)$ -- хэджирующий портфель:
-        \begin{align*}
+    \onslide<1->{Пусть $h_t = (x_t, y_t)$ -- самофинансируемый портфель:
+        $$
             dV_t = x_t dS_t + (V_t - x_t\cdot S_t) r dt 
-        \end{align*}
+        $$
     }
-    \onslide<2->{Пусть цена $p(t, \Phi) = F(t, S_t)$ -- гладкая функция своих аргументов. Динамика цены:
+    \onslide<2->{\noident Предположим, что цена $p(t, \Phi) = F(t, S_t)$ -- гладкая функция своих аргументов. Динамика цены:
         \begin{align*}
             &dF(t, S_t) =
             \dfrac{\partial F}{\partial t} dt + \dfrac{\partial F}{\partial S} dS_t + \dfrac{1}{2}\dfrac{\partial^2 F}{\partial S^2} dS_t^2 = \\
@@ -166,7 +158,7 @@
         \end{align*}
     }
     \onslide<3->{
-        Приравнивая коэффициенты при $dt, dS_t$ получим:
+        Для репликации нужно $dV = dF$. Приравнивая коэф. при $dt, dS_t$ получим:
         \begin{align*}
             &x_t = \dfrac{\partial F}{\partial S},\\
             &\dfrac{\partial F}{\partial t} + r S_t \dfrac{\partial F}{\partial S} + \sigma^2 S_t^2 \dfrac{1}{2}\dfrac{\partial^2 F}{\partial S^2} = r F 
@@ -175,22 +167,19 @@
 \end{frame}
 
 \begin{frame}{Уравнение Блэка-Шоулза}
-\onslide<1->{
-    УРЧП на процесс цены:
-    \begin{align*}
-        &\dfrac{\partial F}{\partial t} + r S \dfrac{\partial F}{\partial S} + \sigma^2 S^2 \dfrac{1}{2}\dfrac{\partial^2 F}{\partial S^2} = r F ,\\
-        &F(T, S) = \Phi(S).
-    \end{align*}
-}
-\onslide<2->{
-    Веса хэджирующего портфеля:
+    \begin{block}{Теорема}
+        Пусть $\Phi(S_T)$ -- простой дериватив, тогда его цена $p(t, \Phi) = F(t, S_t)$, где $F(t, S)$ является решением УРЧП:
+        \begin{align*}
+            &\dfrac{\partial F}{\partial t} + r S \dfrac{\partial F}{\partial S} + \sigma^2 S^2 \dfrac{1}{2}\dfrac{\partial^2 F}{\partial S^2} = r F ,\\
+            &F(T, S) = \Phi(S).
+        \end{align*}
+    \end{block}
+    Простой дериватив является реплицируемым, веса реплицирующего портфеля задаются формулами:
     \begin{align*}
         &x_t = \dfrac{\partial F(t, S_t)}{\partial S},\\
-        &y_t = F(t, S_t) - \dfrac{\partial F(t, S_t)}{\partial S} \cdot S_t.
+        &B_t y_t = F(t, S_t) - \dfrac{\partial F(t, S_t)}{\partial S} S_t.
     \end{align*}
-}
 \end{frame}
-
 
 \begin{frame}{Формула Феймана-Каца}
     \begin{block}{Теорема}
@@ -201,46 +190,13 @@
         \end{align*}
         Тогда решение может быть выраженно через условное мат. ожидание:
         $$
-            F(t, S) = \mathbb{E} \left[ e^{-r(T-t)} \Phi(S_T) | S_t = S\right]
+            F(t, S) = \mathbb{E}^Q \left[ e^{-r(T-t)} \Phi(S_T) | S_t = S\right]
         $$где $S_u$ подчиняется геометрическому броуновскому движению:
         \begin{align*}
             &dS_u = r S_u du + \sigma S_u dW_u, u > t \\
             &S_t = S
         \end{align*}
     \end{block}
-\end{frame}
-
-\begin{frame}{Доказательство}
-    \only<1-4>{Сделаем замену: $F(t, S) = e^{-r(T-t)} \widetilde{F}(t, S)$:        
-    \begin{align*}
-        &\dfrac{\partial \widetilde{F}}{\partial t} + r S \dfrac{\partial \widetilde{F}}{\partial S} + 0.5 \sigma^2 S^2 \dfrac{\partial^2 \widetilde{F}}{\partial S^2} = 0,\\
-        &\widetilde{F}(T, S) = \Phi(S).
-    \end{align*}}
-
-    \onslide<2->{
-    Запишем формулу Ито для процесса $Y_u = \widetilde{F}(u, S_u)$:}
-    \onslide<3->{
-    $$
-        dY_u = \left(\dfrac{\partial\widetilde{F}}{\partial u} + r S_u \dfrac{\partial \widetilde{F}}{\partial S} + 0.5 \sigma^2 S_u^2 \dfrac{\partial^2 \widetilde{F}}{\partial S^2} \right) dt + \sigma S_u \dfrac{\partial \widetilde{F}}{\partial S}dW_u
-    $$
-    }
-    \onslide<4->{
-    Член при $dt$ равен нулю в силу уравнения:
-    $$
-        dY_u = \sigma S_u \dfrac{\partial \widetilde{F}}{\partial S} dW_u
-    $$
-    }
-    \onslide<5->{
-    Интегрируя по $u$ от $t$ до $T$, получим:
-    $$
-        Y_T = \widetilde{F}(t, S) + \int\limits_t^T\sigma S_u \dfrac{\partial \widetilde{F}}{\partial S} dW_u
-    $$}
-    \onslide<6->{
-    Но $Y_T = \widetilde{F}(T, S_T) = \Phi(S_T)$. Беря слева и справа мат. ожидание, получим:}
-    \onslide<7->{
-    $$
-        \widetilde{F}(t, S) = \mathbb{E}\left[ \Phi(S_T) | S_t = S\right]
-    $$}
 \end{frame}
 
 \begin{frame}{Риск-нейтральная мера}
@@ -250,15 +206,16 @@
             dS_t = r S_t dt + \sigma S_t dW_t
         $$ называется риск-нейтральной $\mathbb{Q}$.
     \end{block}
+    \pause
     \begin{block}{Утверждение}
         Относительно риск-нейтральной меры дисконтированные цены $\widetilde{S_t} = \dfrac{S_t}{B_t}, \widetilde{V_t} = \dfrac{V_t}{B_t}$ мартингалы.
     \end{block}
+    \pause
     \textit{Доказательство}. 
     \begin{align*}
         &d \widetilde S_t = \sigma \widetilde S_t dW_t \\
         &d \widetilde V_t = x_t d \widetilde S_t = \sigma x_t \widetilde S_t dW_t 
     \end{align*}
-    
 \end{frame}
 
 \begin{frame}{Безарбитражность}
@@ -315,20 +272,18 @@
     Цена колл-опциона задаётся формулой:
     \begin{align*}
         &C(t, S_t) = S_t N(d_1) - e^{-r\tau}K N(d_2) \\
-        & d_1 = \frac{\ln(S_t/K) + (r+0.5\sigma^2)\tau}{\sigma \sqrt{\tau}}\\
-        &d_1 = d_2 - \sigma \sqrt{\tau}\\
+        &d_1 = \frac{\ln(S_t/K) + (r+0.5\sigma^2)\tau}{\sigma \sqrt{\tau}}\\
+        &d_2 = d_1 - \sigma \sqrt{\tau}\\
         & N(x) = \dfrac{1}{\sqrt{2\pi}}\int_{-\infty}^x e^{-u^2/2}du,
     \end{align*}где $\tau=T-t$ -- время до эксперации.
 \end{frame}
 
 \begin{frame}{Пример. Европейский колл-опцион}
-    
     \textit{Доказательство}. Введём $\tau = T - t$ -- время до экспирации.
     \begin{align*}
-        &C(t, S_T) = e^{-r\tau}\mathbb{E}^{\mathbb{Q}_t}(S_T - K) \mathbb{I}_{S_T \geq K} = \\
-        &= \mathbb{E}^{\mathbb{Q}_t}\left[e^{-r\tau} S_T \mathbb{I}_{S_T \geq K}\right] - K e^{-r\tau} \mathbb{Q}(S_T \geq K).
+        &C(t, S_T) = e^{-r\tau}\mathbb{E}^{\mathbb{Q}_t}(S_T - K) \mathbb{I}_{S_T \geq K} 
+        = \mathbb{E}^{\mathbb{Q}_t}\left[e^{-r\tau} S_T \mathbb{I}_{S_T \geq K}\right] - K e^{-r\tau} \mathbb{Q}(S_T \geq K).
     \end{align*}
-
     1) Вычислим $\mathbb{Q}(S_T \geq K)$:
         $$
             S_T = S_t e^{(r-0.5 \sigma^2)\tau + \sigma (W_T - W_t)} = S_t e^{(r-0.5 \sigma^2)\tau + \sigma \xi \sqrt{\tau}},
@@ -344,7 +299,6 @@
             \mathbb{Q}(S_T \geq K) = \mathbb{Q}(\xi \geq -d_2) = \mathbb{Q}(\xi \leq d_2) = N(d_2) \qed
         $$
 \end{frame}
-
 
 \begin{frame}{Пример. Европейский колл-опцион}
     2) Вычислим $\mathbb{E}^{\mathbb{Q}_t}\left[e^{-r\tau} S_T \mathbb{I}_{S_T \geq K}\right]$:
@@ -365,8 +319,21 @@
         \mathbb{E}^{\mathbb{Q}_t}\left[e^{-r\tau} S_T \mathbb{I}_{S_T \geq K}\right]  
     = \dfrac{S_t}{\sqrt{2\pi}}\int\limits_{-d_1}^{\infty} e^{-0.5y^2}dy
      = S_t N(d_1) \; \QEDB
-    $$
-    
+    $$    
+\end{frame}
+
+\begin{frame}{Пример. Европейский пут-опцион}
+    \begin{block}{Определение}
+        Европейский пут-опцион со страйком $K$ и датой погашения $T$ это случайное платёжное обязательство с функцией выплаты:
+        $$\Phi(S_T) = \max(K-S_T, 0) = (K-S_T)^+$$
+    \end{block}
+    Цена пут-опциона задаётся формулой:
+    \begin{align*}
+        &P(t, S_t) = C(t, S_t) - \left( S_t - K e^{-r\tau}\right)
+        = e^{-r\tau} K N(-d_2) - S_t N(-d_1)
+    \end{align*}где $\tau=T-t$ -- время до эксперации.
+
+    Европейские колл и пут опционы называются ванильными опционами.
 \end{frame}
 
 \begin{frame}{Греки}
@@ -380,9 +347,7 @@
 \end{frame}
 
 \begin{frame}{Греки}
-    \begin{center}
-        \includegraphics[width=1.1\textwidth]{7_figs/Цены и греки.jpg}
-    \end{center}
+    \makebox[\textwidth]{\includegraphics[width=0.9\textwidth]{4_figs/Цены и греки.jpg}}
 \end{frame}
 
 \begin{frame}{Свойства}
@@ -411,24 +376,7 @@
         $$
             C(t, S_t) = e^{-r\tau}\mathbb{E}^Q (S_T - K)^+ \geq e^{-r\tau} (\mathbb{E}^Q S_T - K)^+ = (S_t - e^{-r\tau} K)^+
         $$
-    \end{itemize}
-
-    
-    
-\end{frame}
-
-\begin{frame}{Хэджирование}
-
-    \begin{center}
-        \includegraphics[width=0.9\textwidth]{7_figs/Цены акций и опционов.png}
-    \end{center}
-
-    \pause
-    
-    \begin{center}
-        \includegraphics[width=0.9\textwidth]{7_figs/Пэйофф хэджирующего портфеля.png}
-    \end{center}
-    
+    \end{itemize}    
 \end{frame}
 
 \end{document}

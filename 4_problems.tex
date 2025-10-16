@@ -1,0 +1,83 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+\usepackage{amsmath}
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill Семинар 4\\
+\today
+
+\hrulefill
+
+\begin{problem}
+    Пусть $C(t, S; T, K)$ -- цена колл-опциона в модели БШ:
+    $$C(t, S; T, K) = S \cdot N(d_1) - e^{-r(T-t)} K \cdot N(d_2)$$
+    где 
+    \begin{align*}
+        &d_1 =\dfrac{\log(S / K) + r(T-t)}{\sigma{\sqrt{T-t}}} + \dfrac{\sigma{\sqrt{T-t}}}{2}\\
+        &d_2 = d_1 - \sigma \sqrt{T-t}
+    \end{align*}
+    Найти греки:
+    \begin{align*}
+        &\Delta = \dfrac{\partial C}{\partial S} \\
+        &\Gamma = \dfrac{\partial^2 C}{\partial S^2} \\
+        &\nu = \dfrac{\partial C}{\partial \sigma} \\
+        &\Theta = \dfrac{\partial C}{\partial t}
+    \end{align*}
+\end{problem}
+
+\begin{problem}
+    Рассмотрим контракт с пэйоффом:
+    $$
+        \Phi(S_T) = C(T, S_T; T', S_T)
+    $$т.е. контракт, который в момент $T$ выплачивает стоимость ATM опциона с датой погашения $T'$.
+    Найти его стоимость $p(t, \Phi)$.
+\end{problem}
+
+\begin{problem}
+    Найти стоимость контракта в $t$ с пэйоффом в $T'$:
+    $$
+        \Phi(S_T') = (S_{T'} - S_T)^+
+    $$где $t < T < T'$.
+\end{problem}
+
+\begin{problem}
+    Пусть $h$ -- дельта-нейтральный портфель. Найти PnL портфеля $\Delta V_t^h$ при малых $\Delta t$. Есть ли тут арбитраж?
+\end{problem}
+
+\begin{problem}
+    Найти стоимость опциона с пэйоффом:
+    $$
+        \Phi(S_T) = |S_T - K|^+
+    $$При каком страйке $K$ $\delta$ такого опциона равна нулю?
+\end{problem}
+
+\begin{problem}
+    Реплицировать с помощью ванильных опционов пэйофф:
+    $$
+        \Phi(S_T) = \begin{cases} 
+            &K_1 - S_T, S_T < K_1 \\
+            &0, K_1 \leq S_T \leq K_2 \\
+            &S_T - K_2, K_2 < S_T
+         \end{cases}
+    $$
+\end{problem}
+
+\begin{problem}
+    Реплицировать с помощью ванильных опционов пэйофф:
+    $$
+        \Phi(S_T) = \begin{cases} 
+            &1, S_T \geq K \\
+            &0, S_T < K
+         \end{cases}
+    $$
+\end{problem}
+
+\begin{problem}
+    Реплицировать с помощью ванильных опционов пэйофф:
+    $$
+        \Phi(S_T) = g(S_T)
+    $$где $g(x)$ -- гладкая финитная функция. Найти стоимость дериватива с таким пэйоффом.
+\end{problem}
+
+\end{document}

@@ -1,0 +1,166 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill Семинар 3\\
+\today
+
+\hrulefill
+\begin{problem}
+    Пусть
+    $$\begin{cases}
+        dX_t = X_t (\mu_x dt + \sigma_x dB_t), \\
+        dY_t = Y_t (\mu_y dt + \sigma_y dZ_t),
+    \end{cases}$$
+    где $dB_t\cdot dZ_t = \rho dt$ -- броуновские движения с корреляций $\rho$, $\mu_x, \mu_y, \sigma_x, \sigma_y$ -- константы.
+    \\ Выписать уравнения для процессов $X_t^{\alpha}, X_t \cdot Y_t, \dfrac{X_t}{Y_t}, \alpha \in \R$.
+\end{problem}
+Смысл задачи в том, чтобы показать, что GBM замкнуто относительно операций возведения в степень и произведения. Решение СДУ:
+\begin{align*}
+    &X_t = X_0 \exp((\mu_x - 0.5 \sigma_x^2) t + \sigma_x B_t) \\
+    &Y_t = Y_0 \exp((\mu_y - 0.5 \sigma_y^2) t + \sigma_y Z_t)
+\end{align*}
+\begin{enumerate}
+    \item Введём $U_t = X_t^{\alpha}$
+    $$U_t = X_t^{\alpha} = X_0^{\alpha} \exp(\alpha (\mu_x - 0.5 \sigma_x^2) t + \alpha \sigma_x B_t)
+    = U_0 \exp((\mu_u - 0.5 \sigma_u^2) t + \sigma_u B_t)$$
+    Сравнивая выражения слева и справа видим, что:
+    \begin{align*}
+    &U_0 = X_0^{\alpha}\\
+    &\sigma_u = \alpha \sigma_x\\
+    &\mu_u - 0.5 \sigma_u^2 = \alpha (\mu_x - 0.5 \sigma_x^2) \to \mu_u = \alpha \mu_x + 0.5 \sigma_x^2 \left( \alpha^2 - \alpha \right) 
+\end{align*}
+    В терминах СДУ:
+    $$
+        dU_t = U_t \left( \mu_u dt + \sigma_u dB_t \right)
+    $$
+\item 
+$$U_t = X_t \cdot Y_t
+ = X_0 Y_0 \exp \left( (\mu_x + \mu_y - 0.5 \sigma_x^2 - 0.5 \sigma_y^2) + \sigma_x B_t + \sigma_y Z_t\right)
+$$Подберём $\sigma_u$ так, чтобы процесс:
+$$
+    W_t = \dfrac{\sigma_x B_t + \sigma_y Z_t}{\sigma_u}
+$$был броуновским движением. Для этого достаточно $\mathrm{Var} W_t = t$:
+$$
+    \mathrm{Var} W_t = \dfrac{\sigma_x^2 t + \sigma_y^2 t + 2\rho \sigma_x \sigma_y t}{\sigma^2_u} = t
+$$Откуда:
+$$
+    \sigma_u = \sqrt{\sigma_x^2 + \sigma_y^2 + 2\rho \sigma_x \sigma_y}
+$$
+$$
+    U_t = U_0 \exp((\mu_u - 0.5 \sigma_u^2) t + \sigma_u W_t)
+$$где
+\begin{align*}
+    &U_0 = X_0 \cdot Y_0 \\
+    &\sigma_u = \sqrt{\sigma_x^2 + \sigma_y^2 + 2\rho \sigma_x \sigma_y} \\
+    &\sigma_u W_t = \sigma_x B_t + \sigma_y Z_t \\
+    &\mu_u = \mu_x + \mu_y + \rho \sigma_x \sigma_y 
+\end{align*}
+\item $U_t = X_t Y_t^{-1}$ -- аналогично.
+\end{enumerate}
+
+\begin{problem}[Броуновский мост]
+    Пусть $X_t$ удовлетворяет СДУ:    
+    $$
+        dX_t = a(t) X_t dt + dB_t
+    $$ где $a(t)$ -- детерменированная функция, $B_t$ -- броуновское движение, $X_0 = 0$.
+    Найдите $a(t)$ такое, что процесс $X_t$, определённый по формуле выше, является броуновским мостом.
+    \\ Броуновский мост это гауссовский процесс $X_t$: $\E X_t = 0, \; \mathrm{cov}(X_t, X_s) = s\cdot (1 - t), \; s \leq t$
+\end{problem}\texit{Решение}. Пусть $\beta_t = \E X_t$, тогда:
+$$
+    d\beta_t = a(t) \beta_t dt,
+$$ и $\beta_0=0$, откуда $\beta_t = 0$.
+Пусть $Y_t = X_t^2$, тогда:
+$$
+    dY_t = 2X_t dX_t + (dX_t)^2 = 2 a(t) X_t^2 dt + dt + 2X_t dB_t.
+$$Пусть $\gamma_t = \E Y_t$, тогда:
+$$
+    \dfrac{d\gamma_t}{dt} = \left( 2 a(t) \gamma_t + 1\right).
+$$Отсюда:
+$$
+    a(t) = \dfrac{1}{2\gamma_t} \left( \dfrac{d\gamma_t}{dt} - 1 \right).
+$$
+Мы хотим, чтобы $\gamma_t = t\cdot (1-t)$. Т.к. $\dfrac{d\gamma_t}{dt} = 1 - 2t$, то
+$$
+a(t) = \dfrac{-2t}{2 t (1 - t)} = -\dfrac{1}{1-t}.
+$$
+Непосредственной проверкой можно убедиться, что $\mathrm{cov}(X_t, X_s) = s \cdot (1-t)$.
+Видно, что при $t \to 1$ $a(t)\to -\infty$, т.е. скорость возврата к среднему стремится к бесконечности, что и загоняет $X_t$ в ноль.
+
+\begin{problem}[Формула Феймана-Каца]
+    Пусть $f$ удовлетворяет УРЧП
+    \begin{align*}
+        &f_t + \mu(t, x) f_x + \dfrac{\sigma^2(t, x)}{2} f_{xx} = rf, 0 \leq t < T \\
+        &f(T, x) = \Phi(x)
+    \end{align*}
+    где $r \in \R$. Докажите, что:
+    $$
+        f(t, x) = \E \left[ e^{-r(T-t)} \Phi(X_T) | X_t = x\right]
+    $$
+\end{problem}
+\textit{Решение}. Замена неизвестной функции $f(t, x) = e^{-r(T-t)} g(t, x)$. Тогда:
+$$
+    f_t = e^{-r(T-t)} g_t + r f
+$$Непосредственной подстановкой можно убедиться, что $g(t, x)$ удовлетворяет уравнению:
+\begin{align*}
+    &g_t + \mu(t, x) g_x + \dfrac{\sigma^2(t, x)}{2} g_{xx} = 0, 0 \leq t < T \\
+    &g(T, x) = \Phi(x)
+\end{align*} и по классической формуле Феймана-Каца: 
+$$
+    g(t, x) = \E \left[ \Phi(X_T) | X_t = x\right]
+$$
+
+\begin{problem}[Процесс Орнштейна-Уленбека]
+    Пусть $X_t$ удовлетворяет СДУ:
+    \begin{align*}
+        &dX_t = \alpha (\theta - X_t) dt + \sigma dW_t \\
+        &X_0 = x_0
+    \end{align*}где $\alpha > 0$.
+    Выпишите прямое уравнение Колмогорова на плотность процесса $X_t$. Найдите стационарное решение (плотность, для которой $\dfrac{\partial p(t, x)}{\partial t} = 0$).
+\end{problem}
+\textit{Решение} Уравнение Колмогорова:
+$$
+    \dfrac{\partial p}{\partial t} = \alpha \dfrac{\partial}{\partial x} \left( (x-\theta) \cdot p \right) + \dfrac{\sigma^2}{2} \dfrac{\partial^2 p}{\partial x^2}
+$$
+Из условия $\dfrac{\partial p}{\partial t} = 0$ получим:
+$$
+    \alpha \dfrac{\partial}{\partial x} \left( (x-\theta) \cdot p \right) + \dfrac{\sigma^2}{2} \dfrac{\partial^2 p}{\partial x^2} = 0
+$$Интегрируем левую и правую часть, получим:
+$$
+    \alpha (x - \theta) \cdot p + \dfrac{\sigma^2}{2} p_x = C
+$$Чтобы плотность интегрировалась в единицу, нужно $C=0$, откуда:
+$$
+    \dfrac{p_x}{p} = -\alpha \dfrac{2 (x - \theta)}{\sigma^2}
+$$Интегрируем левую и правую часть, получим:
+$$
+    p(x) = C \cdot \exp(-\frac{\alpha (x-\theta)^2}{\sigma^2})
+$$ $C$ находится из нормировки. Видно, что это нормальная плотность с параметрами 
+$\mathcal{N}\left(\theta, \dfrac{\sigma^2}{2\alpha}\right)$
+
+\begin{problem}
+    Пусть $u(x, y)$ удовлетворяет уравнению Лапласа в области $x^2+y^2 \leq 1$:
+    $$
+        \dfrac{\partial^2 u}{\partial x^2} + \dfrac{\partial^2 u}{\partial y^2} = 0 
+    $$и граничным условиям $u(x, y) = f(x, y)$ при $x^2+y^2=1$. 
+    \\ Доказать, что:
+    $$
+        u(x, y) = \E \left[f(X_{\tau}, Y_{\tau}) | (X_0 = x, Y_0 = y)\right]
+    $$где $(X_t, Y_t)$ -- двумерное броуновское движение, стартующее из точки $(x, y)$, момент остановки $\tau$ определяется как:
+    $$
+        \tau = \inf_{t} \{ X_t^2 + Y_t^2 \geq 1 \}
+    $$
+\end{problem}
+\textit{Решение}. Пусть $U_t = u(X_t, Y_t)$. По формуле Ито:
+$$
+    U_t = \int_0^t dU_s = u(x, y) + \int_0^t \Delta u(X_s, Y_s) ds + \int_0^t \left( 
+        \dfrac{\partial u}{\partial x}(X_t, Y_t) dX_t + \dfrac{\partial u}{\partial y}(X_t, Y_t) dY_t \right)
+$$Так как $\Delta u(x, y) = 0$, то первый интеграл занулится. Отсюда $U_t$ -- мартингал (как интеграл Ито по броуновскому движению), тогда по теореме Дуба:
+$$
+    \E U_{\tau} = U_0 = u(x, y)
+$$С другой стороны при $t=\tau$ точка $(X_{\tau}, Y_{\tau})$ лежит на круге, поэтому $U_{\tau} = u(X_{\tau}, Y_{\tau}) = f(X_{\tau}, Y_{\tau})$, откуда:
+$$
+    u(x, y) = \E f(X_{\tau}, Y_{\tau})
+$$ч.т.д.
+\end{document}

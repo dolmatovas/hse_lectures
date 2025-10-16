@@ -1,0 +1,51 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+\usepackage{amsmath}
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill Семинар 4\\
+\today
+
+\hrulefill
+
+\begin{problem}
+    Пусть $(\Omega, \mathcal{F}, \mathbb{P})$ -- вероятностное пространство, $W_t$ -- броуновское движение. Показать, что для любой эквивалентной меры 
+    $\mathbb{Q} \sim \mathbb{P}$ выполнено:
+    $$
+        [W]_t = t
+    $$ $\mathbb{Q}$-почти наверное.
+\end{problem}
+
+\begin{problem}
+    Найти стоимость дериватива $\Phi(S_T) = S_T \mathbb{I}(S_T \geq K)$ с помощью замены меры при $N_t = S_t$.
+\end{problem}
+
+\begin{problem}
+    Рассмотрим рынок с тремя активами:
+    \begin{align*}
+        &dB_t = 0\\
+        &dS_t^1 = S_t^1 \sigma_1 dW_t^1 \\
+        &dS_t^2 = S_t^2 \sigma_2 dW_t^2
+    \end{align*}где $W_t^1, W_t^2$ -- два броуновских движения с корреляцией $\rho$. Найти стоимость обменного опциона с пэйоффом:
+    $$
+        \Phi(S_T^1, S_T^2) = (S_T^1 - S_T^2)^+
+    $$
+\end{problem}
+
+\begin{problem}
+    Реплицировать с помощью ванильных опционов пэйофф:
+    $$
+        \Phi(S_T) = g(S_T)
+    $$где $g(x)$ -- гладкая финитная функция. Найти стоимость дериватива с таким пэйоффом.
+\end{problem}
+
+\begin{problem}[Variance swap]
+    Пусть $dX_t = X_t \sigma_t dB_t$ -- процесс Ито, $\sigma_t$ -- согласованный процесс.
+    \\ Покажите, что:
+    $$
+        \int_0^T \sigma^2_t dt = -2\ln \dfrac{X_T}{X_0} + \int_0^T \dfrac{2}{X_t}dX_t
+    $$
+\end{problem}
+
+\end{document}

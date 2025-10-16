@@ -1,0 +1,45 @@
+\documentclass[12pt]{article}
+
+\usepackage{preamble_problemset}
+\usepackage{amsmath}
+
+\begin{document}
+\noindent Количественные финансы, осень 2025\hfill Домашнее задание 4\\
+\today
+
+\hrulefill
+\begin{problem}
+    Найти стоимость опциона с пэйоффом:
+    $$
+        \Phi(S_T) = |S_T - K|^+
+    $$в модели Блэка-Шоулза. При каком страйке $K$ $\Delta$ такого опциона равна нулю?
+\end{problem}
+
+\begin{problem}
+    Реплицировать с помощью колл и пут опционов пэйофф:
+    $$
+        \Phi(S_T) = \begin{cases} 
+            &0, S_T < A \\
+            &S_T - A, A \leq S_T < B \\
+            &C - S_T, B \leq S_T < C \\
+            &0, C \leq S_T
+         \end{cases}
+    $$где $A<C \in \R^+$, $B = \dfrac{A+C}{2}$
+\end{problem}
+
+\begin{problem}
+    Реплицировать с помощью колл и пут опционов пэйофф:
+    $$
+        \Phi(S_T) = \begin{cases} 
+            &1, S_T \geq K \\
+            &0, S_T < K
+         \end{cases}
+    $$Найти его стоимость в модели Блэка-Шоулза.
+\end{problem}
+
+\begin{problem} 
+    Пусть $G_T = \exp\left( \frac{1}{T} \int_0^T \ln(S_u) du\right)$ -- геометрическое среднее цены.
+    Найти стоимость опциона $p(0, X)$ который выплачивает сумму денег 
+    $X = (G_T - K)^+$ в момент времени $T$.
+\end{problem}
+\end{document}
