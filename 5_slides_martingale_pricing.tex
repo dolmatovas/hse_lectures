@@ -24,9 +24,13 @@
 
 \begin{frame}{План лекции}
     \begin{itemize}
-        \item Эквивалентные меры.
-        \item Производная Радона-Никодима. Формула замены Меры.
-        \item Теорема Гирсанова: замена дрифта у броуновского движения.
+        \item Элементы теории меры:
+        \begin{itemize}
+            \item Абсолютная непрерывность и эквивалентность мер.
+            \item Производная Радона-Никодима.
+            \item Теорема Гирсанова: замена дрифта у броуновского движения.
+        \end{itemize}
+        \item Модель Блэка-Шоулза с точки зрения мартингального подхода.
         \item Фундаментальные теоремы финансов.
         \item Полнота и безарбитражность многомерной модели Блэка-Шоулза. 
     \end{itemize}
@@ -84,7 +88,7 @@
         $$
         Тогда
         $$
-            \Q \ll \PP \Leftrightarrow \mathrm{supp}(p) \subseteq\mathrm{supp}(q)
+            \Q \ll \PP \Leftrightarrow \mathrm{supp}(q) \subseteq\mathrm{supp}(p)
         $$
         \end{itemize}
 \end{frame}
@@ -231,10 +235,62 @@
         Пусть $\theta_t$ -- согласованный процесс, $\int_0^T \theta_s^2 ds < \infty$. Положим
         $$
             \Lambda = \exp(\int_0^T \theta_s dW_s - 0.5 \int_0^T \theta_s^2 ds)
-        $$Определим новую меру $\Q = \Lambda \PP$, тогда процесс:
+        $$Определим новую меру $d\Q = \Lambda d\PP$, тогда процесс:
         $$
             Z_t = W_t - \int_0^t \theta_s ds
         $$является $\Q$-броуновским движением при $t \leq T$.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Модель Блэка-Шоулза}
+    \begin{itemize}
+        \item $(\Omega, \mathcal{F}, \mathbb{P})$ -- вероятностное пространство
+        \item $W_t$ -- броуновское движение, 
+    $(\mathcal{F}_t)_{t\geq 0}$ -- фильтрация, порождённая $W_t$.
+        \item Два торгуемых актива, банковский счёт:
+        \begin{align*}
+            &dB_t = r B_t dt \\
+            &B_0 = 1
+        \end{align*}
+        \item Акция:
+    \begin{align*}
+        &dS_t = S_t \mu dt + S_t \sigma dW_t \\
+        &S_t = S_0 \exp\left( \left(\mu - 0.5 \sigma^2 \right) t + \sigma W_t \right)
+    \end{align*}
+    \item Рынком будем называть вероятностное пространство + фильтрация + динамика торгуемых активов + класс допустимых портфелей.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Уравнение Блэка-Шоулза}
+    \begin{block}{Теорема}
+        Пусть $\Phi(S_T)$ -- простой дериватив, тогда его цена $p(t, \Phi) = F(t, S_t)$, где $F(t, S)$ является решением УРЧП:
+        \begin{align*}
+            &\dfrac{\partial F}{\partial t} + r S \dfrac{\partial F}{\partial S} + \sigma^2 S^2 \dfrac{1}{2}\dfrac{\partial^2 F}{\partial S^2} = r F ,\\
+            &F(T, S) = \Phi(S).
+        \end{align*}
+    \end{block}
+    Простой дериватив является реплицируемым, веса реплицирующего портфеля задаются формулами:
+    \begin{align*}
+        &x_t = \dfrac{\partial F(t, S_t)}{\partial S},\\
+        &B_t y_t = F(t, S_t) - \dfrac{\partial F(t, S_t)}{\partial S} S_t.
+    \end{align*}
+\end{frame}
+
+\begin{frame}{Формула Феймана-Каца}
+    \begin{block}{Теорема}
+        Пусть функция $F(t, S)$ удовлетворяет УРЧП:
+        \begin{align*}
+            &\dfrac{\partial F}{\partial t} + r S \dfrac{\partial F}{\partial S} + \sigma^2 S^2 \dfrac{1}{2}\dfrac{\partial^2 F}{\partial S^2} = r F ,\\
+            &F(T, S) = \Phi(S).
+        \end{align*}
+        Тогда решение может быть выраженно через условное мат. ожидание:
+        $$
+            F(t, S) = \mathbb{E}^Q \left[ e^{-r(T-t)} \Phi(S_T) | S_t = S\right]
+        $$где $S_u$ подчиняется геометрическому броуновскому движению:
+        \begin{align*}
+            &dS_u = r S_u du + \sigma S_u dW_u^Q, u > t \\
+            &S_t = S
+        \end{align*}
     \end{block}
 \end{frame}
 
@@ -252,8 +308,8 @@
     \pause
     \textit{Доказательство}. 
     \begin{align*}
-        &d \widetilde S_t = \sigma \widetilde S_t dW_t \\
-        &d \widetilde V_t = x_t d \widetilde S_t = \sigma x_t \widetilde S_t dW_t 
+        &d \widetilde S_t = \sigma \widetilde S_t dW_t^Q \\
+        &d \widetilde V_t = x_t d \widetilde S_t = \sigma x_t \widetilde S_t dW_t^Q 
     \end{align*}
 \end{frame}
 
@@ -393,7 +449,7 @@
     \begin{block}{Первая фундаментальная теорема}
         Рынок безарбитражен $\Leftrightarrow$ существует риск-нейтральная мера.
     \end{block}
-
+    \pause 
     $\Rightarrow$ Для случая $r=0$.
     \begin{itemize}
         \item От противного. Пусть система $\sigma \vec{\lambda} = \vec{\mu}$ не имеет решения.
@@ -411,9 +467,30 @@
 \end{frame}
 
 \begin{frame}{Вторая фундаментальная теорема}
-    \begin{block}{Вторая фундаментальная теорема}
+    \only<1>{\begin{block}{Вторая фундаментальная теорема}
         Рынок безарбитражный и полный $\Leftrightarrow$ риск-нейтральная мера единственна.
-    \end{block}
+    \end{block}}
+    \only<2>{
+    \begin{itemize}
+        \item Пусть $X \in \F_T$ -- произвольное платежное обязательство.
+        \item По теореме о представлении:
+        $$
+            X = \int_0^T \sum_{j=1}^K g_t^j dW_t^j = \int_0^T \langle \vec{g}_t, d\vec{W}_t \rangle
+        $$
+        \item Класс реплицируемых пэйоффов:
+        $$
+            V_T = \int_0^T \sum_{i=1}^N h_t^i dS_t^i
+            = \int_0^T \langle \vec{h}_t \circ \vec{S}_t, \hat{\sigma} dW_t \rangle
+            = \int_0^T \langle \hat{\sigma}^{\top} (\vec{h}_t \circ \vec{S}_t), d\vec{W}_t \rangle
+        $$
+        \item Для полноты нужно, чтобы система имела решение $\forall \vec{g}_t$:
+        $$
+            \hat{\sigma}^{\top} (\vec{h}_t \circ \vec{S}_t) = \vec{g}_t
+        $$Отсюда
+        $$
+            \mathrm{Im}(\hat{\sigma}^{\top}) = \R^K \Leftrightarrow \mathrm{Ker}(\hat{\sigma}) = \emptyset
+        $$
+    \end{itemize}}
 \end{frame}
 
 % \begin{frame}{Фундаментальные теоремы}
