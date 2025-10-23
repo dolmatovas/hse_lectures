@@ -1,26 +1,12 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usepackage{preamble_beamer}
+
+\newcommand*{\QEDB}{\null\nobreak\hfill\ensuremath{\square}}
 
 \newtheorem*{question*}{Вопрос}
 \newtheorem*{claim*}{Утверждение}
 
-\newcommand{\vanilla}{\ensuremath{\mathrm{vanilla}}}
-\newcommand{\option}{\ensuremath{\mathrm{option}}}
-\newcommand{\payoff}{\ensuremath{\mathrm{payoff}}}
-\newcommand{\strike}{\ensuremath{\mathrm{strike}}}
-\newcommand{\cashflow}{\ensuremath{\mathrm{cashflow}}}
-\newcommand{\fee}{\ensuremath{\mathrm{fee}}}
-\newcommand{\exposure}{\ensuremath{\mathrm{exposure}}}
-% \newcommand{\condexpec}[1]{\mathbb{E}\left(#1\;\big|\;#2\right)}
-\newcommand{\eps}{\varepsilon}  % нормальная буква эпсилон
-\newcommand{\red}[1]{\textcolor{red}{#1}}
-\newcommand{\blue}[1]{\textcolor{blue}{#1}}
-\newcommand{\green}[1]{\textcolor{green}{#1}}
-\newcommand{\orange}[1]{\textcolor{orange}{#1}}
-
-\newcommand*{\QEDB}{\null\nobreak\hfill\ensuremath{\square}}
-
-\title[Модели стохастической волатильности]{Лекция 10. Локальная волатильность} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Модели стохастической волатильности]{Лекция 6. Локальная волатильность} % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \begin{document}
 
@@ -49,7 +35,7 @@
     \end{itemize}
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth]{10_figs/Meta Log returns plot.jpg}
+    \includegraphics[width=1\linewidth]{6_figs/Meta Log returns plot.jpg}
     \label{fig:enter-label}
 \end{figure}
 \end{frame}
@@ -62,11 +48,8 @@
             $$
         \item Для нормального $\kappa = 0$, для историчесских данных $\hat{\kappa} \approx 23$. 
     \end{itemize}
-    \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{10_figs/Meta Log returns hist.jpg}
-    \label{fig:enter-label}
-\end{figure}
+    \makebox[\textwidth]{\includegraphics[width=0.5\textwidth]{6_figs/Meta Log returns hist.jpg}}
 \end{frame}
 
 \begin{frame}{Исторические доходности}
@@ -81,11 +64,9 @@
             \mathrm{cov}(|L_t|, |L_{t+s}|) \neq 0
         $$ 
     \end{itemize}
-    \begin{figure}
+
     \centering
-    \includegraphics[width=0.65\linewidth]{10_figs/autocorrelation.jpg}
-    \label{fig:enter-label}
-\end{figure}
+    \makebox[\textwidth]{\includegraphics[width=0.4\textwidth]{6_figs/autocorrelation.jpg}}
 \end{frame}
 
 \begin{frame}{Другие стилизованные факты}
@@ -100,27 +81,27 @@
     \begin{itemize}
         \item Формула Блэка-Шоулза:
         $$
-            V_{BS}(S, T, K, r, \sigma) = S \Phi(d_1) - e^{-rT} K \Phi(d_2)
+            C_{BS}(S; T, K, r, \sigma) = S \Phi(d_1) - e^{-rT} K \Phi(d_2)
         $$
-        \item Знаем рыночные цены $V_{market}$, можем решить уравнение относительно $\sigma_{implied}$:
+        \item Знаем рыночные цены $C^{M}(T, K)$, можем решить уравнение относительно $\sigma_{iv}$:
         $$
-            V_{BS}(S, T, K, r, \sigma_{implied}) = V_{market}
+            C_{BS}(S, T, K, r, \sigma_{iv}) = C^{M}(T, K)   
         $$
-        \item В модели Блэка-Шоулза $\sigma_{implied} = \sigma$ -- постоянная. На практике $\sigma_{implied} = \sigma_{implied}(T, K)$.
+        \item В модели Блэка-Шоулза $\sigma_{iv} = \sigma$ -- постоянная. На практике $\sigma_{iv} = \sigma_{iv}(T, K)$.
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Вменяемая волатильность}
     \begin{figure}
     \centering
-    \includegraphics[width=1.05\linewidth]{10_figs/vol smile btc.png}
+    \includegraphics[width=0.8\linewidth]{6_figs/vol smile btc.png}
     \label{fig:enter-label}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Вменяемая волатильность}
     \begin{itemize}
-        \item Как считать $\sigma_{implied}$? Метод Ньютона:
+        \item Как считать $\sigma_{iv}$? Метод Ньютона:
         \only<1>{
             \begin{align*}
                 &0 = f(\sigma^*) \approx f(\sigma) + (\sigma^* - \sigma) f'(\sigma) \\
@@ -132,12 +113,12 @@
             {\sigma}_{k+1} = {\sigma}_k - \dfrac{f(\sigma_{k})}{f'(\sigma_k)}
         $$}
         \onslide<2->{\item Здесь 
-                $f(\sigma) = V_{BS}(\sigma) - V_{market},  f'(\sigma) = \dfrac{\partial V_{BS}(\sigma)}{\partial \sigma}$}
+                $f(\sigma) = C_{BS}(\sigma) - C_{market},  f'(\sigma) = \dfrac{\partial C_{BS}(\sigma)}{\partial \sigma}$}
     \end{itemize}    
 \onslide<2->{
     \begin{figure}
         \centering
-        \includegraphics[width=0.65\linewidth]{10_figs/newton.jpg}
+        \includegraphics[width=0.43\linewidth]{6_figs/newton.jpg}
         \label{fig:enter-label}
     \end{figure}
 }
@@ -164,97 +145,126 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Уравнение Фоккера-Планка}
-    Пусть $dX_t = \mu(t, X_t) dt + \Sigma(t, X_t) dW_t$
-    
-    \onslide<1->{\begin{block}{Теорема}
-        Пусть $h(t, x) = \mathbb{E} \left[ h(T, X_T) | X_t = x \right]$. Тогда:
+\begin{frame}{Формула Бридена-Литценбергера}
+    \begin{block}{Теорема}
+        Пусть $C(T, K)$ -- цены колл-опционов с датой погашения $T$ и страйком $K$. Тогда риск-нейтральная плотность с.в. $S_T$ задатся формулой:
         $$
-              \dfrac{\partial h}{\partial t} + \mu(t, x)\dfrac{\partial h}{\partial x}  + 0.5 \Sigma^2(t, x) \dfrac{\partial^2  h}{\partial x^2} \overset{def}{=} \dfrac{\partial h}{\partial t} + A[h](t, x) = 0    
-        $$
-    \end{block}}
-    
-    \onslide<2->{\begin{block}{Теорема}
-        Пусть $p(t, x)$ -- плотность процесса $X_t$. Тогда она удовлетворяет уравнению Фоккера-Планка:
-        $$
-            \dfrac{\partial p}{\partial t} = -\dfrac{\partial}{\partial x} \left[ \mu(t, x) p(t, x) \right] + 0.5 \dfrac{\partial^2}{\partial x^2} \left[ \Sigma^2(t, x) p(t, x) \right] \overset{def}{=} A^*[p](t, x) 
-        $$
-    \end{block}}
-\end{frame}
-
-\begin{frame}{Уравнение Фоккера-Планка}
-    \begin{itemize}
-        \onslide<1->{\item Пусть $h(t, X)$ -- бесконечно гладкая финитная функция:
-        \begin{align*}
-            &0=h(T, X_T) = h(0, X_0) + \int_0^T dh(t, X_t) = [\text{Формула Ито}]\\
-            &= \int_0^T \left( \dfrac{\partial h}{\partial t} + A[h](t, X_t)\right) dt + \int_0^T \dfrac{\partial h}{\partial X_t} \Sigma(t, X_t) dW_t
-        \end{align*}
-        где $A[h](t, x) = \mu(t, x) \dfrac{\partial h}{\partial x} + 0.5 \Sigma^2(t, x) \dfrac{\partial^2 h}{\partial x^2}$}
-
-        \onslide<2->{\item Берём слева и справа мат. ожидание:
-        \begin{align*}
-            &\mathbb{E} \int_0^T dt \left( \dfrac{\partial h}{\partial t} + A[h](t, X_t)\right) dt = \int_0^T dt \mathbb{E} \left( \dfrac{\partial h}{\partial t} + A[h](t, X_t)\right) dt = \\
-            &= \int_0^T dt \int_{\mathbb{R}} dx p(t, x)  \left( \dfrac{\partial h}{\partial t} + A[h](t, x)\right) = 0
-        \end{align*}}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Уравнение Фоккера-Планка}
-    \begin{itemize}
-        \item Берём интеграл по частям:
-        \onslide<1->{$$
-            \int_0^T p(t, x) \dfrac{\partial h}{\partial t} dt = p(t, x) h(t, x)|_{0}^T - \int_0^T h(t, x) \dfrac{\partial p}{\partial t} dt
-        $$}
-        \onslide<2->{$$
-            \int_{\mathbb{R}} p(t, x) \mu(t, x) \dfrac{\partial h}{\partial x}dx = -\int_{\mathbb{R}} h(t, x) \dfrac{\partial}{\partial x} \left[ \mu(t, x) p(t, x) \right] dx
-        $$}
-        \onslide<3->{$$
-            \int_{\mathbb{R}} p(t, x) \Sigma^2(t, x) \dfrac{\partial^2 h}{\partial x^2}dx = \int_{\mathbb{R}} h(t, x) \dfrac{\partial^2}{\partial x^2} \left[ \Sigma^2(t, x) p(t, x) \right] dx
-        $$}
-        \onslide<4->{Итого:
-        $$
-            0 = \int_0^T dt \int_{\mathbb{R}} dx h(t, x) \left( -\dfrac{\partial p}{\partial t} + A^*[p](t, x)\right) 
-        $$}
-        \onslide<5->{\item В силу произвольности функции $h(t, x)$:
-        $$
-            \dfrac{\partial p}{\partial t} = A^*[p](t, x) \overset{def}{=} -\dfrac{\partial}{\partial x} \left[ \mu(t, x) p(t, x) \right] + 0.5 \dfrac{\partial^2}{\partial x^2} \left[ \Sigma^2(t, x) p(t, x) \right]
-        $$}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Формула Дюпира}
-    \begin{block}{Формула Дюпира}
-        Пусть $\dfrac{dS_t}{S_t} = r dt + \sigma(t, S_t) dW_t$. Тогда цены опционов $C(T, K) = e^{-rT}\mathbb{E} (S_T - K)^+$ удовлетворяют уравнению:
-        $$
-            \dfrac{\partial C}{\partial T} + rK\dfrac{\partial C}{\partial K} = \dfrac{1}{2} K^2 \sigma^2(T, K) \dfrac{\partial^2 C}{\partial K^2} 
+            p(T, K) = e^{rT} \dfrac{\partial^2 C(T, K)}{\partial K^2 } 
         $$
     \end{block}
-
-    И обратно, если мы в качестве локальной волатильности выберем функцию:
+    \textit{Доказательство}
     $$
-        \sigma_{loc}^2(t, S) =2 \dfrac{C_T + rKC_K}{K^2 C_{KK} } |_{T=t, K=S}
-    $$то попадём в поверхность цен опционов $C(T, K)$. 
+        C(T, K) = \E^Q e^{-rT} (S_T - K)^+ = 
+        e^{-rT} \int_{K}^{\infty}(x-K) p(T, K) dx
+    $$
+    
+    $$
+        \dfrac{\partial C(T, K)}{\partial K }
+        = e^{-rT} \dfrac{\partial}{\partial K} \left( \int_{K}^{\infty}(x-K) p(T, K) dx \right)
+        = -e^{-rT} \int_{K}^{\infty}p(T, K) dx
+    $$
+
+    $$
+    \dfrac{\partial^2 C(T, K)}{\partial K^2 }
+    = e^{-rT} p(T, K)
+    $$
 \end{frame}
 
+\begin{frame}{Прямое уравнение Колмогорова}
+    \begin{itemize}
+        \item Риск-нейтральная динамика процесса: 
+        $$
+            dS_t/S_t = r dt + \sigma(t, S_t) dW_t
+        $$
+
+        \item Инфинитизимальный оператор:
+        $$
+            [Af](t, S) = r S \dfrac{\partial f}{\partial S}
+            + \dfrac{1}{2}\sigma^2(t, S_t)S^2 \dfrac{\partial^2 f}{\partial S^2}
+        $$
+
+        \item Сопряжённый оператор:
+        $$
+            [A^*f](t, S) = -r \dfrac{\partial (S f)}{\partial S}
+            + \dfrac{1}{2} \dfrac{\partial^2 (\sigma^2(t, S) S^2 f)}{\partial S^2}
+        $$
+
+        \item Прямое уравнение Колмогорова:
+        $$
+            \dfrac{\partial p}{\partial t} = [A^*f](t, S)
+            = -r \dfrac{\partial (S p)}{\partial S}
+            + \dfrac{1}{2} \dfrac{\partial^2 (\sigma^2(t, S) S^2 p)}{\partial S^2}
+        $$
+    \end{itemize}
+\end{frame}
 
 \begin{frame}{Формула Дюпира}
-    Док-во для случая $r=0$. 
-    \begin{itemize}
-    \onslide<1->{\item Пусть $p(t, x)$ -- плотность процесса $S_t$. 
-    \begin{align*}
-        &\dfrac{\partial C}{\partial T} = \int_{K}^{\infty} (x-K) \dfrac{\partial p(T, x)}{\partial T} dx = \text{[Фоккер-Планк]}\\
-        &= \int_K^{\infty} (x-K) A^*[p](T, x) dx = \int_K^{\infty} (x-K)  0.5 \dfrac{\partial^2}{\partial x^2} \left[ x^2 \sigma^2 p \right] dx
-    \end{align*}}
-    \onslide<2->{
-    \item Берём интеграл по частям:
-    \begin{align*}
-         &\int_K^{\infty} (x-K) \dfrac{\partial^2}{\partial x^2} \left[ x^2 \sigma^2 p \right] dx = -\int_K^{\infty} \dfrac{\partial}{\partial x} \left[ x^2 \sigma^2 p \right] dx  = \sigma^2 K^2 p
-    \end{align*}}
-    \onslide<3->{\item Из домашки $\dfrac{\partial^2 C}{\partial K^2} = p(T, K)$}
-    \onslide<4->{\item Итого:
+
+    \begin{block}{Формула Дюпира}
+        Пусть RN-динамика процесса $S_t$ задаётся моделью локальной волатильности:
         $$
-            \dfrac{\partial C}{\partial T} = \dfrac{1}{2} K^2 \sigma^2(T, K) \dfrac{\partial^2 C}{\partial K^2} 
+            dS_t / S_t = r dt + \sigma(t, S_t) dW_t
+        $$
+        Тогда поверхность цен колл-опционов $C(T, K)$ удовлетворяет уравнению: 
+        $$
+            \dfrac{\partial C}{\partial T} = \dfrac{1}{2} \sigma^2(T, K) K^2 
+            \dfrac{\partial^2 C}{\partial K^2} - r K \dfrac{\partial C}{\partial K}
+        $$
+        В частности, если $C^M(T, K)$ -- рыночная поверхность цен опционов, и
+        $$
+            \sigma^2_{Dup}(t, S) = \left.\dfrac{\frac{\partial C^M}{\partial T} + r K \frac{\partial C^M}{\partial K}}
+            {K^2 \frac{\partial^2 C^M}{\partial K^2}} \right\vert_{T=t, K=S}
+        $$то модель точно описывает рыночные цены.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Формула Дюпира: доказательство}
+    \begin{itemize}
+        \item Общая формула ценообразования:
+        $$
+            C(T, K) = \E^Q (S_T - K)^+ = \int_{K}^{\infty} (x-K) p(T, x) dx
+        $$
+        \item Вычислим производную по $T$:
+        \begin{align*}
+            &\dfrac{\partial C}{\partial T} =  
+            \int_{K}^{\infty} (x-K) \dfrac{\partial p(T, x)}{\partial T} dx = [\text{Уравнение Колмогорова}]\\ 
+            & =\dfrac{1}{2} \int_{K}^{\infty} (x-K) \dfrac{\partial^2 (x^2 \sigma(T, x) p(T, x))}{\partial x^2} dx = [\text{по частям}]\\
+            & =-\dfrac{1}{2} \int_{K}^{\infty} \dfrac{\partial (x^2 \sigma(T, x) p(T, x))}{\partial x} =\dfrac{1}{2} K^2 \sigma(T, K) p(T, K)
+        \end{align*}
+        \item По формуле Бридена-Литценбергера:
+        $$
+            p(T, K) = \dfrac{\partial^2 C(T, K)}{\partial K^2} 
+        $$\QEDB
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Связь с implied volatility}
+    \begin{itemize}
+        \only<1>{\item Log moneyness: 
+        $$
+            k = \ln(\frac{K}{S_0e^{rT}})
+        $$
+        \item Total variance:
+        $$
+            \omega(T, k) = T \sigma_{iv}^2(T, S_0e^{rT+k})
+        $$
+        \item Формула Блэка-Шоулза:
+        $$
+            C_{BS}(T, K) = S_0 \left( N\left(-\frac{k}{\sqrt{\omega}} + \dfrac{1}{2}\sqrt{\omega}\right)
+             - e^{k} N\left(-\frac{k}{\sqrt{\omega}} - \dfrac{1}{2}\sqrt{\omega}\right) \right)
         $$}
+        \only<1->{
+        \item Формула Дюпира:
+        $$
+            \sigma_{Dup}^2(T, K) = \dfrac{\frac{\partial \omega}{\partial T}}
+            {1 - \frac{k}{\omega} \frac{\partial \omega}{\partial k} + 
+            \frac{1}{4}(-\frac{1}{4} + \frac{1}{\omega} + \frac{k^2}{\omega^2}) (\frac{\partial \omega}{\partial k})^2 + 
+            \frac{1}{2} \frac{\partial^2 \omega}{\partial k^2}}
+        $$}
+        \only<2>{
+            \centering
+            \makebox[\textwidth]{\includegraphics[width=1\textwidth]{6_figs/local_vs_implied.jpg}}
+        }
     \end{itemize}
 \end{frame}
 
