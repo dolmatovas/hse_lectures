@@ -6,9 +6,13 @@
 \newtheorem*{question*}{Вопрос}
 \newtheorem*{claim*}{Утверждение}
 
-\title[Американский опцион]{Title} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Американские опцион]{Семинар 6. Американские опционы} % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \begin{document}
+
+\begin{frame}
+\titlepage 
+\end{frame}
 
 \begin{frame}{Контракты американского типа}
 
@@ -53,7 +57,7 @@
         \begin{align*}
             V_t^E &= \E\left[e^{-r(T-t)} (S_T - K)^+ | \F_t \right]
             \geq \left(\E\left[e^{-rT}(S_T - K)| \F_t \right]\right)^+ = \\
-            &= (S_t - e^{-r(T-t)}K)^+ > (S_0 - K)^+
+            &= (S_t - e^{-r(T-t)}K)^+ > (S_t - K)^+
         \end{align*}
         \item Отсюда $V_t^E \geq \Phi(t, S_t) \to V_t^A = V_t^E$
     \end{itemize}
@@ -112,10 +116,10 @@
         \item Исполняем опцион в первый момент, когда цена пробъёт уровень $L < s$.
         \item Найдем ожидаемую выплату для такой стратегии:
         $$
-            V_L(s) = \E e^{-r\tau}(K-S_{\tau})
-            = (K-L)\E e^{-r\tau}
-        $$Считаем, что $e^{-r\tau}(K-S_{\tau})=0$ при $\tau = \infty$ (выплаты не происходит).
-        \item Нужно найти преобразование Лапласа от $\tau_L, \E e^{-r\tau}$.
+            V_L(s) = \E e^{-r\tau_L}(K-S_{\tau_L})
+            = (K-L)\E e^{-r\tau_L}
+        $$Считаем, что $e^{-r\tau_L}(K-S_{\tau_L})=0$ при $\tau_L = \infty$ (выплаты не происходит).
+        \item Нужно найти преобразование Лапласа от $\tau_L, \E e^{-r\tau_L}$.
     \end{itemize}
 \end{frame}
 
@@ -178,6 +182,11 @@
         = \left.\dfrac{\partial v_{L^*}(s)}{\partial s} \right\vert_{L^*+0}=-1
     $$}
     \end{itemize}
+\end{frame}
+
+\begin{frame}{Perpetual american put: цены}
+    \centering
+    \makebox[\textwidth]{\includegraphics[width=1\textwidth]{6_figs/american_perpetual.jpg}}
 \end{frame}
 
 \end{document}

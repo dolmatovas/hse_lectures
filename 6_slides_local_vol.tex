@@ -14,6 +14,14 @@
 \titlepage 
 \end{frame}
 
+\begin{frame}{Рекап прошлой лекции}
+    \begin{itemize}
+        \item Элементы теории меры: производная Радона-Никодима, теорема Гирсанова
+        \item Модель Блэка-Шоулза с точки зрения мартингального подхода
+        \item Фундаметальные теоремы финансов
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Модель Блэка-Шоулза}
     Основные предположения:
     \begin{itemize}
@@ -155,13 +163,13 @@
     \textit{Доказательство}
     $$
         C(T, K) = \E^Q e^{-rT} (S_T - K)^+ = 
-        e^{-rT} \int_{K}^{\infty}(x-K) p(T, K) dx
+        e^{-rT} \int_{K}^{\infty}(x-K) p(T, x) dx
     $$
     
     $$
         \dfrac{\partial C(T, K)}{\partial K }
-        = e^{-rT} \dfrac{\partial}{\partial K} \left( \int_{K}^{\infty}(x-K) p(T, K) dx \right)
-        = -e^{-rT} \int_{K}^{\infty}p(T, K) dx
+        = e^{-rT} \dfrac{\partial}{\partial K} \left( \int_{K}^{\infty}(x-K) p(T, x) dx \right)
+        = -e^{-rT} \int_{K}^{\infty}p(T, x) dx
     $$
 
     $$
