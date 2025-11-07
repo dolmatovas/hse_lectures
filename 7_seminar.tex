@@ -1,0 +1,145 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{preamble_beamer}
+
+\newcommand*{\QEDB}{\null\nobreak\hfill\ensuremath{\square}}
+
+\newtheorem*{question*}{Вопрос}
+\newtheorem*{claim*}{Утверждение}
+
+\title[Фьючерсные и форвардные контракты]{Семинар 7. Фьючерсные и форвардные контракты} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\begin{document}
+
+\begin{frame}
+\titlepage 
+\end{frame}
+
+\begin{frame}{Стохастическая процентная ставка}
+    \begin{itemize}
+        \item Модели со стохастической ставкой:
+        \begin{align*}
+            &dB_t = r_t B_t dt\\
+            &dS_t / S_t = r_t dt + \sigma dW_t
+        \end{align*}
+        \item Стоимость опциона с пэйоффом $\Phi(S_T)$:
+        $$
+            \dfrac{V_t}{B_t} = \E^\Q \left[\dfrac{\Phi(S_T)}{B_T} | \F_t\right]
+            \Leftrightarrow V_t = \E^\Q \left[e^{-\int_t^T r_u du} \Phi(S_T) | \F_t \right]
+        $$
+        \item Дисконт-фактор:
+        $$
+            DF(t, T) = e^{-\int_t^T r_u du}
+        $$
+        \item Стоимость бескупонной облигации:
+        $$
+            P(t, T) = \E^Q [DF(t, T) | \F_t]
+        $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Форвардный контракт}
+    \begin{block}{Определение}
+        Форвардный контракт -- соглашение о покупке актива в момент $T$ по фиксированной цене $K$. Задаётся функцией выплаты $\Phi(S_T) = S_T - K$
+    \end{block}
+
+    \begin{block}{Определение}
+        Форвардная цена $\mathrm{Forw}(t, T)$-- страйк форвардного контракта, при котором его стоимость равна нулю.
+    \end{block}
+    \begin{block}{Теорема}
+        $$\mathrm{Forw}(t, T) = \dfrac{\E^\Q DF(t, T) S_T}{P(t, T)}
+        = \dfrac{S_t}{P(t,T)}$$
+    \end{block}
+\end{frame}
+
+\begin{frame}{Фьючерсный контракт}
+    \begin{block}{Определение}
+        Фьючерсный контракт -- соглашение о покупке актива в момент $T$, при котором платежи размазаны по всему сроку. Он обладает следующими свойствами
+        \begin{itemize}
+            \item На рынке котируется \textbf{фьючерсная цена} $\mathrm{Fut}_t(T)$.
+            \item В момент исполнения держатель платит $\mathrm{Fut}_T(T)$ и получает $S_T$.
+            \item $\forall t \leq T$ стоимость фьючерсного контракта равна нулю.
+            \item В течении интервала времени $(s, t]$ держатель контракта получает платеж $\mathrm{Fut}_t(T) - \mathrm{Fut}_s(T)$
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Теорема}
+        \begin{itemize}
+            \item $\mathrm{Fut}_T(T) = S_T$
+            \item $\mathrm{Fut}_t(T)$ -- мартингал относительно риск-нейтральной меры.
+            \item $\mathrm{Fut}_t(T) = \E^{\Q} \left[ S_T | \F_t \right]$
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Фьючерсный контракт}
+    \begin{block}{Теорема}
+        \begin{itemize}
+            \item $\mathrm{Fut}_T(T) = S_T$
+            \item $\mathrm{Fut}_t(T)$ -- мартингал относительно риск-нейтральной меры.
+            \item $\mathrm{Fut}_t(T) = \E^{\Q} \left[ S_T | \F_t \right]$
+        \end{itemize}
+        \textit{Доказательство}. Первый пункт очевиден. Докажем второй пункт. Пусть $(x_t, y_t)$ -- реплицирующий портфель (не обязательно самофинансируемый). Тогда:
+        \begin{align*}
+            &x_t S_t + y_t B_t = 0 \\
+            &d\mathrm{Fut}_t(T) = x_t dS_t + y_t dB_t
+        \end{align*}
+        Из первого уравнения $y_t = -x_t\dfrac{S_t}{B_t}$, откуда
+        $$
+            d\mathrm{Fut}_t(T) = x_t \left( dS_t - r_t S_t dt \right)
+            = x_t S_t \sigma dW_t
+        $$\QEDB
+    \end{block}
+\end{frame}
+
+\begin{frame}{Форвардная мера}
+\only<1>{
+    \begin{block}{Определение}
+        Форвардная мера $\Q^T$ -- мартингальная мера для numeraire $P(t, T)$. Относительно $\Q^T$ процессы:
+        $$
+            \overline{B}_t = \dfrac{B_t}{P(t, T)}, \quad \overline{S}_t = \dfrac{S_t}{P(t,T)}
+        $$являются мартингалами.
+    \end{block}}
+\only<2>{
+    \begin{itemize}
+        \item Относительно $\Q^T$ $\mathrm{Forw}_t(T)$ является мартингалом:
+        $$
+            \mathrm{Forw}_t(T) = \dfrac{S_t}{P(t,T)} = \overline{S}_t
+        $$
+        \item Формула ценообразования:
+        $$
+            \dfrac{V_t}{P(t, T)} = \E^\Q^T \left[ \dfrac{\Phi(S_T)}{P(T, T)} |\F_t \right]
+            \to \E^\Q^T \Phi(S_T)
+        $$
+        \item Формула замены меры:
+        $$
+            V_t = \E^\Q DF(t,T)\Phi(S_T) = P(t,T) \E^\Q^T \Phi(S_T)
+        $$     
+    \end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Форвардные ставки}
+    \begin{block}{Определение}Пусть на рынке торгуются бескупонные облигации для всех $T$.
+        
+        Определим форвардную ставку $f_t(T)$ как:
+        $$
+            P(t, T) = \exp(-\int_t^T f_t(U) dU)
+        $$или 
+        $$f_t(T) = -\dfrac{1}{P(t, T)}\dfrac{\partial P(t, T)}{\partial T}$$
+    \end{block}
+
+    \textit{Упражнение}. Покажите, что 
+    $$
+        f_t(T) = \E^{Q_T} [r_T | \F_t]
+    $$
+\end{frame}
+
+\begin{frame}{Контракты с разными типами расчёта}
+    \begin{itemize}
+        \item Контракты со спотовым типом расчёта -- спот цены
+        \item Контракты с форвардным типом расчёта -- форвардные цены
+        \item Контракты с фьючерсным типом расчёта -- фьючерсные цены
+    \end{itemize}
+\end{frame}
+
+\end{document}

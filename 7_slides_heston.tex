@@ -1,0 +1,349 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{preamble_beamer}
+
+\newcommand*{\QEDB}{\null\nobreak\hfill\ensuremath{\square}}
+
+\newtheorem*{question*}{Вопрос}
+\newtheorem*{claim*}{Утверждение}
+
+\title[Модели стохастической волатильности]{Лекция 7. Модель Хестона} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\begin{document}
+
+\begin{frame}
+\titlepage 
+\end{frame}
+
+\begin{frame}{Рекап прошлой лекции}
+    \begin{itemize}
+        \item Анализ предположений модели Блэка-Шоулза
+        \item Вменяемая (implied) волатильность
+        \item Формула Бридена-Литценбергера
+        \item Модели локальной волатильности
+        \item Формула Дюпира
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{План лекции}
+    \begin{itemize}
+        \item Модель Хестона: определение
+        \item Формула для цены колл-опциона через вероятности исполнения
+        \item Прайсинг в моделях и известной хар. функцией
+        \item Вычисление хар. функции в модели Хестона
+        \item Связь с моделями локальной волатильности. Теорема Дьёнди.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Модель Хестона}
+    \begin{block}{Определение}
+        Риск-нейтральная динамика в модели Хестона задаётся системой СДУ:
+        \begin{align*}
+            &\dfrac{dS_t}{S_t} = r dt + \sqrt{v_t} dW_t\\
+            &dv_t = \kappa (\theta - v_t) dt + \xi \sqrt{v_t} dZ_t
+        \end{align*}
+        где $W_t, Z_t$ -- два броуновских движения с корреляцией $\rho$.
+    \end{block}
+
+    Процесс для $v_t$ -- процесс с возвратом к среднему:
+    $$
+        \E v_t = v_0 e^{-\kappa t} + \theta (1 - e^{-\kappa t})
+    $$
+\end{frame}
+
+\begin{frame}{Формула замены меры в условном мат. ожидании}
+        \begin{itemize}
+        \item Замена меры:
+        $$
+            V_t = \E^{\Q} \left[ \left. X \dfrac{B_t}{B_T} \right\vert \F_t \right]
+            = \E^{\Q_S} \left[ \left. X \dfrac{S_t}{S_T} \right\vert \F_t \right]
+        $$где $\Q_S$ -- мартингальная мера для numeraire $S_t$.
+        \item Введём $Y = X \dfrac{S_t}{S_T}$, откуда:
+        $$
+            \E^{\Q_S} \left[ \left.Y \right\vert \F_t \right]
+            = \E^{\Q} \left[ \left.Y \dfrac{S_T}{S_t} \dfrac{B_t}{B_T} \right\vert \F_t \right]
+            = \dfrac{e^{-r(T-t)}}{S_t} \E^{\Q} \left[ \left.Y S_T \right\vert \F_t \right]        
+        $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Прайсинг через вероятности исполнения}
+    \begin{itemize}
+        \item Общая формула для прайсинга:
+        \begin{align*}
+            &C_t(T, K) = e^{-r(T-t)} \E^\Q \left[ (S_T-K)^+ | \F_t \right] = \\
+            &= e^{-r(T-t)} \E^\Q \left[ S_T \mathbb{I}_{S_T > K} | \F_t \right]
+            - e^{-r(T-t)} \E^\Q \left[ K \mathbb{I}_{S_T > K} | \F_t \right] = \\
+            &= S_t \Q_S(S_T > K | \F_t) - e^{-r(T-t)} K \Q(S_T > K | \F_t) 
+        \end{align*}где $\Q_S$ -- мартингальная мера для numeraire $S_t$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Характеристическая функция}
+
+    \begin{itemize}
+        \item Хар. функция как преобразования Фурье:
+        $$
+            \varphi(u) = \int_{\R} e^{iux} p(x) dx
+        $$
+        \item Обратное преобразование Фурье:
+        $$
+            p(x) = \dfrac{1}{2\pi} \int_{\R} e^{-iux} \varphi(u) du
+        $$
+        \item Функция распределения:
+        $$
+            F(x) = \int_{-\infty}^x p(y) dy
+            = \dfrac{1}{2\pi} \int_{-\infty}^x dy \int_{\R} e^{-iuy} \varphi(u) du
+        $$\item Формула обращения:
+        $$
+            F(x) = \dfrac{1}{2} - \dfrac{1}{\pi} \int_{0}^{\infty} \Re \left[ \dfrac{e^{-iux}\varphi(u)}{iu} du \right] 
+        $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Прайсинг в моделях с известной хар. функцией}
+    \begin{itemize}
+        \item Пусть $X_t = \log S_t$. Условная хар. функция:
+        \begin{align*}
+            &\varphi(u) = \E^\Q \left[e^{iuX_T} | \F_t \right] \\
+            &\tilde{\varphi}(u) = \E^{\Q_S} \left[e^{iuX_T} | \F_t \right]
+        \end{align*}
+        \item Связь:
+        $$
+            \tilde{\varphi}(u) = \dfrac{\varphi(u - i)}{\varphi(-i)}
+        $$
+        \item \textit{Доказательство}
+        \begin{align*}
+            \tilde{\varphi}(u) = \E^{\Q_S} \left[ e^{iuX_T} | F_t\right]
+            = e^{-r(T-t)}S_t^{-1} \E^{\Q} \left[ S_T e^{iuX_T} | F_t \right] =&\\
+            = e^{-r(T-t)}S_t^{-1} \E^{\Q} \left[ e^{(iu+1)X_T} | F_t \right]
+            = e^{-r(T-t)}S_t^{-1} \varphi(u - i)&
+        \end{align*}
+        $$
+            \varphi(-i) = \E^{\Q}\left[ S_T | \F_t \right]= e^{r(T-t)} S_t
+        $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Прайсинг в моделях с известной хар. функцией}
+    \begin{block}{Утверждение}
+        Пусть $\varphi(u) = \E^\Q \left[e^{iu\ln S_T} | \F_t \right]$ -- условная хар. функция процесса $\ln S_T$. 
+        Тогда цены европейских колл-опционов выражаются по формуле:
+        $$C_t(T, K) = S_t \Q_S(S_T > K | \F_t) - e^{-r(T-t)} K \Q(S_T > K | \F_t)$$
+        где вероятности исполнения вычисляются как:
+        \begin{align*}
+            &\Q(S_T > K | \F_t) = \dfrac{1}{2} + \dfrac{1}{\pi} \int_{0}^{\infty} \Re \left[ \dfrac{e^{-iu \ln K}\varphi(u)}{iu} du \right]\\
+            &\Q_S(S_T > K | \F_t) = \dfrac{1}{2} + \dfrac{1}{\pi} \int_{0}^{\infty} \Re \left[ \dfrac{e^{-iu \ln K}\tilde{\varphi}(u)}{iu} du \right]
+        \end{align*}
+        и $\tilde{\varphi}(u) = \dfrac{\varphi(u - i)}{\varphi(-i)}$ -- условная хар. функция в мере $\Q_S$.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Характеристическая функция в модели Хестона}
+    \begin{itemize}
+    \item Введём $X_t = \ln S_t$
+    \item Условная хар. фунцкия 
+    $$\varphi(t, x, v; u) = \E^{\Q}\left[ e^{iuX_T} | X_t = x, v_t = v\right]$$
+    \item Формула Феймана-Каца:
+        \begin{align*}
+            &\dfrac{\partial \varphi}{\partial t}
+            + \left(r - \frac{1}{2}v\right) 
+            \dfrac{\partial \varphi}{\partial x} 
+            + \kappa (\theta - v) \dfrac{\partial \varphi}{\partial v} 
+            + v \dfrac{1}{2}\dfrac{\partial^2 \varphi}{\partial x^2} 
+            + \rho \xi v \dfrac{\partial^2 \varphi}{\partial x \partial v}  
+            +  \xi^2 v \dfrac{1}{2}\dfrac{\partial^2 \varphi}{\partial v^2} = 0\\
+            &\varphi(T, x, v; u) = e^{iux}
+        \end{align*}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Характеристическая функция в модели Хестона}
+    Пусть $\tau = T - t$ -- время до погашения.
+    \begin{block}{Лемма}Характеристическая функция имеет вид:
+        $$\varphi(t, x, v; u) = \exp(C(T-\tau; u) + D(T-\tau; u) v + iux)$$
+        где функции $C(\tau; u), D(\tau; u)$ удовлетворяют ОДУ:
+        \begin{align*}
+            &C' = iur + \kappa \theta D\\
+            &D' = -\frac{1}{2}(iu+u^2) + (\rho \xi ui - \kappa)D + \frac{1}{2} \xi^2 D^2\\
+            &C(0) = D(0) = 0
+        \end{align*}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Характеристическая функция в модели Хестона}
+    \textit{Доказательство}. Подставим выражение для $\varphi$ выше в исходное уравнение, получим:
+    \begin{itemize}
+        \item $\varphi_{x} = iu\varphi$, $\varphi_{xx} = -u^2 \varphi$
+        \item $\varphi_v = D \varphi$, $\varphi_{vv} = D^2 \varphi$
+        \item $\varphi_{vx} = iuD\varphi$, $\varphi_t = -\varphi \left( C' + D'v \right)$
+    \end{itemize}
+    $$
+    \varphi \left[ 
+            -C' - D'v
+            + \left(r - \frac{1}{2}v\right) iu 
+            + \kappa (\theta - v) D 
+            - v \dfrac{1}{2}u^2 
+            + \rho \xi v iuD  
+            +  \xi^2 v \dfrac{1}{2}D^2 
+    \right] = 0
+    $$Зануляя слагаемые при $v^0$ и $v^1$ получим требуемые уравнения.
+\end{frame}
+
+\begin{frame}{Характеристическая функция в модели Хестона}
+    \begin{itemize}
+    \item Для фиксированного \( u \) \( D(\tau, u) \) удовлетворяет уравнению Риккати:
+    \[
+        D^{\prime} = \alpha + \beta D + \gamma D^2, \quad D(0, u) = 0,
+    \]где
+    \[
+    \alpha = -\frac{iu + u^2}{2}, \quad \beta = \rho\xi iu - \kappa, \quad \gamma = \frac{\xi^2}{2}.
+    \]
+    \item Корни характеристического уравнения  
+    \[
+    r_{\pm} = \frac{\beta \pm d}{2}, \quad d = \sqrt{\beta^2 - 4\alpha\gamma} = \sqrt{(\rho\xi iu - \kappa)^2 + \xi^2(iu + u^2)}.
+    \]  
+    \item Решение  
+    \[
+    D(\tau) = -\frac{1}{\gamma}\left(\frac{K_1 r_+ e^{r_+\tau} + K_2 r_- e^{r_-\tau}}{K_1 e^{r_+\tau} + K_2 e^{r_-\tau}}\right).
+    \]
+    \item Из граничных условий:
+    \[
+        K_1 = 1, \quad K_2 = -\frac{r_+}{r_-}.
+        \]  
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Характеристическая функция в модели Хестона}
+    \begin{itemize}
+        \item Решение
+    \[
+    D(\tau, u) = \frac{\kappa - \rho\xi iu - d}{\xi^2} \left( \frac{1 - e^{-d\tau}}{1 - ge^{-d\tau}} \right), \quad \text{где } g = \frac{r_+}{r_-},
+    \]  
+    \[
+    C(\tau, u) = iur\tau + \frac{\kappa\theta}{\xi^2} \left( (\kappa - \rho\xi iu - d)\tau - 2\ln\left( \frac{1 - ge^{-d\tau}}{1 - g} \right) \right).
+    \]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Решение уравнения Риккати}
+    Уравнение Риккати: 
+    $$
+        y' = \alpha + \beta y + \gamma y^2
+    $$ 
+    Замена $y = -\dfrac{z'}{\gamma z}$приводит к уравнению:
+    $$
+        z'' - \beta z' + \alpha \gamma z = 0
+    $$Характеристическое уравнение:
+    $$
+        r^2 - \beta r + \alpha \gamma = 0 \to 
+        r_{\pm} = \dfrac{\beta \pm d}{2}
+    $$где $d = \sqrt{\beta^2 - 4\alpha \gamma}$. Решение:
+    $$
+        z = K_1 e^{r_+ x} + K_2 e^{r_- x} 
+    $$ Обратная замена:
+    $$
+        y = -\dfrac{1}{\gamma} \left( \dfrac{K_1 r_+ e^{r_+x} + K_2r_-e^{r_-}}{K_1 e^{r_+ x} + K_2 e^{r_- x}} \right)
+    $$
+\end{frame}
+
+\begin{frame}{Характеристическая функция в модели Хестона}
+    Пусть $\tau = T - t$ -- время до погашения. Зафиксируем $u$. Пусть
+    \begin{align*}
+        d = \sqrt{(\rho\xi iu - \kappa)^2 + \xi^2(iu + u^2)}, 
+        \quad g = \frac{\rho\xi iu - \kappa + d}{\rho\xi iu - \kappa - d}
+    \end{align*}
+
+    \begin{block}{Лемма}Характеристическая функция имеет вид:
+        $$\varphi(t, x, v; u) = \exp(C(T-\tau; u) + D(T-\tau; u) v + iux)$$
+        где функции $C(\tau; u), D(\tau; u)$ задаются как:
+        \[
+        D(\tau, u) = \frac{\kappa - \rho\xi iu - d}{\xi^2} \left( \frac{1 - e^{-d\tau}}{1 - ge^{-d\tau}} \right),
+        \]  
+        \[
+        C(\tau, u) = iur\tau + \frac{\kappa\theta}{\xi^2} \left( (\kappa - \rho\xi iu - d)\tau - 2\ln\left( \frac{1 - ge^{-d\tau}}{1 - g} \right) \right).
+        \]
+    \end{block}
+\end{frame}
+
+\begin{frame}{Результаты}
+    \centering
+    \makebox[\textwidth]{\includegraphics[width=0.6\textwidth]{7_figs/implied_vol.jpg}}
+\end{frame}
+
+\begin{frame}{Связь с моделью локальной волатильности}
+    Модель Хестона:
+        \begin{align*}
+        &dS_t/S_t = r dt + \sqrt{v_t} dW_t\\
+        &dv_t = \kappa (\theta - v_t) dt + \xi \sqrt{v_t} dZ_t
+    \end{align*}
+
+    \begin{block}{Теорема}
+        Рассмотрим одномерный процесс 
+        $$
+            d\tilde{S}_t/\tilde{S}_t = r dt + \sigma_{loc}(t, \tilde{S}) dB_t
+        $$где $B_t$ -- броуновское движение, функция локальной волатильности задаётся как:
+        $$
+            \sigma_{loc}^2(t, s) = \E^\Q \left[ v_t | S_t=s\right]
+        $$Тогда $\tilde{S}_t \overset{d}{=} S_t$
+    \end{block}
+\end{frame}
+
+\begin{frame}{Связь с моделью локальной волатильности}
+    \textit{Доказательство для $r=0$} 
+    \begin{itemize}   
+    \item Пусть $p(t, S, v)$ -- двумерная плотность процесса $(S_t, v_t)$. 
+    \item Уравнение Колмогорова:
+        \begin{align*}
+            \frac{\partial p}{\partial t} = & -\frac{\partial}{\partial v}[\kappa (\theta - v) p] + \frac{1}{2} \frac{\partial^2}{\partial S^2}[S^2 v p] \\
+            & + \frac{1}{2} \frac{\partial^2}{\partial v^2}[\xi^2 v p] + \rho \xi \frac{\partial^2}{\partial S \partial v}[S v p]
+        \end{align*}
+    \item Одномерная плотность:
+    $$
+        q(t, S) = \int_{0}^{\infty} p(t, S, v) dv
+    $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Связь с моделью локальной волатильности}
+    \begin{itemize}
+    \item Интегрируем по $v$ от $0$ до $+\infty$:
+        \begin{align*}
+        \int_0^\infty \frac{\partial p}{\partial t} dv = & -\int_0^\infty \frac{\partial}{\partial v}[\kappa (\theta - v) p] dv \\
+        & + \frac{1}{2} \int_0^\infty \frac{\partial^2}{\partial S^2}[S^2 v p] dv \\
+        & + \frac{1}{2} \int_0^\infty \frac{\partial^2}{\partial v^2}[\xi^2 v p] dv \\
+        & + \rho \xi \int_0^\infty \frac{\partial^2}{\partial S \partial v}[S v p] dv
+        \end{align*}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Связь с моделью локальной волатильности}
+    \begin{itemize}
+    \item $\int_0^\infty \frac{\partial p}{\partial t} dv = \frac{\partial q}{\partial t}$
+    \item $-\int_0^\infty \frac{\partial}{\partial v}[\kappa (\theta - v) p] dv = 0$ (граничные условия)
+    \item $\frac{1}{2} \int_0^\infty \frac{\partial^2}{\partial S^2}[S^2 v p] dv = \frac{1}{2} \frac{\partial^2}{\partial S^2} \left[ S^2 \int_0^\infty v p dv \right]$
+    \item $\frac{1}{2} \int_0^\infty \frac{\partial^2}{\partial v^2}[\xi^2 v p] dv = 0$ (граничные условия)
+    \item $\rho \xi \int_0^\infty \frac{\partial^2}{\partial S \partial v}[S v p] dv = 0$ (граничные условия)
+    \end{itemize}
+    \end{frame}
+
+\begin{frame}{Связь с моделью локальной волатильности}
+    \begin{itemize}
+    \item Заметим, что:
+        \[
+        \int_0^\infty v p(t, S, v) dv = \mathbb{E}[v_t | S_t = S] q(t, S)
+        \]
+    \item Итоговое уравнение на маргинальную плотность: 
+        \[
+            \frac{\partial q}{\partial t} = \frac{1}{2} \frac{\partial^2}{\partial S^2} \left( S^2 \mathbb{E}[v_t | S_t = S] q(t, S) \right)
+        \]
+
+    \item  Формула для локальной волатильности: 
+        \[
+        \sigma_{\text{loc}}^2(t, S) = \mathbb{E}[v_t | S_t = S]
+        \]
+
+    \end{itemize}
+\end{frame}
+
+\end{document}

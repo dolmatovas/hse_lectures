@@ -1,0 +1,92 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{preamble_beamer}
+
+\newcommand*{\QEDB}{\null\nobreak\hfill\ensuremath{\square}}
+
+\newtheorem*{question*}{Вопрос}
+\newtheorem*{claim*}{Утверждение}
+
+\title[Модели стохастической волатильности]{Лекция 7. Модель Хестона} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\begin{document}
+
+
+\begin{frame}{Модель Хестона}
+Рассмотрим модель Хестона с нулевой процентной ставкой:
+\begin{align*}
+\frac{dS_t}{S_t} &= \sqrt{v_t} dW_t, \\
+dv_t &= \kappa (\theta - v_t) dt + \xi \sqrt{v_t} dZ_t, \\
+dW_t dZ_t &= \rho dt
+\end{align*}
+\end{frame}
+
+\begin{frame}{Двумерное уравнение Фоккера-Планка}
+Для совместной плотности $p(t, S, v)$:
+\begin{align*}
+\frac{\partial p}{\partial t} = & -\frac{\partial}{\partial v}[\kappa (\theta - v) p] + \frac{1}{2} \frac{\partial^2}{\partial S^2}[S^2 v p] \\
+& + \frac{1}{2} \frac{\partial^2}{\partial v^2}[\xi^2 v p] + \rho \xi \frac{\partial^2}{\partial S \partial v}[S v p]
+\end{align*}
+\end{frame}
+
+\begin{frame}{Интегрирование по $v$}
+Интегрируем по $v$ от $0$ до $+\infty$:
+\begin{align*}
+\int_0^\infty \frac{\partial p}{\partial t} dv = & -\int_0^\infty \frac{\partial}{\partial v}[\kappa (\theta - v) p] dv \\
+& + \frac{1}{2} \int_0^\infty \frac{\partial^2}{\partial S^2}[S^2 v p] dv \\
+& + \frac{1}{2} \int_0^\infty \frac{\partial^2}{\partial v^2}[\xi^2 v p] dv \\
+& + \rho \xi \int_0^\infty \frac{\partial^2}{\partial S \partial v}[S v p] dv
+\end{align*}
+\end{frame}
+
+\begin{frame}{Анализ слагаемых}
+\begin{itemize}
+\item[1.] $\int_0^\infty \frac{\partial p}{\partial t} dv = \frac{\partial p}{\partial t}$
+\item[2.] $-\int_0^\infty \frac{\partial}{\partial v}[\kappa (\theta - v) p] dv = 0$ (граничные условия)
+\item[3.] $\frac{1}{2} \int_0^\infty \frac{\partial^2}{\partial S^2}[S^2 v p] dv = \frac{1}{2} \frac{\partial^2}{\partial S^2} \left[ S^2 \int_0^\infty v p dv \right]$
+\item[4.] $\frac{1}{2} \int_0^\infty \frac{\partial^2}{\partial v^2}[\xi^2 v p] dv = 0$ (граничные условия)
+\item[5.] $\rho \xi \int_0^\infty \frac{\partial^2}{\partial S \partial v}[S v p] dv = 0$ (граничные условия)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Условное математическое ожидание}
+Заметим, что:
+\[
+\int_0^\infty v p(t, S, v) dv = \mathbb{E}[v_t | S_t = S] p(t, S)
+\]
+где:
+\[
+\mathbb{E}[v_t | S_t = S] = \frac{1}{p(t, S)} \int_0^\infty v p(t, S, v) dv
+\]
+\end{frame}
+
+\begin{frame}{Итоговое уравнение}
+Получаем уравнение для маргинальной плотности:
+\[
+\frac{\partial p}{\partial t} = \frac{1}{2} \frac{\partial^2}{\partial S^2} \left( S^2 \mathbb{E}[v_t | S_t = S] p(t, S) \right)
+\]
+
+\textbf{Следствие:}
+\[
+\sigma_{\text{loc}}^2(t, S) = \mathbb{E}[v_t | S_t = S]
+\]
+\end{frame}
+
+\begin{frame}{Теорема Дьёндь}
+\textbf{Теорема (Gyöngy, 1986):}
+
+Для процесса со стохастической волатильностью:
+\[
+dS_t = \mu_t S_t dt + \sqrt{v_t} S_t dW_t
+\]
+существует процесс с локальной волатильностью:
+\[
+dS_t = \mu_t S_t dt + \sigma_{\text{loc}}(t, S_t) S_t dW_t
+\]
+с одинаковыми одномерными распределениями, где:
+\[
+\sigma_{\text{loc}}^2(t, S_t) = \mathbb{E}[v_t | S_t]
+\]
+\end{frame}
+
+
+\end{document}
