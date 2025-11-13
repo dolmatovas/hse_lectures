@@ -78,6 +78,7 @@
             \item $\mathrm{Fut}_t(T)$ -- мартингал относительно риск-нейтральной меры.
             \item $\mathrm{Fut}_t(T) = \E^{\Q} \left[ S_T | \F_t \right]$
         \end{itemize}
+    \end{block}
         \textit{Доказательство}. Первый пункт очевиден. Докажем второй пункт. Пусть $(x_t, y_t)$ -- реплицирующий портфель (не обязательно самофинансируемый). Тогда:
         \begin{align*}
             &x_t S_t + y_t B_t = 0 \\
@@ -88,7 +89,7 @@
             d\mathrm{Fut}_t(T) = x_t \left( dS_t - r_t S_t dt \right)
             = x_t S_t \sigma dW_t
         $$\QEDB
-    \end{block}
+    
 \end{frame}
 
 \begin{frame}{Форвардная мера}

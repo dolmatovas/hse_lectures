@@ -6,7 +6,7 @@
 \newtheorem*{question*}{Вопрос}
 \newtheorem*{claim*}{Утверждение}
 
-\title[Модели стохастической волатильности]{Лекция 7. Модель Хестона} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Барьерные опционы]{Лекция 8. Барьерные опционы} % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \begin{document}
 
@@ -14,32 +14,83 @@
 \titlepage
 \end{frame}
 
-\begin{frame}{Постановка задачи}
+\begin{frame}{Барьерные опционы}
 
 \begin{itemize}
     \item Модель Блэка-Шоулза:
         \begin{align*}
-        \frac{dS_t}{S_t} &= r dt + \sigma dW_t
+            dS_t / S_t &= r dt + \sigma dW_t \\
+            dB_t &= r B_t dt
         \end{align*}
-    \item Верхний барьер $B$
-    \item Накопленный максимум $M_t = \max_{u\leq t} S_u$
-    \item Выплата: 
-        $$\Phi(S_T, M_T) = \Phi(S_T) \cdot \mathbb{I}(M_T < B)
-            = \begin{cases}
-                \Phi(S_T), M_T < B\\
-                0, M_T \geq B
-            \end{cases}$$
+    \item Накопленный максимум/минимум 
+            \begin{align*}
+            M_t = \max_{u\leq t} S_u, \quad m_t = \min_{u\leq t} S_u 
+           \end{align*}
+    \item Выплата $\Phi(S_T)$
 \end{itemize}
+\begin{block}{Определение}
+    Барьерный up-and-out опцион с функцией выплаты $\Phi(S_T)$ и барьером $B$ это дериватив, который в момент времени $T$ 
+    платит случайную сумму денег, равную
+    $$\Phi(S_T) \cdot \mathbb{I}(M_T < B)
+    = \begin{cases}
+        \Phi(S_T), M_T < B\\
+        0, M_T \geq B
+    \end{cases}$$
+\end{block}
+\end{frame}
+
+\begin{frame}{Барьерные опционы: пример}
+    \begin{itemize}
+        \item Up-and-out пут-опцион. Функция выплаты $\Phi(S_T) = (S_T - K)^+$
+        \item Пэйофф барьерного опциона $(S_T - K)^+ \cdot \mathbb{I}(M_T < B)$
+    \end{itemize}
+    \centering
+    \makebox[\textwidth]{\includegraphics[width=0.8\textwidth]{8_figs/barrer_example.jpg}}
+\end{frame}
+
+\begin{frame}{Другие барьерные опционы}
+    \begin{itemize}
+        \item Up-and-out (UO)
+        $$
+            \mathrm{Payoff} = \Phi(S_T) \cdot \mathbb{I}(M_T < B)
+        $$
+        \item Up-and-in (UI)
+        $$
+            \mathrm{Payoff} = \Phi(S_T) \cdot \mathbb{I}(M_T \geq B)
+        $$
+        \item Down-and-out (DO)
+        $$
+            \mathrm{Payoff} = \Phi(S_T) \cdot \mathbb{I}(m_t \geq B)
+        $$
+        \item Down-and-in (DI)
+        $$
+            \mathrm{Payoff} = \Phi(S_T) \cdot \mathbb{I}(m_t < B)
+        $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Барьерные опционы: свойства}
+    \begin{itemize}
+        \item In-out parity
+        $$
+            V^{UO}(t, S_t; \Phi) + V^{UI}(t, S_t; \Phi) = V(t, S_t; \Phi)
+        $$
+        \item Оценка сверху:
+        \begin{align*}
+            &V^{UO}(t, S_t; \Phi) \leq V(t, S_t; \Phi) \\
+            &V^{UI}(t, S_t; \Phi) \leq V(t, S_t; \Phi)
+        \end{align*}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Уравнение Блэка-Шоулза}
     \begin{itemize}
         \item Пусть $M_t < B$, т.е. барьер не пробит до момента $t$
         \item Пусть $\tau = \inf_{u\geq t} \{ S_u \geq B \}$
-        \item Пэйофф: $\Phi(S_T) \mathbb{I}(\tau > T)$
+        \item $\{M_T \leq B\} \Leftrightarrow \{\tau > T\}$
         \item Стоимость опциона:
         $$
-            V^{UO}(t, S_t) = \E e^{-r(T-t)} \Phi(S_T) \mathbb{I}(\tau > T)
+            V^{UO}(t, S_t; \Phi) = \E \left[e^{-r(T-t)} \Phi(S_T) \mathbb{I}(\tau > T) | \F_t \right]
         $$
         \item По формуле Феймана-Каца стоимость удовлетворяет уравнению БШ
         \begin{align*}
@@ -62,6 +113,18 @@
                 0, S > B
             \end{cases}
         $$
+        \item Стоимость европейских опционов:
+        $$
+            V(t, S_t; \Phi^B) =  \E \left[e^{-r(T-t)} \Phi^B(S_T) | \F_t \right]
+        $$
+        \item Классическое уравнение БШ:
+        \begin{align*}
+            &\dfrac{\partial V}{\partial t} + 
+            r S \dfrac{\partial V}{\partial S}
+            + \dfrac{1}{2}\sigma^2 S^2 \dfrac{\partial^2V}{\partial S^2}
+            = r V, \quad 0 \leq t \leq T, 0 \leq S < \infty \\
+            & V(T, S) = \Phi(S) \mathbb{I}(S \leq B)
+        \end{align*}
     \end{itemize}
 \end{frame}
 
@@ -69,149 +132,184 @@
     \begin{itemize}
         \item Замена переменных $X_t = \log S_t$
         \item Логарифмический барьер $b = \log B$
-        \item Уравнение БШ в новых координатах $v^{UO}(t, x) = V^{UO}(t, e^x)$:
+        \item Уравнение БШ в новых координатах $v(t, x) = V(t, e^x; \Phi^B)$:
         \begin{align*}
-            &\dfrac{\partial v^{UO}}{\partial t} + 
-            \gamma \dfrac{\partial v^{UO}}{\partial x}
-            + \dfrac{1}{2}\sigma^2 \dfrac{\partial^2 v^{UO}}{\partial x^2}
-            = r v^{UO} \\           
-            & v^{UO}(t, b) = 0\\
-            & v^{UO}(T, x) = \Phi^B(e^x)
+            &\dfrac{\partial v}{\partial t} + 
+            \gamma \dfrac{\partial v}{\partial x}
+            + \dfrac{1}{2}\sigma^2 \dfrac{\partial^2 v}{\partial x^2}
+            = r v \\          
+            & v(T, x) = \Phi^B(e^x)
         \end{align*}где $\gamma = r - \dfrac{1}{2}\sigma^2$
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Метод отражения}
     \begin{itemize}
+        \only<1>{
         \item Пусть $\gamma = 0$, т.е. $r=0.5 \sigma^2$
-        \item Пусть $v(t, x)$ -- стоимость европейского опциона с пэйоффом $\Phi^B(e^x)$
-        \item Функция $v(t, x)$ удовлетворяет уравнению:
+        \item Уравнение БШ в новых координатах $v(t, x) = V(t, e^x; \Phi^B)$:
         \begin{align*}
             &\dfrac{\partial v}{\partial t}
             + \dfrac{1}{2}\sigma^2 \dfrac{\partial^2 v}{\partial x^2}
             = r v
         \end{align*}
-        \item В силу симметрии $v(t, 2b - x)$ тоже решение. 
-        \item Терминальное условие:
-        $
-             v(T, 2a - x) = \Phi^B(e^{2b - x}) = 0
-        $ при $x \leq b$. 
+        \item В силу симметрии уравнения, $v(t, 2b - x)$ тоже решение.
+        \item Терминальные условия при $x < b$:
+        $$
+            v(T, 2b - x) = \Phi^B(e^{2b - x}) = \Phi^B\left(\frac{B^2}{S}\right) = 0  
+        $$}
+    \only<2>{
         \item Отсюда $g(t, x) = v(t, x) - v(t, 2b - x)$ удовлетворяет уравнению:
         \begin{align*}
             &\dfrac{\partial g}{\partial t}
             + \dfrac{1}{2}\sigma^2 \dfrac{\partial^2 g}{\partial x^2}
-            = r v \\
+            = r v, x \leq b\\
             & g(T, b) = 0\\           
             & g(T, x) = \Phi^B(e^x)
         \end{align*}
-        т.е. $v^{UO}(t, x) = g(t, x)$ -- стоимость барьерного опциона.
+        т.е. $V^{UO}(t, S; \Phi) = g(t, \log S)$ -- стоимость барьерного опциона.}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Метод отражения}
-    \begin{block}
-        $$
-            V^{UO}(t, S_t; \Phi) = V(t, S_t; \Phi^L) - V\left(t, \dfrac{L^2}{S_t}; \Phi^L\right)
-        $$
+    \begin{block}{Теорема}
+        Пусть $r = 0.5 \sigma^2$, пусть $V^{UO}(t, S_t; \Phi)$ -- стоимость барьерного up-and-out опциона. Тогда:
+        \begin{align*}
+            V^{UO}(t, S_t; \Phi) = \begin{cases}
+                0, M_t \geq B \\
+                V(t, S_t; \Phi^B) - V\left( t, \frac{B^2}{S_t}; \Phi^B \right), M_t < B
+            \end{cases}
+        \end{align*}
+        где $V(t, S_t; \Phi^B)$ -- стоимость европейского опциона с обрезанным пэйоффом.
     \end{block}
 \end{frame}
 
 \begin{frame}{Пример}
     \begin{itemize}
-        \item Пусть $\Phi(S_T) = (K-S_T)^+$, $K \leq L$
-        \item $\Phi^L(S_T) = \Phi(S_T)$
-        \item 
-        $$
-            P^{UO}(t, S_t) = P(t, S_t) - P(t, \dfrac{L^2}{S_t})
-            = \ldots
-        $$
+        \item Рассмотрим up-and-out пут-опцион со страйком $K$ и барьером $B$
+        \item Соответсвующий обрезанный пэйофф: 
+        \begin{align*}
+            \Phi^B(S_T) &= (K-S_T)^+ \mathbb{I}(S_T \leq B)
+            = (K-S_T) \mathbb{I}(S_T \leq K) \mathbb{I}(S_T \leq B) = \\
+            &= 
+             K \mathbb{I} (S_T \leq \min(K, B)) - S_T \mathbb{I} (S_T \leq \min(K, B))
+        \end{align*}
     \end{itemize}
+        \centering
+        \makebox[\textwidth]{\includegraphics[width=0.8\textwidth]{8_figs/barrier_put_payoff.jpg}}
 \end{frame}
 
-\begin{frame}{Переход к логарифмическим координатам}
-Введём: $X_t = \log S_t$
-
-По формуле Ито:
-\begin{align*}
-dX_t &= \left(r - \frac{1}{2}\sigma^2\right) dt + \sigma dW_t
-\end{align*}
-
-При $r = \frac{1}{2}\sigma^2$ получаем:
-\begin{align*}
-dX_t &= \sigma dW_t
-\end{align*}
-
-Барьер в новых координатах: $a = \log B$
-\end{frame}
-
-\begin{frame}{123}
+\begin{frame}{Пример: продолжение}
     \begin{itemize}
-        \item Введём обрезанный пэйофф:
+        \only<1>{\item Цена европейского пэйоффа:
+        $$\mathrm{Put}(t, S_t; K, B) = 
+            Ke^{-r(T-t)} \mathcal{N}(-d_1 + \sigma \sqrt{T-t}) - S_t \mathcal{N}(-d_1)
+        $$ где 
+        \begin{align*}
+            &d_1 = \frac{\ln(S_t / \min(B, K)) + (r + 0.5 \sigma^2)(T-t)}{\sigma \sqrt{T-t}}
+        \end{align*}}
+        \only<1->{
+        \item Цена барьерного опциона:
         $$
-            \Phi^L(S) = \Phi(S) \cdot \mathbb{I} (S < L)
+            V^{UO}(t, S_t; \Phi) = \mathrm{Put}(t, S_t; K, B) - 
+            \mathrm{Put}\left(t, \dfrac{B^2}{S_t}; K, B\right)
+        $$}
+    \end{itemize}
+    \only<2->{
+            \centering
+        \makebox[\textwidth]{\includegraphics[width=0.8\textwidth]{8_figs/barrier_put_prices_vs_spot.jpg}}
+    }
+\end{frame}
+
+\begin{frame}{Метод отражения: общий случай}
+    \begin{itemize}
+        \only<1>{\item Пусть $\gamma \neq 0$. Уравнение БШ в новых координатах $v(t, x) = V(t, e^x; \Phi^B)$:
+        \begin{align*}
+            &\dfrac{\partial v}{\partial t}
+            + \gamma \dfrac{\partial v}{\partial x}
+            + \dfrac{1}{2}\sigma^2 \dfrac{\partial^2 v}{\partial x^2}
+            = r v
+        \end{align*}\item Пусть $v(t, x)$ -- решение. Ищем второе решение $h(t, x) = e^{\alpha (x-b)} v(t, 2b - x)$
+        \item Производные:
+        \begin{align*}
+            & h_t = e^{\alpha (x-b)} v_t, \quad h_x = e^{\alpha (x-b)}(\alpha v - v_x)\\
+            & h_{xx} = e^{\alpha (x-b)} (v_{xx} - 2\alpha v_x + \alpha^2 v)
+        \end{align*}
+        }
+        \only<1->{\item Подставляем в уравнение:
+        \begin{align*}
+            0 \overset{?}{=} &h_t + \gamma h_x + \frac{1}{2} \sigma^2 h_{xx} - rh =
+            \\ = 
+            &e^{\alpha (x-b)} \left( v_t + v_x (-\gamma - \alpha \sigma^2) + 
+            \frac{1}{2} \sigma^2 v_{xx} - v(r - \gamma \alpha - \frac{\alpha^2\sigma^2}{2}) \right)
+        \end{align*}}
+        \only<2->{\item При $\alpha = -\frac{2\gamma}{\sigma^2}$ правая часть равна нулю, поэтому $g(t, x)$ является решением.
+
+        \item Отсюда:
         $$
-        \item В новых координатах:
-        $$
-            \Phi^L(e^x) = \Phi(e^x) \cdot \mathbb{I} (x < a)
-        $$
+            g(t, x) = v(t, x) - e^{-\frac{2\gamma}{\sigma^2} (x-b)} v(t, 2b - x)
+        $$ является решением уравнения:
+        \begin{align*}
+            &\dfrac{\partial g}{\partial t}
+            + \dfrac{1}{2}\sigma^2 \dfrac{\partial^2 g}{\partial x^2}
+            = r v, x \leq b\\
+            & g(T, b) = 0\\           
+            & g(T, x) = \Phi^B(e^x)
+        \end{align*}
+        }
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Уравнение Блэка-Шоулса}
-Цена европейского опциона $C(t,x)$ с пэйоффом $\Phi^L(e^x)$ удовлетворяет:
-\begin{align*}
-\frac{\partial C}{\partial t} + \frac{1}{2}\sigma^2 \frac{\partial^2 C}{\partial x^2} + \left(r - \frac{1}{2}\sigma^2\right) \frac{\partial C}{\partial x} - rC = 0
-\end{align*}
-
-При $r = \frac{1}{2}\sigma^2$:
-\begin{align*}
-\frac{\partial C}{\partial t} + \frac{1}{2}\sigma^2 \frac{\partial^2 C}{\partial x^2} - rC = 0
-\end{align*}
+\begin{frame}{Метод отражения: общий случай}
+    \begin{block}{Теорема}
+        Пусть $\gamma = r - 0.5 \sigma^2$, $V^{UO}(t, S_t; \Phi)$ -- стоимость барьерного up-and-out опциона. Тогда:
+        \begin{align*}
+            V^{UO}(t, S_t; \Phi) = \begin{cases}
+                0, M_t \geq B \\
+                V(t, S_t; \Phi^B) - \left(\dfrac{B}{S_t}\right)^{\frac{2\gamma}{\sigma^2}}V\left( t, \frac{B^2}{S_t}; \Phi^B \right), M_t < B
+            \end{cases}
+        \end{align*}
+        где $V(t, S_t; \Phi^B)$ -- стоимость европейского опциона с обрезанным пэйоффом.
+    \end{block}
 \end{frame}
 
-\begin{frame}{Симметрия уравнения}
-Уравнение:
-\begin{align*}
-\\frac{\partial C}{\partial t} + \frac{1}{2}\sigma^2 \frac{\partial^2 C}{\partial x^2} - rC = 0
-\end{align*}
-
-\textbf{Симметрия}: уравнение инвариантно относительно замены $x \to -x$
-
-Если $C(t,x)$ - решение, то $C(t,2a - x)$ тоже решение.
+\begin{frame}{Контракты типа up-and-in}
+    \begin{itemize}
+        \item Обрезанные снизу пэйоффы:
+        $$
+            \Phi_B(S) = \Phi(S) \mathbb{I}(S > B)
+        $$
+        $$\Phi = \Phi_B + \Phi^B$$
+        \item Европейский контракт:
+        $$
+            V(t, S_t; \Phi) = V(t, S_t; \Phi_B) + V(t, S_t; \Phi^B)
+        $$
+        \item In-out parity:
+        $$
+            V^{UO}(t, S_t; \Phi) + V^{UI}(t, S_t; \Phi) = V(t, S_t; \Phi)
+        $$
+        \begin{align*}
+             &V^{UI}(t, S_t; \Phi) = 
+             V(t, S_t; \Phi) - V^{UO}(t, S_t; \Phi) = \\
+             = &V(t, S_t; \Phi_B) + V(t, S_t; \Phi^B)
+             - V(t, S_t; \Phi^B) + \left(\frac{B}{S_t}\right)^{\frac{2\gamma}{\sigma^2}}V\left( t, \frac{B^2}{S_t}; \Phi^B \right)
+             = \\ 
+             = &V(t, S_t; \Phi_B) + \left(\frac{B}{S_t}\right)^{\frac{2\gamma}{\sigma^2}}V\left( t, \frac{B^2}{S_t}; \Phi^B \right)
+        \end{align*}
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Метод отражения}
-Построим новую функцию:
-\begin{align*}
-G(t,x) = C(t,x) - C(t,2a-x)
-\end{align*}
-
-\textbf{Свойства}:
-\begin{itemize}
-\item $G(t,x)$ - решение уравнения (линейная комбинация решений)
-\item $G(t,a) = C(t,a) - C(t,a) = 0$ (условие на барьере)
-\end{itemize}
+\begin{frame}{Контракты типа up-and-in}
+    \begin{block}{Теорема}
+        Пусть $\gamma = r - 0.5 \sigma^2$, $V^{UI}(t, S_t; \Phi)$ -- стоимость барьерного up-and-in опциона. Тогда:
+        \begin{align*}
+            V^{UI}(t, S_t; \Phi) = \begin{cases}
+                0, M_t \geq B \\
+                V(t, S_t; \Phi_B) + \left(\dfrac{B}{S_t}\right)^{\frac{2\gamma}{\sigma^2}}V\left( t, \frac{B^2}{S_t}; \Phi^B \right), M_t < B
+            \end{cases}
+        \end{align*}
+        где $V(t, S_t; \Phi_B)$ -- стоимость европейского опциона с обрезанным пэйоффом.
+    \end{block}
 \end{frame}
-
-\begin{frame}{Начальные условия}
-При $t = T$ (экспирация):
-\begin{align*}
-G(T,x) &= C(T,x) - C(T,2a-x) = \Phi^L(e^x) - \Phi^L(e^{2a - x})
-= \Phi^L(e^x)
-\end{align*}так как $2a - x > a$ при $x < a$.
-
-\textbf{Проверим выполнение условий барьерного опциона:}
-\end{frame}
-
-\begin{frame}{Итог}
-    Пусть $C^L(t, x)$ -- цена опциона с пэйоффом $\Phi^L(x)$. Тогда цена барьерного опциона задаётся как:
-    $$
-        C^{LO}(t, x) = \begin{cases}
-            C^L(t, x) - C^L(t, 2a - x), \text{при } a < M_t\\
-            0, \text{при} a \geq M_t
-        \end{cases}
-    $$
-\end{frame}
-
 
 \end{document}
