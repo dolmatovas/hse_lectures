@@ -12,6 +12,8 @@
 *.cb2
 .*.lb
 
+*.pyc
+
 ## Intermediate documents:
 *.dvi
 *.xdv
