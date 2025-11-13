@@ -24,6 +24,13 @@ def BS(f, k, theta):
     pv = f * norm_cdf(d1) - k * norm_cdf(d2)
     return pv
 
+@nb.njit
+def BSput(f, k, theta):
+    d1 = np.log(f / k) / theta + 0.5 * theta
+    d2 = d1 - theta
+    pv = f * norm_cdf(d1) - k * norm_cdf(d2)
+    return pv - (f - k)
+
 
 @nb.njit
 def BS_vega(f, k, theta):
